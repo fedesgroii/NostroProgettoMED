@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impostazioni - MindLab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Corpo della pagina */
+        html, body {
+            height: 100%;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2;
+            overflow: hidden; /* Evita lo scroll in entrambe le direzioni */
+        }
+
+        /* Navbar */
+        .navbar {
+            width: 100%;
+            background-color: #28a745;
+            padding: 15px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar i {
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+
+        .navbar span {
+            font-size: 1.5em;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        /* Contenitore principale */
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            padding: 70px 20px 20px; /* Spazio per la navbar e margini */
+        }
+
+        /* Header */
+        .header i {
+            font-size: 2.5em;
+            color: #28a745;
+        }
+
+        /* Sezione di benvenuto */
+        .welcome {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
+        }
+
+        /* Form delle impostazioni */
+        .settings-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .settings-form h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+        }
+
+        .settings-form label {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            display: block;
+            color: #333;
+        }
+
+        .settings-form input,
+        .settings-form select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        .settings-form button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .settings-form button:hover {
+            background-color: #218838;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/home_paziente.html"><i class="fas fa-home"></i> Home</a>
+        <span>MindLab</span>
+    </div>
+
+    <div class="container">
+        <!-- Header con icona di impostazioni -->
+        <div class="header">
+            <i class="fas fa-cogs"></i>
+        </div>
+
+        <!-- Sezione di benvenuto -->
+        <div class="welcome">
+            Impostazioni dell'account
+        </div>
+
+        <!-- Form delle impostazioni -->
+        <form class="settings-form" action="/salva-impostazioni" method="POST">
+            <h2>Modifica le tue impostazioni</h2>
+
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Modifica il tuo nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Modifica la tua email" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Nuova password" required>
+
+            <label for="preferenze">Preferenze:</label>
+            <select id="preferenze" name="preferenze">
+                <option value="email">Ricevi notifiche via email</option>
+                <option value="sms">Ricevi notifiche via SMS</option>
+                <option value="none">Non ricevere notifiche</option>
+            </select>
+
+            <button type="submit">Salva modifiche</button>
+        </form>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MindLab - Tutti i diritti riservati</p>
+    </footer>
+</body>
+</html>

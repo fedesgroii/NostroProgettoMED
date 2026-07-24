@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vetrina Prodotti - MindLab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Stili di base */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f2f2f2 0%, #e8e8e8 100%);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+
+        /* Sezione di benvenuto */
+        .welcome {
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        /* Logo MindLab */
+        .logo {
+            font-size: 3em;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Vetrina Prodotti */
+        .product-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-description {
+            padding: 20px;
+        }
+
+        .product-description h3 {
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .product-description p {
+            margin: 0;
+            color: #666;
+        }
+
+        /* Bottoni */
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 20px; /* Bordo arrotondato */
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .buttons a:hover {
+            transform: scale(1.05);
+        }
+
+        .confirm-btn {
+            background-color: #28a745;
+        }
+
+        .cancel-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="/path/to/profile.html"><i class="fas fa-user"></i></a>
+            </div>
+            <div class="header-right">
+                <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/impostazioni_utente.html"><i class="fas fa-cog"></i></a>
+                <a href="/path/to/privacy.html"><i class="fas fa-shield-alt"></i></a>
+            </div>
+        </div>
+
+        <!-- Logo MindLab -->
+        <div class="logo">
+            MindLab
+        </div>
+
+        <!-- Sezione di benvenuto -->
+        <div class="welcome">
+            Vetrina Prodotti
+        </div>
+
+        <!-- Vetrina Prodotti -->
+        <div class="product-grid">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Prodotto 1" class="product-image">
+                <div class="product-description">
+                    <h3>Prodotto 1</h3>
+                    <p>Descrizione del prodotto 1. Un prodotto di alta qualità.</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Prodotto 2" class="product-image">
+                <div class="product-description">
+                    <h3>Prodotto 2</h3>
+                    <p>Descrizione del prodotto 2. Un prodotto di alta qualità.</p>
+                </div>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/300x200" alt="Prodotto 3" class="product-image">
+                <div class="product-description">
+                    <h3>Prodotto 3</h3>
+                    <p>Descrizione del prodotto 3. Un prodotto di alta qualità.</p>
+                </div>
+            </div>
+            <!-- Aggiungi altri prodotti qui -->
+        </div>
+
+        <!-- Bottoni -->
+        <div class="buttons">
+            <a href="#" class="cancel-btn">Torna indietro</a>
+            <a href="#" class="confirm-btn">Vai al Carrello</a>
+        </div>
+    </div>
+
+    <script>
+        // Script per sicurezza e conferma azione
+        document.querySelector('.confirm-btn').addEventListener('click', function(event) {
+            if (!confirm('Sei sicuro di voler procedere al carrello?')) {
+                event.preventDefault();
+            }
+        });
+
+        document.querySelector('.cancel-btn').addEventListener('click', function(event) {
+            if (!confirm('Sei sicuro di voler tornare indietro?')) {
+                event.preventDefault();
+            }
+        });
+
+        // Prevenzione attacchi XSS
+        function sanitizeInput(input) {
+            var element = document.createElement('div');
+            element.innerText = input;
+            return element.innerHTML;
+        }
+    </script>
+</body>
+</html>

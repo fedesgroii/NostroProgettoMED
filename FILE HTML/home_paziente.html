@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - MindLab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Stili di base */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f2f2f2;
+            /* DISABILITARE SELEZIONE*/
+            -webkit-user-select: none; /* Per Safari */
+            -moz-user-select: none;    /* Per Firefox */
+            -ms-user-select: none;     /* Per IE/Edge */
+            user-select: none;         /* Standard */
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .header a {
+            text-decoration: none;
+            color: #333;
+            font-size: 1.5em;
+            margin: 0 10px;
+        }
+
+        /* Sezione di benvenuto */
+        .welcome {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #333;
+        }
+
+        /* Box */
+        .box {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .green-box {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .shop-box {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+        }
+
+        .green-box::after {
+            content: '\f271';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        .green-box:nth-of-type(2)::after {
+            content: '\f1da';
+        }
+
+        .shop-box::after {
+            content: '\f07a';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        /* Footer */
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            border-top: 1px solid #ccc;
+            margin-top: auto; /* Posiziona il footer in basso */
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #333;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .footer a.active {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-left">
+                <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/impostazioni_utente.html"><i class="fas fa-user"></i></a>
+            </div>
+            <div class="header-right">
+                <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/impostazioni_app.html"><i class="fas fa-cog"></i></a>
+                <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/privacy_policy.html"><i class="fas fa-shield-alt"></i></a>
+            </div>
+        </div>
+
+        <!-- Sezione di benvenuto -->
+        <div class="welcome">
+            Ciao, <strong>Federico!</strong>
+        </div>
+
+        <!-- Box -->
+        <a href="/Users/Federico/Desktop/ISPW/FILE HTML COMPITO/prenota_senza_reg.html" class="box green-box">
+            <h2>Prenota una visita</h2>
+            <p>Cerca il momento perfetto per la tua prossima visita</p>
+        </a>
+        <a href="#" class="box green-box">
+            <h2>Storico Visite</h2>
+            <p>Visualizza e gestisci le tue visite</p>
+        </a>
+        <a href="/path/to/shop.html" class="box shop-box">
+            <h2>Shop</h2>
+            <p>Scopri i nostri prodotti</p>
+        </a>
+
+        <!-- Footer -->
+        <div class="footer">
+            <a href="/Users/Federico/Desktop/ISPW/FILE HTML COMPITO/bacheca_utente.html"><p>Bacheca</p></a>
+            <a href="/Users/Federico/Desktop/ISPW/FILE HTML COMPITO/home_paziente.html" class="active"><p><b>Home</b></p></a>
+            <a href="/Users/Federico/Desktop/ISPW/FILE HTML COMPITO/visite_utente_attive.html"><p>Visite</p></a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.box').forEach(box => {
+            box.addEventListener('click', () => {
+                alert('Hai cliccato su ' + box.querySelector('h2').innerText);
+            });
+        });
+    </script>
+</body>
+</html>

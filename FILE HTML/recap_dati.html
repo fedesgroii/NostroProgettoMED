@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recap Visita - MindLab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Stili di base */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f2f2f2 0%, #e8e8e8 100%);
+            overflow-x: hidden;
+            overflow-y: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            min-height: 60vh; /* Altezza minima ridotta */
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sezione di benvenuto */
+        .welcome {
+            font-size: 2.5em;
+            margin: 20px 0;
+            color: #333;
+            text-align: center;
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        /* Box */
+        .box {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .green-box {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .shop-box {
+            background-color: white;
+            color: black;
+            border: 1px solid black;
+        }
+
+        .box::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 1.5em;
+        }
+
+        .green-box::after {
+            content: '\f271';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        .green-box:nth-of-type(2)::after {
+            content: '\f1da';
+        }
+
+        .shop-box::after {
+            content: '\f07a';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        /* Stili recap */
+        .recap {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 700px;
+            animation: fadeIn 1.4s ease-in-out;
+        }
+
+        .recap h2 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .recap p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .buttons a {
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 20px; /* Bordo arrotondato */
+            color: white;
+            font-size: 18px;
+            margin: 0 10px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .buttons a:hover {
+            transform: scale(1.05);
+        }
+
+        .confirm-btn {
+            background-color: #28a745;
+        }
+
+        .cancel-btn {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sezione di benvenuto -->
+        <div class="welcome">
+            Recap Prenotazione Visita
+        </div>
+
+        <!-- Recap Box -->
+        <div class="recap">
+            <h2>Recap dei Dati Inseriti</h2>
+            <p><strong>Nome:</strong> Giorgia</p>
+            <p><strong>Cognome:</strong> Rossi</p>
+            <p><strong>Numero Telefonico:</strong> +39 123 456 7890</p>
+            <p><strong>Email:</strong> giorgia.rossi@example.com</p>
+            <p><strong>Data di Nascita:</strong> 01/01/1990</p>
+            <p><strong>Tipo di Visita:</strong> Controllo Generale</p>
+            <p><strong>Data della Visita:</strong> 15/11/2024</p>
+        </div>
+
+        <!-- Bottoni -->
+        <div class="buttons">
+            <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/annulla_prenotazione.html" class="cancel-btn">Annulla</a>
+            <a href="/Users/Federico/Desktop/ISPW/FILE%20HTML%20COMPITO/conferma_prenotazione.html" class="confirm-btn">Conferma</a>
+        </div>
+    </div>
+
+    <script>
+        // Script per sicurezza e conferma azione
+        document.querySelector('.confirm-btn').addEventListener('click', function(event) {
+            if (!confirm('Sei sicuro di voler confermare la prenotazione?')) {
+                event.preventDefault();
+            }
+        });
+
+        document.querySelector('.cancel-btn').addEventListener('click', function(event) {
+            if (!confirm('Sei sicuro di voler annullare la prenotazione?')) {
+                event.preventDefault();
+            }
+        });
+
+        // Prevenzione attacchi XSS
+        function sanitizeInput(input) {
+            var element = document.createElement('div');
+            element.innerText = input;
+            return element.innerHTML;
+        }
+    </script>
+</body>
+</html>
