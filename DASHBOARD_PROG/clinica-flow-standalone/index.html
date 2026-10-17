@@ -1,0 +1,532 @@
+<!DOCTYPE html> <!-- Dichiara che il documento usa lo standard HTML5. -->
+<html lang="it"> <!-- Apre l'elemento radice e imposta la lingua italiana. -->
+<head> <!-- Apre la sezione dei metadati e delle risorse. -->
+  <meta charset="UTF-8"> <!-- Imposta la codifica UTF-8. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Rende il layout adattabile a smartphone e tablet. -->
+  <meta name="theme-color" content="#0f766e"> <!-- Imposta il colore del tema del browser. -->
+  <title>ClinicaFlow — Area Professionisti</title> <!-- Imposta il titolo della scheda del browser. -->
+  <!-- [VIEW - Application] CSS incorporato nel deliverable standalone: nessuna dipendenza esterna. -->
+  <style>
+/* [VIEW - Application] Foglio principale. */
+@import url("./layout.css"); /* [VIEW - Layout] Layout. */
+@import url("./components.css"); /* [VIEW - Components] Componenti. */
+@import url("./pages/dashboard.css"); /* [VIEW - Dashboard] Dashboard. */
+@import url("./pages/agenda.css"); /* [VIEW - Agenda] Agenda. */
+@import url("./pages/patients.css"); /* [VIEW - Pazienti] Pazienti. */
+@import url("./pages/clinical.css"); /* [VIEW - Cartelle cliniche] Cartelle. */
+@import url("./pages/documents.css"); /* [VIEW - Documenti] Documenti. */
+@import url("./pages/finance.css"); /* [VIEW - Finanze e fatture] Finanze. */
+@import url("./pages/taxes.css"); /* [VIEW - Tasse e scadenze] Tasse. */
+@import url("./pages/reports.css"); /* [VIEW - Report] Report. */
+@import url("./pages/team.css"); /* [VIEW - Staff] Staff. */
+@import url("./pages/settings.css"); /* [VIEW - Impostazioni] Impostazioni. */
+
+/* [VIEW - Layout] Struttura globale. */
+:root{--primary:#0f766e;--surface:#fff;--background:#f5f7f9;--text:#173042;--muted:#718096;--border:#e6ebef;--sidebar:#0f2f35;--shadow:0 8px 24px rgba(25,42,50,.06)} /* [VIEW - Layout] Variabili. */
+*{box-sizing:border-box} /* [VIEW - Layout] Box model. */
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--background)} /* [VIEW - Layout] Tipografia. */
+button,input,select{font:inherit} /* [VIEW - Layout] Controlli. */
+button{cursor:pointer} /* [VIEW - Layout] Interazione. */
+.app-shell{min-height:100vh;display:flex} /* [VIEW - Layout] Shell. */
+.sidebar{width:260px;min-height:100vh;background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:24px 16px 18px;position:sticky;top:0} /* [VIEW - Sidebar] Sidebar. */
+.main{flex:1;min-width:0} /* [VIEW - Layout] Main. */
+.topbar{height:72px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 30px;position:sticky;top:0;z-index:20} /* [VIEW - Topbar] Topbar. */
+.content{padding:30px;max-width:1500px;margin:0 auto} /* [VIEW - Pages] Contenuto. */
+.page{display:none}.page.active{display:block} /* [VIEW - Pages] Stato pagina. */
+@media(max-width:900px){.sidebar{position:fixed;left:-280px;z-index:50;transition:left .2s}.sidebar.open{left:0}.content{padding:22px 16px}.topbar{padding:0 16px}} /* [VIEW - Layout] Responsive. */
+
+/* [VIEW - Components] Componenti condivisi. */
+.brand{display:flex;align-items:center;gap:12px;margin:4px 8px 24px}.brand-mark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#dff7f3;color:var(--primary);font-size:24px;font-weight:800}.brand strong,.profile-mini strong{display:block}.brand span,.profile-mini span{color:rgba(255,255,255,.62);font-size:12px}.profile-mini{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.04)}.profile-mini>div:nth-child(2){flex:1}.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#dbeafe;color:#1e3a8a;font-weight:700}.avatar.small{width:34px;height:34px}.avatar.large{width:64px;height:64px}.avatar.pastel{background:#e8f4f1;color:var(--primary)} /* [VIEW - Sidebar] Brand e profilo. */
+.icon-btn,.mobile-menu{border:0;background:transparent;color:inherit}.nav{margin-top:22px}.nav-label{color:rgba(255,255,255,.38);font-size:10px;font-weight:800;letter-spacing:.12em;margin:20px 10px 8px}.nav-item{width:100%;border:0;background:transparent;color:rgba(255,255,255,.72);text-align:left;padding:11px 12px;border-radius:10px;display:flex;gap:10px;align-items:center;margin:3px 0}.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.09);color:#fff}.sidebar-bottom{margin-top:auto}.security-card{display:flex;gap:10px;padding:12px;border-radius:12px;background:rgba(255,255,255,.05);font-size:12px}.security-card span{display:block;color:rgba(255,255,255,.52)}.security-icon{color:#6ee7b7;font-weight:800}.logout-btn{width:100%;margin-top:12px;border:0;background:transparent;color:rgba(255,255,255,.62);padding:10px;text-align:left} /* [VIEW - Sidebar] Navigazione. */
+.breadcrumb{color:var(--muted);font-size:14px}.breadcrumb span{margin:0 8px}.top-actions{display:flex;align-items:center;gap:14px}.notification-btn{position:relative;color:var(--text);font-size:22px}.notification-btn b{position:absolute;top:-2px;right:-4px;min-width:17px;height:17px;border-radius:9px;background:#ef4444;color:#fff;font-size:10px;display:grid;place-items:center}.user-chip{border:0;background:transparent;display:flex;align-items:center;gap:8px;color:var(--text)}.mobile-menu{display:none;color:var(--text);font-size:22px} /* [VIEW - Topbar] Azioni. */
+.page-heading,.welcome-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:24px}.eyebrow{margin:0 0 6px;color:var(--primary);font-size:11px;font-weight:800;letter-spacing:.12em}h1{margin:0;font-size:clamp(26px,3vw,34px)}h2{margin:0;font-size:18px}h3{margin:0 0 5px}.muted{color:var(--muted)}.primary,.secondary{border-radius:10px;padding:11px 15px;font-weight:700}.primary{border:1px solid var(--primary);background:var(--primary);color:#fff}.secondary{border:1px solid var(--border);background:#fff;color:var(--text)}.card,.stat-card,.finance-stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}.card{padding:20px}.card-header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px} /* [VIEW - Components] Tipografia. */
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px 10px;border-bottom:1px solid var(--border);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase}.status,.pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:700}.status.confirmed{background:#dcfce7;color:#166534}.status.pending{background:#fef3c7;color:#92400e}.positive{color:#059669}.warning-text{color:#d97706}.text-btn{border:0;background:transparent;color:var(--primary);font-weight:700} /* [VIEW - Components] Tabelle. */
+.modal-backdrop{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(15,23,42,.48);z-index:100;padding:20px}.modal-backdrop.open{display:flex}.modal{width:min(620px,100%);max-height:85vh;overflow:auto;position:relative;background:#fff;border-radius:18px;padding:26px}.modal-close{position:absolute;right:14px;top:10px;border:0;background:transparent;font-size:28px;color:var(--muted)} /* [VIEW - Modal] Modale. */
+.toast{position:fixed;right:24px;bottom:24px;z-index:110;background:#16353b;color:#fff;padding:12px 16px;border-radius:10px;opacity:0;transform:translateY(12px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)} /* [VIEW - Toast] Toast. */
+@media(max-width:900px){.mobile-menu{display:block}.user-chip span:not(.avatar){display:none}.page-heading,.welcome-row{flex-direction:column}} /* [VIEW - Components] Responsive. */
+
+/* [VIEW - Sidebar > agenda] Stili pagina. */
+.agenda-toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px}.agenda-grid{display:grid;grid-template-columns:70px repeat(5,minmax(140px,1fr));border:1px solid var(--border);border-radius:14px;overflow:auto;background:#fff}.agenda-cell{min-height:70px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:8px}.appointment{padding:10px;border-radius:10px;background:#e6f7f4;border-left:4px solid var(--primary);font-size:12px;cursor:grab}.appointment strong{display:block}
+
+/* [VIEW - Sidebar > clinical] Stili pagina. */
+.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}@media(max-width:900px){.record-grid{grid-template-columns:1fr}}
+
+/* [VIEW - Sidebar > dashboard] Stili pagina. */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.stat-card{padding:18px;display:flex;gap:14px}.stat-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center}.stat-card span,.stat-card small{display:block;color:var(--muted);font-size:12px}.stat-card strong{display:block;font-size:25px}.dashboard-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px}@media(max-width:1000px){.stats-grid{grid-template-columns:repeat(2,1fr)}.dashboard-grid{grid-template-columns:1fr}}@media(max-width:600px){.stats-grid{grid-template-columns:1fr}}
+
+/* [VIEW - Sidebar > documents] Stili pagina. */
+.document-list{display:grid;gap:10px}.document-row{display:flex;justify-content:space-between;padding:14px;border-bottom:1px solid var(--border)}
+
+/* [VIEW - Sidebar > finance] Stili pagina. */
+.finance-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}.finance-stat{padding:18px}.finance-stat span,.finance-stat small{display:block;color:var(--muted);font-size:12px}.finance-stat strong{display:block;font-size:22px}@media(max-width:1000px){.finance-stats{grid-template-columns:repeat(2,1fr)}}
+
+/* [VIEW - Sidebar > patients] Stili pagina. */
+.table-card{overflow:auto}.search-row{display:flex;gap:10px;margin-bottom:16px}.search-row input{border:1px solid var(--border);border-radius:9px;padding:10px;width:100%}
+
+/* [VIEW - Sidebar > reports] Stili pagina. */
+.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.report-card span,.report-card small{display:block;color:var(--muted);font-size:12px}.report-card strong{display:block;font-size:28px}@media(max-width:1000px){.report-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* [VIEW - Sidebar > settings] Stili pagina. */
+.settings-layout{display:grid;grid-template-columns:240px 1fr;gap:20px}.settings-nav{display:flex;flex-direction:column;height:max-content}.settings-nav button{border:0;background:transparent;text-align:left;padding:12px;border-radius:9px}.settings-nav button.active{background:#eef8f6;color:var(--primary);font-weight:700}.settings-form label{display:block;font-size:12px;font-weight:700;margin-top:15px}.settings-form input{display:block;margin-top:6px;border:1px solid var(--border);border-radius:9px;padding:10px;width:100%}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}@media(max-width:800px){.settings-layout{grid-template-columns:1fr}.two-col{grid-template-columns:1fr}}
+
+/* [VIEW - Sidebar > taxes] Stili pagina. */
+.tax-alert{display:flex;gap:12px;padding:16px;border-radius:14px;background:#fff7ed;border:1px solid #fed7aa;margin-bottom:20px}.deadline-table{padding:0;overflow:hidden}.tax-row{display:grid;grid-template-columns:64px 1fr auto auto;gap:16px;align-items:center;padding:16px 20px;border-top:1px solid var(--border)}
+
+/* [VIEW - Sidebar > team] Stili pagina. */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.team-member>span{color:var(--muted);font-size:13px}.member-actions{display:flex;justify-content:space-between;margin-top:18px}@media(max-width:900px){.team-grid{grid-template-columns:1fr}}
+
+/* [VIEW - Sidebar > dashboard] Layout dashboard originale. */
+.welcome-row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:24px}.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}.stat-card{padding:18px;display:flex;gap:14px}.stat-icon.teal{background:#dff7f3;color:#0f766e}.stat-icon.blue{background:#e8f0ff;color:#2563eb}.stat-icon.purple{background:#f1e9ff;color:#7c3aed}.stat-icon.orange{background:#fff0dc;color:#c2410c}.dashboard-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;margin-bottom:20px}.timeline{position:relative}.timeline-item{display:grid;grid-template-columns:54px 14px 1fr;gap:10px;align-items:center;padding:13px 0;border-bottom:1px solid var(--border)}.timeline-item:last-child{border-bottom:0}.time{font-size:12px;color:var(--muted);font-weight:700}.dot{width:10px;height:10px;border-radius:50%}.teal-bg{background:#0f766e}.blue-bg{background:#2563eb}.purple-bg{background:#7c3aed}.orange-bg{background:#f59e0b}.appointment{display:flex;justify-content:space-between;gap:12px;align-items:center}.appointment span{display:block;color:var(--muted);font-size:12px;margin-top:3px}.status.current{background:#ede9fe;color:#6d28d9}.deadline-list{display:grid;gap:4px}.deadline{display:grid;grid-template-columns:52px 1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--border)}.deadline:last-child{border-bottom:0}.date-box{width:44px;text-align:center;border:1px solid var(--border);border-radius:10px;padding:5px;background:#fafcfd}.date-box strong,.date-box span{display:block}.date-box strong{font-size:16px}.date-box span{font-size:9px;color:var(--muted);font-weight:800}.pill.orange{background:#ffedd5;color:#9a3412}.pill.gray{background:#f1f5f9;color:#64748b}.dashboard-grid.bottom{align-items:stretch}.chart-wrap{display:grid;grid-template-columns:45px 1fr;gap:10px;height:250px}.y-labels{display:flex;flex-direction:column;justify-content:space-between;color:var(--muted);font-size:10px;padding:5px 0}.chart{position:relative;height:220px;border-left:1px solid var(--border);border-bottom:1px solid var(--border)}.chart svg{width:100%;height:100%;position:relative;z-index:2}.gridline{position:absolute;left:0;right:0;border-top:1px dashed #e8edf0}.g1{top:0}.g2{top:25%}.g3{top:50%}.g4{top:75%}.chart-labels{display:grid;grid-template-columns:repeat(7,1fr);margin-left:55px;color:var(--muted);font-size:10px;text-align:center}.quick-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick-actions button{border:1px solid var(--border);background:#fff;border-radius:12px;padding:14px;text-align:left;font-weight:700}.filters{display:flex;gap:10px;margin-bottom:16px}.filters .search{flex:1}.search{display:flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:10px;padding:0 10px;background:#fff}.search input{border:0;outline:0;padding:10px;width:100%}.filters select{border:1px solid var(--border);border-radius:10px;background:#fff;padding:10px}.person{display:flex;align-items:center;gap:10px}.person span,.person small{display:block;color:var(--muted)}.clinical-layout{display:grid;grid-template-columns:280px 1fr;gap:20px}.patient-selector{padding:12px}.patient-list{margin-top:12px;display:grid;gap:5px}.patient-list button{display:grid;grid-template-columns:40px 1fr 20px;gap:10px;align-items:center;text-align:left;border:0;background:transparent;padding:10px;border-radius:10px}.patient-list button.selected,.patient-list button:hover{background:#eef8f6}.patient-list button span{color:var(--muted);font-size:12px}.patient-header{display:flex;align-items:center;gap:14px}.patient-header>div:nth-child(2){flex:1}.tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);margin:20px 0}.tabs button{border:0;background:transparent;padding:10px 12px;color:var(--muted)}.tabs button.active{color:var(--primary);font-weight:700;border-bottom:2px solid var(--primary)}.note{padding:16px;border:1px solid var(--border);border-radius:12px;margin-bottom:12px}.note>div{display:flex;justify-content:space-between;gap:12px}.note>div span{color:var(--muted);font-size:12px}.note p{color:var(--muted);font-size:13px;line-height:1.5}.tag{display:inline-flex;background:#fef3c7;color:#92400e;padding:4px 8px;border-radius:999px;font-size:10px;font-weight:700}.tag.success{background:#dcfce7;color:#166534}.document-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}.doc-stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px}.doc-stat span{display:block;color:var(--muted);font-size:12px}.doc-stat strong{font-size:26px}.tax-date{width:50px;text-align:center;border:1px solid var(--border);border-radius:10px;padding:5px}.tax-date strong,.tax-date span{display:block}.tax-date span{font-size:9px;color:var(--muted);font-weight:800}.tax-date.urgent{border-color:#fdba74;background:#fff7ed}.report-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}.mini-bar{height:7px;background:#edf2f3;border-radius:99px;margin:12px 0;overflow:hidden}.mini-bar i{display:block;height:100%;background:var(--primary);border-radius:99px}.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.team-member{text-align:center}.team-member .large{margin:0 auto 12px}.member-actions{align-items:center}.member-actions button{border:0;background:transparent}.settings-layout{display:grid;grid-template-columns:240px 1fr;gap:20px}.settings-nav{display:flex;flex-direction:column;height:max-content}.settings-nav button{text-align:left}.settings-form label{display:block;font-size:12px;font-weight:700;margin-top:15px}.settings-form input{display:block;margin-top:6px;border:1px solid var(--border);border-radius:9px;padding:10px;width:100%}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}.agenda-toolbar{display:flex;justify-content:space-between;gap:12px;margin-bottom:16px}.agenda-grid{display:grid;grid-template-columns:70px repeat(5,minmax(160px,1fr));border:1px solid var(--border);border-radius:14px;overflow:auto;background:#fff}.agenda-cell{min-height:70px;border-right:1px solid var(--border);border-bottom:1px solid var(--border);padding:8px}.agenda-day-header{padding:12px;background:#f8fafb;border-bottom:1px solid var(--border);text-align:center}.agenda-day-header strong,.agenda-day-header span{display:block}.agenda-day-header span{font-size:10px;color:var(--muted)}.agenda-day-body{min-height:520px;position:relative;padding:8px}.agenda-day-body .appointment{margin-bottom:8px;background:#e6f7f4;border-left:4px solid var(--primary);padding:10px;border-radius:10px;font-size:12px;cursor:grab}.agenda-day-body .appointment strong{display:block}.agenda-time{color:var(--muted);font-size:11px;text-align:right;padding-right:8px}.record-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+/* [VIEW - Application] Responsive complementare. */
+@media(max-width:1000px){.stats-grid,.finance-stats{grid-template-columns:repeat(2,1fr)}.dashboard-grid,.clinical-layout{grid-template-columns:1fr}.report-grid,.team-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:800px){.document-cards,.two-col,.report-grid,.team-grid{grid-template-columns:1fr}.filters,.agenda-toolbar{flex-direction:column}.tax-row{grid-template-columns:54px 1fr}.tax-row .pill,.tax-row .text-btn{justify-self:start}.clinical-layout{grid-template-columns:1fr}}
+@media(max-width:600px){.stats-grid,.finance-stats{grid-template-columns:1fr}.page-heading,.welcome-row{flex-direction:column}.dashboard-grid{grid-template-columns:1fr}.appointment{align-items:flex-start;flex-direction:column}.quick-actions{grid-template-columns:1fr}}
+
+  </style>
+</head> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<body> <!-- Apre il contenuto visibile dell'applicazione. -->
+  <div class="app-shell"> <!-- Contenitore generale dell'intera interfaccia. -->
+    <aside class="sidebar" id="sidebar"> <!-- Contiene la sidebar e la navigazione principale. -->
+      <div class="brand"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div class="brand-mark">+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <strong>ClinicaFlow</strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <span>Area professionisti</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+      </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+      <div class="profile-mini"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div class="avatar">MR</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <strong>Dott.ssa Giorgia Sgroi</strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <span>Psicologa</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <button class="icon-btn" title="Impostazioni profilo">⚙</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+      </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+      <nav class="nav"> <!-- Raggruppa semanticamente i comandi di navigazione. -->
+        <p class="nav-label">GESTIONE</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+        <button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+        <button class="nav-item" data-page="agenda"><span>◷</span> Agenda</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="patients"><span>♙</span> Pazienti</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="clinical"><span>▤</span> Cartelle cliniche</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="documents"><span>□</span> Documenti</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+
+        <p class="nav-label">AMMINISTRAZIONE</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+        <button class="nav-item" data-page="finance"><span>€</span> Finanze e fatture</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="taxes"><span>▣</span> Tasse e scadenze</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="reports"><span>◒</span> Report</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+
+        <p class="nav-label">STRUTTURA</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+        <button class="nav-item" data-page="team"><span>♧</span> Staff</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+        <button class="nav-item" data-page="settings"><span>⚙</span> Impostazioni</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+      </nav> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+      <div class="sidebar-bottom"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div class="security-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div class="security-icon">✓</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <strong>Sessione protetta</strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <span>Ultimo accesso: oggi, 14:42</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <button class="logout-btn" id="logoutBtn">↪ Esci dall'account</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+      </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+    </aside> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+    <main class="main"> <!-- Contiene l'area principale del gestionale. -->
+      <header class="topbar"> <!-- Apre la sezione dei metadati e delle risorse. -->
+        <button class="mobile-menu" id="mobileMenu">☰</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+        <div class="breadcrumb">Area professionisti <span>/</span> <strong id="pageTitle">Dashboard</strong></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <div class="top-actions"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <button class="icon-btn notification-btn" id="notificationBtn" title="Notifiche">♢<b>3</b></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+          <button class="user-chip"> <!-- Pulsante interattivo collegabile a JavaScript. -->
+            <div class="avatar small">MR</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <span>Giorgia Sgroi</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <span>⌄</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </button> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+      </header> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+      <div class="content"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        <section class="page active" id="dashboard"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="welcome-row"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <p class="eyebrow">MARTEDÌ 22 SETTEMBRE 2026</p> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <h1>Buon pomeriggio, Maria 👋</h1> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <p class="muted">Ecco una panoramica dell'attività della struttura.</p> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <button class="primary" data-page-action="agenda">+ Nuovo appuntamento</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+          <div class="stats-grid"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="stat-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="stat-icon teal">◷</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div><span>Appuntamenti oggi</span><strong>8</strong><small class="positive">+2 rispetto a ieri</small></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="stat-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="stat-icon blue">♙</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div><span>Pazienti attivi</span><strong>124</strong><small>6 nuovi questo mese</small></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="stat-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="stat-icon purple">€</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div><span>Incassi del mese</span><strong>€ 7.840</strong><small class="positive">+8,4% vs mese scorso</small></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="stat-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="stat-icon orange">!</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div><span>Scadenze vicine</span><strong>4</strong><small class="warning-text">Entro 30 giorni</small></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+          <div class="dashboard-grid"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="card agenda-card"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="card-header"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+                <div><h2>Agenda di oggi</h2><span class="muted">Martedì 22 settembre</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <button class="text-btn" data-page-action="agenda">Vedi agenda →</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+              </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="timeline"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="timeline-item"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <span class="time">09:00</span><div class="dot teal-bg"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="appointment"><div><strong>Laura Bianchi</strong><span>Psicologia · Seduta individuale</span></div><span class="status confirmed">Confermato</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="timeline-item"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <span class="time">10:30</span><div class="dot blue-bg"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="appointment"><div><strong>Marco Esposito</strong><span>Psicologia · Primo colloquio</span></div><span class="status confirmed">Confermato</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="timeline-item current"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <span class="time">12:00</span><div class="dot purple-bg"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="appointment"><div><strong>Giulia Romano</strong><span>Psicologia · Follow-up</span></div><span class="status current">In corso</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="timeline-item"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <span class="time">15:00</span><div class="dot orange-bg"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="appointment"><div><strong>Alessandro Conti</strong><span>Psicologia · Seduta individuale</span></div><span class="status pending">Da confermare</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="timeline-item"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <span class="time">17:30</span><div class="dot teal-bg"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="appointment"><div><strong>Sara Moretti</strong><span>Psicologia · Seduta individuale</span></div><span class="status confirmed">Confermato</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+            <article class="card deadlines-card"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="card-header"><div><h2>Prossime scadenze</h2><span class="muted">Amministrazione</span></div><button class="text-btn" data-page-action="taxes">Tutte →</button></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="deadline-list"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="deadline"><div class="date-box"><strong>30</strong><span>SET</span></div><div><strong>Fatture da emettere</strong><span>8 prestazioni da fatturare</span></div><span class="pill orange">Azione</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="deadline"><div class="date-box"><strong>16</strong><span>OTT</span></div><div><strong>Versamento IVA</strong><span>Da verificare con commercialista</span></div><span class="pill gray">16 gg</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="deadline"><div class="date-box"><strong>30</strong><span>OTT</span></div><div><strong>Contributi previdenziali</strong><span>Promemoria automatico</span></div><span class="pill gray">38 gg</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="deadline"><div class="date-box"><strong>15</strong><span>NOV</span></div><div><strong>Invio documentazione</strong><span>Documenti contabili</span></div><span class="pill gray">54 gg</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+          <div class="dashboard-grid bottom"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <article class="card"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="card-header"><div><h2>Andamento mensile</h2><span class="muted">Incassi ultimi 6 mesi</span></div><select><option>2026</option><option>2025</option></select></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="chart-wrap"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="y-labels"><span>€10k</span><span>€7.5k</span><span>€5k</span><span>€2.5k</span><span>€0</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <div class="chart"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="gridline g1"></div><div class="gridline g2"></div><div class="gridline g3"></div><div class="gridline g4"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <svg viewBox="0 0 600 220" preserveAspectRatio="none" aria-label="Grafico incassi"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                    <defs><linearGradient id="fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0f766e" stop-opacity=".25"/><stop offset="1" stop-color="#0f766e" stop-opacity="0"/></linearGradient></defs> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                    <path d="M0 175 L100 150 L200 160 L300 105 L400 125 L500 70 L600 88 L600 220 L0 220Z" fill="url(#fill)"/> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                    <path d="M0 175 L100 150 L200 160 L300 105 L400 125 L500 70 L600 88" fill="none" stroke="#0f766e" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                    <circle cx="600" cy="88" r="6" fill="#fff" stroke="#0f766e" stroke-width="4"/> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  </svg> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                  <div class="x-labels"><span>Apr</span><span>Mag</span><span>Giu</span><span>Lug</span><span>Ago</span><span>Set</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+            <article class="card quick-card"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="card-header"><div><h2>Azioni rapide</h2><span class="muted">Operazioni frequenti</span></div></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="quick-grid"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+                <button data-page-action="patients"><span>♙</span><strong>Nuovo paziente</strong><small>Registra un assistito</small></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+                <button data-page-action="agenda"><span>◷</span><strong>Appuntamento</strong><small>Inserisci in agenda</small></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+                <button data-page-action="finance"><span>€</span><strong>Nuova fattura</strong><small>Registra una prestazione</small></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+                <button data-page-action="documents"><span>□</span><strong>Carica documento</strong><small>Archivio digitale</small></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+              </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </article> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="agenda"> <!-- Sezione agenda; JavaScript gestisce la visualizzazione e il drag and drop. -->
+          <div class="page-heading"> <!-- Raggruppa titolo e azioni principali della pagina. -->
+            <div> <!-- Contiene il titolo e la descrizione della pagina. -->
+              <p class="eyebrow">GESTIONE</p> <!-- Etichetta superiore della sezione. -->
+              <h1>Agenda</h1> <!-- Titolo principale della pagina. -->
+              <p class="muted">Trascina un appuntamento in un altro giorno e orario libero per spostarlo.</p> <!-- Spiega direttamente il nuovo comportamento dell'agenda. -->
+            </div> <!-- Chiude il contenitore del titolo. -->
+            <button class="primary" id="newAppointment">+ Nuovo appuntamento</button> <!-- Apre la modale per creare un appuntamento. -->
+          </div> <!-- Chiude l'intestazione della pagina. -->
+          <div class="toolbar"> <!-- Contiene i controlli di navigazione e filtro dell'agenda. -->
+            <div class="segmented"> <!-- Raggruppa le modalità di visualizzazione. -->
+              <button class="active">Giorno</button> <!-- Modalità giorno mostrata come scelta attiva nella demo. -->
+              <button>Settimana</button> <!-- Modalità settimana presente nell'interfaccia futura. -->
+              <button>Mese</button> <!-- Modalità mese presente nell'interfaccia futura. -->
+            </div> <!-- Chiude il selettore della modalità. -->
+            <button class="secondary">‹</button> <!-- Pulsante grafico per la navigazione temporale. -->
+            <strong>Settimana 21 – 27 settembre 2026</strong> <!-- Intervallo temporale visualizzato nella demo. -->
+            <button class="secondary">›</button> <!-- Pulsante grafico per la navigazione temporale. -->
+            <select> <!-- Filtro per professionista. -->
+              <option>Tutti i professionisti</option> <!-- Mostra tutti gli appuntamenti. -->
+              <option>Dott.ssa Giorgia Sgroi</option> <!-- Filtro demo per Giorgia Sgroi. -->
+              <option>Dott. Luca Verdi</option> <!-- Filtro demo per Luca Verdi. -->
+              <option>Dott.ssa Elena Neri</option> <!-- Filtro demo per Elena Neri. -->
+            </select> <!-- Chiude il filtro professionista. -->
+          </div> <!-- Chiude la toolbar. -->
+          <div class="agenda-help"> <!-- Piccolo pannello informativo dedicato al drag and drop. -->
+            <span>↕</span> <!-- Icona visiva che richiama lo spostamento. -->
+            <span><strong>Spostamento rapido:</strong> trascina un appuntamento su un altro giorno/orario.</span> <!-- Istruzione sintetica per l'utente. -->
+            <span class="agenda-help-rule">Lo slot deve essere libero.</span> <!-- Regola fondamentale del comportamento. -->
+          </div> <!-- Chiude il pannello informativo. -->
+          <div class="card agenda-full"> <!-- Contenitore grafico principale dell'agenda. -->
+            <div class="agenda-week"> <!-- Griglia settimanale completa. -->
+              <div class="agenda-time-column"> <!-- Colonna laterale con gli orari. -->
+                <div class="agenda-corner">Ora</div> <!-- Cella d'angolo della griglia. -->
+                <div class="agenda-time-labels"> <!-- Contiene le etichette degli orari. -->
+                  <span>08:00</span> <!-- Etichetta oraria. -->
+                  <span>09:00</span> <!-- Etichetta oraria. -->
+                  <span>10:00</span> <!-- Etichetta oraria. -->
+                  <span>11:00</span> <!-- Etichetta oraria. -->
+                  <span>12:00</span> <!-- Etichetta oraria. -->
+                  <span>13:00</span> <!-- Etichetta oraria. -->
+                  <span>14:00</span> <!-- Etichetta oraria. -->
+                  <span>15:00</span> <!-- Etichetta oraria. -->
+                  <span>16:00</span> <!-- Etichetta oraria. -->
+                  <span>17:00</span> <!-- Etichetta oraria. -->
+                  <span>18:00</span> <!-- Etichetta oraria. -->
+                  <span>19:00</span> <!-- Etichetta oraria. -->
+                </div> <!-- Chiude le etichette degli orari. -->
+              </div> <!-- Chiude la colonna degli orari. -->
+              <div class="agenda-days"> <!-- Contiene i sette giorni della settimana. -->
+                <div class="agenda-day" data-date="2026-09-21"> <!-- Colonna del lunedì. -->
+                  <div class="agenda-day-header"><strong>LUN</strong><span>21 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-21"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude il lunedì. -->
+                <div class="agenda-day" data-date="2026-09-22"> <!-- Colonna del martedì. -->
+                  <div class="agenda-day-header"><strong>MAR</strong><span>22 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-22"> <!-- Area della giornata con gli appuntamenti demo. -->
+                    <div class="appointment-block teal-block" draggable="true" data-id="1" data-date="2026-09-22" data-time="09:00" data-duration="60"><strong>Laura Bianchi</strong><span>09:00 · Psicologia</span></div> <!-- Appuntamento trascinabile delle 09:00. -->
+                    <div class="appointment-block blue-block" draggable="true" data-id="2" data-date="2026-09-22" data-time="10:30" data-duration="60"><strong>Marco Esposito</strong><span>10:30 · Primo colloquio</span></div> <!-- Appuntamento trascinabile delle 10:30. -->
+                    <div class="appointment-block purple-block" draggable="true" data-id="3" data-date="2026-09-22" data-time="12:00" data-duration="60"><strong>Giulia Romano</strong><span>12:00 · Follow-up</span></div> <!-- Appuntamento trascinabile delle 12:00. -->
+                    <div class="appointment-block orange-block" draggable="true" data-id="4" data-date="2026-09-22" data-time="15:00" data-duration="60"><strong>Alessandro Conti</strong><span>15:00 · Seduta</span></div> <!-- Appuntamento trascinabile delle 15:00. -->
+                    <div class="appointment-block teal-block" draggable="true" data-id="5" data-date="2026-09-22" data-time="17:30" data-duration="60"><strong>Sara Moretti</strong><span>17:30 · Seduta</span></div> <!-- Appuntamento trascinabile delle 17:30. -->
+                  </div> <!-- Chiude l'area del martedì. -->
+                </div> <!-- Chiude il martedì. -->
+                <div class="agenda-day" data-date="2026-09-23"> <!-- Colonna del mercoledì. -->
+                  <div class="agenda-day-header"><strong>MER</strong><span>23 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-23"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude il mercoledì. -->
+                <div class="agenda-day" data-date="2026-09-24"> <!-- Colonna del giovedì. -->
+                  <div class="agenda-day-header"><strong>GIO</strong><span>24 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-24"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude il giovedì. -->
+                <div class="agenda-day" data-date="2026-09-25"> <!-- Colonna del venerdì. -->
+                  <div class="agenda-day-header"><strong>VEN</strong><span>25 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-25"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude il venerdì. -->
+                <div class="agenda-day" data-date="2026-09-26"> <!-- Colonna del sabato. -->
+                  <div class="agenda-day-header"><strong>SAB</strong><span>26 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-26"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude il sabato. -->
+                <div class="agenda-day" data-date="2026-09-27"> <!-- Colonna della domenica. -->
+                  <div class="agenda-day-header"><strong>DOM</strong><span>27 SET</span></div> <!-- Intestazione del giorno. -->
+                  <div class="agenda-day-body" data-date="2026-09-27"></div> <!-- Area che riceve gli appuntamenti trascinati. -->
+                </div> <!-- Chiude la domenica. -->
+              </div> <!-- Chiude la griglia dei giorni. -->
+            </div> <!-- Chiude la settimana dell'agenda. -->
+          </div> <!-- Chiude la card dell'agenda. -->
+        </section> <!-- Chiude la pagina agenda. -->
+
+        <section class="page" id="patients"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">ASSISTITI</p><h1>Pazienti</h1><p class="muted">Anagrafica, contatti e percorso assistenziale.</p></div><button class="primary" id="newPatient">+ Nuovo paziente</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="filters"><div class="search"><span>⌕</span><input placeholder="Cerca per nome, codice o telefono..."></div><select><option>Tutti i professionisti</option><option>Psicologia</option><option>Logopedia</option><option>Dietologia</option></select><select><option>Stato: tutti</option><option>Attivo</option><option>In attesa</option></select></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div class="card table-card"><table><thead><tr><th>Paziente</th><th>Professionista</th><th>Ultima visita</th><th>Prossimo appuntamento</th><th>Stato</th><th></th></tr></thead><tbody> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+            <tr><td><div class="person"><div class="avatar pastel">LB</div><div><strong>Laura Bianchi</strong><span>PT-00124</span></div></div></td><td>Giorgia Sgroi<br><small>Psicologia</small></td><td>22/09/2026</td><td>29/09/2026 · 09:00</td><td><span class="status confirmed">Attivo</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td><div class="person"><div class="avatar pastel">ME</div><div><strong>Marco Esposito</strong><span>PT-00118</span></div></div></td><td>Giorgia Sgroi<br><small>Psicologia</small></td><td>22/09/2026</td><td>06/10/2026 · 10:30</td><td><span class="status confirmed">Attivo</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td><div class="person"><div class="avatar pastel">GR</div><div><strong>Giulia Romano</strong><span>PT-00107</span></div></div></td><td>Giorgia Sgroi<br><small>Psicologia</small></td><td>15/09/2026</td><td>22/09/2026 · 12:00</td><td><span class="status confirmed">Attivo</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td><div class="person"><div class="avatar pastel">SC</div><div><strong>Sofia Costa</strong><span>PT-00098</span></div></div></td><td>Luca Verdi<br><small>Logopedia</small></td><td>18/09/2026</td><td>25/09/2026 · 16:00</td><td><span class="status confirmed">Attivo</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td><div class="person"><div class="avatar pastel">AF</div><div><strong>Andrea Ferri</strong><span>PT-00086</span></div></div></td><td>Elena Neri<br><small>Dietologia</small></td><td>10/09/2026</td><td>01/10/2026 · 14:30</td><td><span class="status pending">In attesa</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+          </tbody></table></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="clinical"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">AREA CLINICA</p><h1>Cartelle cliniche</h1><p class="muted">Note, anamnesi, piani terapeutici e documentazione assistenziale.</p></div><button class="primary">+ Nuova nota</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="clinical-layout"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div class="card patient-selector"><div class="search"><span>⌕</span><input placeholder="Cerca paziente..."></div><div class="patient-list"> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <button class="selected"><div class="avatar pastel">LB</div><div><strong>Laura Bianchi</strong><span>Ultima nota · oggi</span></div><span>›</span></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+              <button><div class="avatar pastel">ME</div><div><strong>Marco Esposito</strong><span>Ultima nota · oggi</span></div><span>›</span></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+              <button><div class="avatar pastel">GR</div><div><strong>Giulia Romano</strong><span>Ultima nota · 15/09</span></div><span>›</span></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+              <button><div class="avatar pastel">SC</div><div><strong>Sofia Costa</strong><span>Ultima nota · 18/09</span></div><span>›</span></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+            </div></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div class="card clinical-detail"><div class="patient-header"><div class="avatar large pastel">LB</div><div><h2>Laura Bianchi</h2><span>PT-00124 · Psicologia</span></div><button class="secondary">Apri scheda completa</button></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+              <div class="tabs"><button class="active">Note cliniche</button><button>Anamnesi</button><button>Piano terapeutico</button><button>Allegati</button></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="note"><div><strong>22 settembre 2026 · Seduta individuale</strong><span>Giorgia Sgroi</span></div><p>Area dedicata alla nota clinica. In produzione questa sezione sarà collegata al backend e ai permessi professionali.</p><span class="tag">Bozza</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+              <div class="note"><div><strong>15 settembre 2026 · Follow-up</strong><span>Giorgia Sgroi</span></div><p>Spazio per annotazioni della seduta e obiettivi concordati.</p><span class="tag success">Firmata</span></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="documents"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">ARCHIVIO</p><h1>Documenti</h1><p class="muted">Gestisci documenti amministrativi e clinici con permessi dedicati.</p></div><button class="primary">↑ Carica documento</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="document-cards"><div class="doc-stat"><span>Documenti totali</span><strong>486</strong></div><div class="doc-stat"><span>Da firmare</span><strong>7</strong></div><div class="doc-stat"><span>In scadenza</span><strong>3</strong></div></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div class="card table-card"><table><thead><tr><th>Documento</th><th>Categoria</th><th>Paziente / struttura</th><th>Data</th><th>Stato</th><th></th></tr></thead><tbody> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+            <tr><td>Consenso informato.pdf</td><td>Clinico</td><td>Laura Bianchi</td><td>22/09/2026</td><td><span class="status pending">Da firmare</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td>Fattura 2026-089.pdf</td><td>Amministrativo</td><td>Laura Bianchi</td><td>22/09/2026</td><td><span class="status confirmed">Archiviato</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+            <tr><td>Documento identità.pdf</td><td>Anagrafica</td><td>Marco Esposito</td><td>20/09/2026</td><td><span class="status confirmed">Verificato</span></td><td>•••</td></tr> <!-- Riga della tabella. -->
+          </tbody></table></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="finance"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Finanze e fatture</h1><p class="muted">Entrate, fatture, pagamenti e riepiloghi per il commercialista.</p></div><button class="primary">+ Nuova fattura</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="finance-stats"><div class="finance-stat"><span>Fatturato settembre</span><strong>€ 9.460,00</strong><small>32 fatture emesse</small></div><div class="finance-stat"><span>Incassato</span><strong>€ 7.840,00</strong><small class="positive">82,9% del fatturato</small></div><div class="finance-stat"><span>Da incassare</span><strong>€ 1.620,00</strong><small class="warning-text">8 fatture aperte</small></div><div class="finance-stat"><span>Spese</span><strong>€ 2.140,00</strong><small>Questo mese</small></div></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div class="card table-card"><div class="card-header"><div><h2>Ultime fatture</h2><span class="muted">Settembre 2026</span></div><button class="secondary">Esporta CSV</button></div><table><thead><tr><th>Numero</th><th>Cliente</th><th>Prestazione</th><th>Importo</th><th>Data</th><th>Stato</th></tr></thead><tbody> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+            <tr><td>#2026-089</td><td>Laura Bianchi</td><td>Seduta psicologica</td><td>€ 70,00</td><td>22/09/26</td><td><span class="status confirmed">Pagata</span></td></tr> <!-- Riga della tabella. -->
+            <tr><td>#2026-088</td><td>Marco Esposito</td><td>Primo colloquio</td><td>€ 80,00</td><td>22/09/26</td><td><span class="status pending">Da pagare</span></td></tr> <!-- Riga della tabella. -->
+            <tr><td>#2026-087</td><td>Sofia Costa</td><td>Logopedia</td><td>€ 55,00</td><td>21/09/26</td><td><span class="status confirmed">Pagata</span></td></tr> <!-- Riga della tabella. -->
+          </tbody></table></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="taxes"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">AMMINISTRAZIONE</p><h1>Tasse e scadenze</h1><p class="muted">Calendario fiscale e documenti per la gestione amministrativa.</p></div><button class="secondary">Esporta riepilogo</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="tax-alert"><span>!</span><div><strong>4 scadenze richiedono attenzione</strong><p>Controlla gli importi e coordina i versamenti con il commercialista.</p></div></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          <div class="card deadline-table"><div class="card-header"><h2>Calendario fiscale</h2><select><option>2026</option><option>2027</option></select></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+            <div class="tax-row"><div class="tax-date urgent"><strong>30</strong><span>SET</span></div><div><strong>Fatture da emettere</strong><span>8 prestazioni ancora da fatturare</span></div><span class="pill orange">Da completare</span><button class="text-btn">Apri →</button></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div class="tax-row"><div class="tax-date"><strong>16</strong><span>OTT</span></div><div><strong>Versamento IVA</strong><span>Importo da confermare</span></div><span class="pill gray">In programma</span><button class="text-btn">Dettagli →</button></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div class="tax-row"><div class="tax-date"><strong>30</strong><span>OTT</span></div><div><strong>Contributi previdenziali</strong><span>Promemoria per il professionista</span></div><span class="pill gray">In programma</span><button class="text-btn">Dettagli →</button></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+            <div class="tax-row"><div class="tax-date"><strong>15</strong><span>NOV</span></div><div><strong>Invio documentazione al commercialista</strong><span>Estratto contabile e fatture</span></div><span class="pill gray">In programma</span><button class="text-btn">Dettagli →</button></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+          </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="reports"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">ANALISI</p><h1>Report</h1><p class="muted">Indicatori operativi e amministrativi della struttura.</p></div><button class="secondary">↓ Scarica report</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="report-grid"><div class="card report-card"><span>Prestazioni erogate</span><strong>186</strong><div class="mini-bar"><i style="width:72%"></i></div><small>+12% rispetto ad agosto</small></div><div class="card report-card"><span>Tasso di presenza</span><strong>91,4%</strong><div class="mini-bar"><i style="width:91%"></i></div><small>Su 204 appuntamenti</small></div><div class="card report-card"><span>Nuovi pazienti</span><strong>18</strong><div class="mini-bar"><i style="width:46%"></i></div><small>Ultimi 30 giorni</small></div><div class="card report-card"><span>Incasso medio</span><strong>€ 50,22</strong><div class="mini-bar"><i style="width:63%"></i></div><small>Per prestazione</small></div></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="team"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">STRUTTURA</p><h1>Staff</h1><p class="muted">Professionisti, ruoli e autorizzazioni.</p></div><button class="primary">+ Invita professionista</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="team-grid"><div class="card team-member"><div class="avatar large pastel">MR</div><h3>Dott.ssa Giorgia Sgroi</h3><span>Psicologa · Amministratrice</span><div class="member-actions"><span class="status confirmed">Attivo</span><button>•••</button></div></div><div class="card team-member"><div class="avatar large pastel">LV</div><h3>Dott. Luca Verdi</h3><span>Logopedista</span><div class="member-actions"><span class="status confirmed">Attivo</span><button>•••</button></div></div><div class="card team-member"><div class="avatar large pastel">EN</div><h3>Dott.ssa Elena Neri</h3><span>Dietista</span><div class="member-actions"><span class="status confirmed">Attivo</span><button>•••</button></div></div></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+        <section class="page" id="settings"> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="page-heading"><div><p class="eyebrow">STRUTTURA</p><h1>Impostazioni</h1><p class="muted">Configura struttura, profilo, notifiche e sicurezza.</p></div><button class="primary">Salva modifiche</button></div> <!-- Sezione di pagina; JavaScript decide quale mostrare. -->
+          <div class="settings-layout"><div class="card settings-nav"><button class="active">Profilo struttura</button><button>Notifiche</button><button>Permessi e ruoli</button><button>Fatturazione</button><button>Privacy e sicurezza</button></div><div class="card settings-form"><h2>Profilo struttura</h2><p class="muted">Informazioni visualizzate nei documenti e nelle comunicazioni.</p><label>Nome struttura<input value="Centro Salute & Benessere"></label><div class="two-col"><label>Partita IVA<input value="IT 01234567890"></label><label>Telefono<input value="+39 06 1234 5678"></label></div><label>Email<input value="segreteria@centrosalute.it"></label><label>Indirizzo<input value="Via Roma 25, Roma"></label></div></div> <!-- Scheda grafica riutilizzabile per raggruppare contenuti. -->
+        </section> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+      </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+    </main> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+  </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+  <div class="modal-backdrop" id="modal"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+    <div class="modal"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+      <button class="modal-close" id="modalClose">×</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+      <div id="modalContent"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+    </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+  </div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+
+  <div class="toast" id="toast">Operazione completata</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+  <!-- [CONTROLLER - Application] JavaScript MVC incorporato: il file è autosufficiente anche via file://. -->
+  <script>
+
+/* [MODEL - Application] Stato applicativo centralizzato per mantenere separati dati e comportamento. */
+const AppModel={currentPage:'dashboard',selectedPatient:'Laura Bianchi',notifications:3}; // [MODEL - Application] Stato principale.
+/* [MODEL - Navigation] Mappa tra identificativi tecnici e titoli visualizzati. */
+const PageTitles={dashboard:'Dashboard',agenda:'Agenda',patients:'Pazienti',clinical:'Cartelle cliniche',documents:'Documenti',finance:'Finanze e fatture',taxes:'Tasse e scadenze',reports:'Report',team:'Staff',settings:'Impostazioni'}; // [MODEL - Navigation] Dati di navigazione.
+/* [VIEW - Utility] Selettore DOM usato dai controller. */
+const $=(selector,root=document)=>root.querySelector(selector); // [VIEW - Utility] Accesso al DOM.
+/* [VIEW - Utility] Selettore multiplo usato dai controller. */
+const $$=(selector,root=document)=>Array.from(root.querySelectorAll(selector)); // [VIEW - Utility] Accesso al DOM.
+/* [VIEW - Utility] Aggiorna un testo senza cambiare la struttura grafica. */
+const setText=(selector,value)=>{const node=$(selector);if(node)node.textContent=value;}; // [VIEW - Utility] Aggiornamento testuale.
+/* [CONTROLLER - Navigation] Attiva una sola sezione di pagina. */
+function navigate(page){ // [CONTROLLER - Navigation] Coordinamento navigazione.
+  if(!PageTitles[page]) return; // [CONTROLLER - Navigation] Ignora destinazioni inesistenti.
+  AppModel.currentPage=page; // [MODEL - Navigation] Memorizza pagina corrente.
+  $$('.page').forEach(section=>section.classList.toggle('active',section.id===page)); // [VIEW - Navigation] Mostra la sezione richiesta.
+  $$('.nav-item').forEach(item=>item.classList.toggle('active',item.dataset.page===page)); // [VIEW - Sidebar] Aggiorna voce attiva.
+  setText('#pageTitle',PageTitles[page]); // [VIEW - Topbar] Aggiorna breadcrumb.
+  $('#sidebar')?.classList.remove('open'); // [VIEW - Sidebar] Chiude la sidebar mobile dopo la scelta.
+}
+/* [CONTROLLER - Navigation] Collega i pulsanti della sidebar. */
+function bindSidebar(){ // [CONTROLLER - Sidebar] Gestione eventi sidebar.
+  $$('.nav-item').forEach(item=>item.addEventListener('click',()=>navigate(item.dataset.page))); // [CONTROLLER - Sidebar] Navigazione per voce.
+  $('#logoutBtn')?.addEventListener('click',()=>showToast('Sessione chiusa.')); // [CONTROLLER - Sidebar] Gestione uscita account.
+}
+/* [CONTROLLER - Navigation] Collega i comandi che portano a una pagina. */
+function bindPageActions(){ // [CONTROLLER - Application] Azioni trasversali.
+  $$('[data-page-action]').forEach(button=>button.addEventListener('click',()=>navigate(button.dataset.pageAction))); // [CONTROLLER - Application] Navigazione da pulsanti contestuali.
+}
+/* [CONTROLLER - Layout] Gestisce la sidebar su schermi piccoli. */
+function bindMobileMenu(){ // [CONTROLLER - Sidebar] Gestione menu mobile.
+  $('#mobileMenu')?.addEventListener('click',()=>$('#sidebar')?.classList.toggle('open')); // [CONTROLLER - Sidebar] Apertura e chiusura.
+}
+/* [VIEW - Modal] Costruisce il contenuto del modale in base all'azione richiesta. */
+function openModal(title,body){ // [VIEW - Modal] Rendering del modale.
+  const modal=$('#modal'); // [VIEW - Modal] Recupera contenitore.
+  const content=$('#modalContent'); // [VIEW - Modal] Recupera area contenuto.
+  if(!modal||!content)return; // [VIEW - Modal] Protezione DOM.
+  content.innerHTML='<p class="eyebrow">CLINICAFLOW</p><h2>'+title+'</h2><div style="margin-top:14px;color:var(--muted);line-height:1.6">'+body+'</div>'; // [VIEW - Modal] Renderizza contenuto.
+  modal.classList.add('open'); // [VIEW - Modal] Visualizza modale.
+}
+/* [CONTROLLER - Modal] Collega apertura e chiusura del modale. */
+function bindModal(){ // [CONTROLLER - Modal] Gestione eventi modale.
+  $('#modalClose')?.addEventListener('click',()=>$('#modal')?.classList.remove('open')); // [CONTROLLER - Modal] Chiusura esplicita.
+  $('#modal')?.addEventListener('click',event=>{if(event.target.id==='modal')event.currentTarget.classList.remove('open');}); // [CONTROLLER - Modal] Chiusura cliccando fuori.
+  document.addEventListener('keydown',event=>{if(event.key==='Escape')$('#modal')?.classList.remove('open');}); // [CONTROLLER - Modal] Chiusura da tastiera.
+}
+/* [CONTROLLER - Notifications] Gestisce il comando notifiche. */
+function bindNotifications(){ // [CONTROLLER - Notifications] Eventi notifiche.
+  $('#notificationBtn')?.addEventListener('click',()=>openModal('Notifiche','Hai '+AppModel.notifications+' notifiche da verificare: una scadenza amministrativa, un documento da firmare e un promemoria agenda.')); // [CONTROLLER - Notifications] Apertura notifiche.
+}
+/* [CONTROLLER - Patients] Attiva la ricerca pazienti senza modificare il layout. */
+function bindPatientSearch(){ // [CONTROLLER - Patients] Ricerca locale.
+  const input=$('#patients .search input'); // [VIEW - Patients] Recupera campo ricerca.
+  if(!input)return; // [CONTROLLER - Patients] Protezione assenza elemento.
+  input.addEventListener('input',()=>{const term=input.value.trim().toLowerCase();$$('#patients tbody tr').forEach(row=>row.hidden=term!==''&&!row.textContent.toLowerCase().includes(term));}); // [CONTROLLER - Patients] Filtra righe.
+}
+/* [CONTROLLER - Clinical] Gestisce la selezione del paziente nelle cartelle. */
+function bindClinicalPatients(){ // [CONTROLLER - Clinical] Eventi lista pazienti.
+  $$('#clinical .patient-list button').forEach(button=>button.addEventListener('click',()=>{ $$('#clinical .patient-list button').forEach(item=>item.classList.remove('selected')); button.classList.add('selected'); AppModel.selectedPatient=button.querySelector('strong')?.textContent||AppModel.selectedPatient; const title=$('#clinical .patient-header h2'); if(title)title.textContent=AppModel.selectedPatient; })); // [CONTROLLER - Clinical] Aggiorna paziente attivo.
+}
+/* [CONTROLLER - Settings] Gestisce le schede laterali delle impostazioni. */
+function bindSettingsTabs(){ // [CONTROLLER - Settings] Eventi tab impostazioni.
+  $$('#settings .settings-nav button').forEach(button=>button.addEventListener('click',()=>{ $$('#settings .settings-nav button').forEach(item=>item.classList.remove('active')); button.classList.add('active'); showToast('Sezione "'+button.textContent.trim()+'" selezionata.'); })); // [CONTROLLER - Settings] Selezione tab.
+}
+/* [CONTROLLER - Agenda] Rende gli appuntamenti trascinabili tra le colonne. */
+function bindAgendaDragDrop(){ // [CONTROLLER - Agenda] Drag and drop.
+  $$('#agenda .appointment').forEach(item=>{item.draggable=true;item.addEventListener('dragstart',event=>event.dataTransfer?.setData('text/plain',item.dataset.id||item.textContent));}); // [CONTROLLER - Agenda] Inizio trascinamento.
+  $$('#agenda .agenda-day-body').forEach(day=>{day.addEventListener('dragover',event=>event.preventDefault());day.addEventListener('drop',event=>{event.preventDefault();const id=event.dataTransfer?.getData('text/plain');const item=$$('#agenda .appointment').find(node=>(node.dataset.id||node.textContent)===id);if(item){day.appendChild(item);showToast('Appuntamento spostato al '+day.dataset.date+'.');}});}); // [CONTROLLER - Agenda] Destinazione trascinamento.
+}
+/* [VIEW - Toast] Visualizza una notifica temporanea. */
+let toastTimer=null; // [CONTROLLER - Notifications] Timer del toast.
+function showToast(message){ // [CONTROLLER - Notifications] Coordinamento toast.
+  const toast=$('#toast'); // [VIEW - Toast] Recupera componente.
+  if(!toast)return; // [CONTROLLER - Notifications] Protezione DOM.
+  toast.textContent=message; // [VIEW - Toast] Aggiorna testo.
+  toast.classList.add('show'); // [VIEW - Toast] Mostra toast.
+  clearTimeout(toastTimer); // [CONTROLLER - Notifications] Cancella timer precedente.
+  toastTimer=setTimeout(()=>toast.classList.remove('show'),2600); // [CONTROLLER - Notifications] Nasconde toast.
+}
+/* [CONTROLLER - Buttons] Collega i pulsanti principali a feedback coerenti. */
+function bindPrimaryButtons(){ // [CONTROLLER - Application] Eventi pulsanti.
+  $$('.primary,.secondary').forEach(button=>{if(button.dataset.pageAction)return;button.addEventListener('click',()=>showToast(button.textContent.trim()+' — azione pronta per il collegamento al backend.'));}); // [CONTROLLER - Application] Feedback pulsanti.
+}
+/* [CONTROLLER - Application] Inizializza l'intera applicazione standalone. */
+function AppController(){ // [CONTROLLER - Application] Controller principale.
+  bindSidebar(); // [CONTROLLER - Sidebar] Inizializza sidebar.
+  bindPageActions(); // [CONTROLLER - Navigation] Inizializza azioni pagina.
+  bindMobileMenu(); // [CONTROLLER - Sidebar] Inizializza menu mobile.
+  bindModal(); // [CONTROLLER - Modal] Inizializza modale.
+  bindNotifications(); // [CONTROLLER - Notifications] Inizializza notifiche.
+  bindPatientSearch(); // [CONTROLLER - Patients] Inizializza ricerca.
+  bindClinicalPatients(); // [CONTROLLER - Clinical] Inizializza lista pazienti.
+  bindSettingsTabs(); // [CONTROLLER - Settings] Inizializza tab.
+  bindAgendaDragDrop(); // [CONTROLLER - Agenda] Inizializza drag and drop.
+  bindPrimaryButtons(); // [CONTROLLER - Application] Inizializza pulsanti.
+  navigate(AppModel.currentPage); // [CONTROLLER - Navigation] Imposta dashboard iniziale.
+}
+/* [CONTROLLER - Application] Avvia l'app quando il DOM è pronto, senza moduli ES e senza dipendenze esterne. */
+document.addEventListener('DOMContentLoaded',AppController); // [CONTROLLER - Application] Bootstrap finale.
+
+  </script>
+</body> <!-- Chiude il contenuto visibile. -->
+</html> <!-- Chiude il documento HTML. -->

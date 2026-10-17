@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!-- [VIEW - Login] Dichiara il documento HTML5 della schermata di autenticazione. -->
+<html lang="it">
+<!-- [VIEW - Login] Imposta la lingua italiana. -->
+<head>
+<!-- [VIEW - Login] Apre i metadati della View. -->
+<meta charset="UTF-8">
+<!-- [VIEW - Login] Imposta la codifica UTF-8. -->
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- [VIEW - Login] Rende il form responsive. -->
+<title>ClinicaFlow — Accesso</title>
+<!-- [VIEW - Login] Imposta il titolo della pagina. -->
+</head>
+<body>
+<!-- [VIEW - Login] Apre il contenuto della schermata di login. -->
+<form id="formLogin">
+<!-- [VIEW - Login] Definisce il form che genera il Bean/DTO. -->
+<label>Email<input id="loginEmail" type="email" autocomplete="username" required></label>
+<!-- [VIEW - Login] Raccoglie l'email dell'utente. -->
+<label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label>
+<!-- [VIEW - Login] Raccoglie la password dell'utente. -->
+<button type="submit">Accedi</button>
+<!-- [VIEW - Login] Invia le credenziali al ControllerGrafico. -->
+<p id="erroreLogin"></p>
+<!-- [VIEW - Login] Mostra eventuali errori di autenticazione. -->
+</form>
+<!-- [VIEW - Login] Chiude il form. -->
+<script type="module">
+<!-- [CONTROLLER GRAFICO - Login] Avvia il controller grafico della schermata. -->
+import { ApiClient } from '../frontend/infrastruttura/ApiClient.js';
+<!-- [CONTROLLER GRAFICO - Login] Importa il client HTTP tecnico. -->
+import { Login_ControlGrafico } from './Login_ControlGrafico.js';
+<!-- [CONTROLLER GRAFICO - Login] Importa il controller grafico del login. -->
+const controller = new Login_ControlGrafico(new ApiClient());
+<!-- [CONTROLLER GRAFICO - Login] Istanzia il ControllerGrafico con il client HTTP. -->
+<!-- [CONTROLLER GRAFICO - Login] Istanzia il controller del login. -->
+document.getElementById('formLogin').addEventListener('submit', async (evento) => {
+<!-- [CONTROLLER GRAFICO - Login] Intercetta l'invio del form. -->
+evento.preventDefault();
+<!-- [CONTROLLER GRAFICO - Login] Evita il submit HTML tradizionale. -->
+try {
+<!-- [CONTROLLER GRAFICO - Login] Apre il percorso applicativo di autenticazione. -->
+const email = document.getElementById('loginEmail').value;
+<!-- [VIEW/CONTROLLER GRAFICO - Login] Legge l'email dal form. -->
+const password = document.getElementById('loginPassword').value;
+<!-- [VIEW/CONTROLLER GRAFICO - Login] Legge la password dal form. -->
+await controller.accedi(email,password);
+<!-- [CONTROLLER GRAFICO - Login] Invia il Bean/DTO al backend. -->
+window.location.href='../index.html';
+<!-- [CONTROLLER GRAFICO - Login] Torna alla dashboard dopo autenticazione. -->
+} catch(errore) {
+<!-- [CONTROLLER GRAFICO - Login] Gestisce l'errore senza inserire dati fittizi. -->
+document.getElementById('erroreLogin').textContent=errore.message;
+<!-- [VIEW - Login] Mostra l'errore nella View. -->
+}
+<!-- [CONTROLLER GRAFICO - Login] Chiude la gestione dell'autenticazione. -->
+});
+<!-- [CONTROLLER GRAFICO - Login] Chiude l'associazione al form. -->
+</script>
+<!-- [VIEW - Login] Chiude lo script della View. -->
+</body>
+<!-- [VIEW - Login] Chiude il contenuto. -->
+</html>
+<!-- [VIEW - Login] Chiude il documento. -->

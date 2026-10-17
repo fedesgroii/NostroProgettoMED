@@ -1,0 +1,1379 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap'); /* Importa il font usato dall'interfaccia. */
+:root { /* Contiene le variabili CSS globali del progetto. */
+  --bg:#f5f7f8; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --surface:#fff; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --sidebar:#0b2022; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --sidebar-2:#102a2c; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --text:#162425; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --muted:#718083; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --line:#e6ebeb; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --teal:#0f766e; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --teal-light:#e4f4f1; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --blue:#2563eb; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --purple:#7c3aed; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --orange:#ea8a16; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --shadow:0 10px 30px rgba(18,39,40,.06); /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+  --radius:16px; /* Variabile globale: modificarla aggiorna tutti gli elementi che la usano. */
+} /* Chiude il blocco CSS corrente. */
+* { /* Selettore CSS: definisce lo stile di '*'. */
+  box-sizing:border-box; /* Imposta la proprietà CSS 'box-sizing'. */
+} /* Chiude il blocco CSS corrente. */
+body { /* Selettore CSS: definisce lo stile di 'body'. */
+  margin:0; /* Definisce lo spazio esterno. */
+  background:var(--bg); /* Definisce lo sfondo. */
+  color:var(--text); /* Definisce il colore del testo. */
+  font-family:"DM Sans",Arial,sans-serif; /* Imposta la proprietà CSS 'font-family'. */
+  font-size:14px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+button,input,select { /* Selettore CSS: definisce lo stile di 'button,input,select'. */
+  font:inherit; /* Imposta la proprietà CSS 'font'. */
+} /* Chiude il blocco CSS corrente. */
+button { /* Selettore CSS: definisce lo stile di 'button'. */
+  cursor:pointer; /* Definisce l'aspetto del cursore. */
+} /* Chiude il blocco CSS corrente. */
+.app-shell { /* Selettore CSS: definisce lo stile di '.app-shell'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  min-height:100vh; /* Imposta la proprietà CSS 'min-height'. */
+} /* Chiude il blocco CSS corrente. */
+.sidebar { /* Selettore CSS: definisce lo stile di '.sidebar'. */
+  width:270px; /* Definisce la larghezza. */
+  background:var(--sidebar); /* Definisce lo sfondo. */
+  color:#dce8e8; /* Definisce il colore del testo. */
+  padding:22px 16px; /* Definisce lo spazio interno. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  flex-direction:column; /* Imposta la proprietà CSS 'flex-direction'. */
+  position:fixed; /* Definisce il metodo di posizionamento. */
+  inset:0 auto 0 0; /* Imposta la proprietà CSS 'inset'. */
+  z-index:20; /* Imposta la proprietà CSS 'z-index'. */
+} /* Chiude il blocco CSS corrente. */
+.brand { /* Selettore CSS: definisce lo stile di '.brand'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:11px; /* Definisce la distanza tra gli elementi figli. */
+  padding:4px 10px 25px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.brand-mark { /* Selettore CSS: definisce lo stile di '.brand-mark'. */
+  width:34px; /* Definisce la larghezza. */
+  height:34px; /* Definisce l'altezza. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  background:#20a392; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  place-items:center; /* Imposta la proprietà CSS 'place-items'. */
+  font-size:23px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.brand strong { /* Selettore CSS: definisce lo stile di '.brand strong'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:16px; /* Definisce la dimensione del testo. */
+  color:#fff; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.brand span,.profile-mini span { /* Selettore CSS: definisce lo stile di '.brand span,.profile-mini span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:#8da4a4; /* Definisce il colore del testo. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+  margin-top:2px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.profile-mini { /* Selettore CSS: definisce lo stile di '.profile-mini'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+  background:var(--sidebar-2); /* Definisce lo sfondo. */
+  border:1px solid #1c393b; /* Definisce il bordo. */
+  border-radius:12px; /* Arrotonda gli angoli. */
+  padding:10px; /* Definisce lo spazio interno. */
+  margin-bottom:18px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.profile-mini>div:nth-child(2) { /* Selettore CSS: definisce lo stile di '.profile-mini>div:nth-child(2)'. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+  min-width:0; /* Imposta la proprietà CSS 'min-width'. */
+} /* Chiude il blocco CSS corrente. */
+.profile-mini strong { /* Selettore CSS: definisce lo stile di '.profile-mini strong'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:#fff; /* Definisce il colore del testo. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+  white-space:nowrap; /* Imposta la proprietà CSS 'white-space'. */
+  overflow:hidden; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+  text-overflow:ellipsis; /* Imposta la proprietà CSS 'text-overflow'. */
+} /* Chiude il blocco CSS corrente. */
+.avatar { /* Selettore CSS: definisce lo stile di '.avatar'. */
+  width:38px; /* Definisce la larghezza. */
+  height:38px; /* Definisce l'altezza. */
+  border-radius:50%; /* Arrotonda gli angoli. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  place-items:center; /* Imposta la proprietà CSS 'place-items'. */
+  background:#276e69; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+  flex:0 0 auto; /* Imposta la proprietà CSS 'flex'. */
+} /* Chiude il blocco CSS corrente. */
+.avatar.small { /* Selettore CSS: definisce lo stile di '.avatar.small'. */
+  width:32px; /* Definisce la larghezza. */
+  height:32px; /* Definisce l'altezza. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.avatar.large { /* Selettore CSS: definisce lo stile di '.avatar.large'. */
+  width:56px; /* Definisce la larghezza. */
+  height:56px; /* Definisce l'altezza. */
+} /* Chiude il blocco CSS corrente. */
+.avatar.pastel { /* Selettore CSS: definisce lo stile di '.avatar.pastel'. */
+  background:#dff1ee; /* Definisce lo sfondo. */
+  color:#126c65; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.icon-btn { /* Selettore CSS: definisce lo stile di '.icon-btn'. */
+  background:transparent; /* Definisce lo sfondo. */
+  border:0; /* Definisce il bordo. */
+  color:#9eb1b1; /* Definisce il colore del testo. */
+  padding:5px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.nav { /* Selettore CSS: definisce lo stile di '.nav'. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+  overflow:auto; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+} /* Chiude il blocco CSS corrente. */
+.nav-label { /* Selettore CSS: definisce lo stile di '.nav-label'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  letter-spacing:1.2px; /* Imposta la proprietà CSS 'letter-spacing'. */
+  color:#668080; /* Definisce il colore del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  padding:14px 11px 7px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.nav-item { /* Selettore CSS: definisce lo stile di '.nav-item'. */
+  width:100%; /* Definisce la larghezza. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  gap:12px; /* Definisce la distanza tra gli elementi figli. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  background:transparent; /* Definisce lo sfondo. */
+  border:0; /* Definisce il bordo. */
+  color:#a9bcbc; /* Definisce il colore del testo. */
+  padding:11px 12px; /* Definisce lo spazio interno. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  margin:2px 0; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.nav-item span { /* Selettore CSS: definisce lo stile di '.nav-item span'. */
+  width:18px; /* Definisce la larghezza. */
+  text-align:center; /* Imposta la proprietà CSS 'text-align'. */
+  font-size:16px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.nav-item:hover { /* Selettore CSS: definisce lo stile di '.nav-item:hover'. */
+  background:#132f31; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.nav-item.active { /* Selettore CSS: definisce lo stile di '.nav-item.active'. */
+  background:#1a4140; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  box-shadow:inset 3px 0 #36b5a5; /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.sidebar-bottom { /* Selettore CSS: definisce lo stile di '.sidebar-bottom'. */
+  margin-top:12px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.security-card { /* Selettore CSS: definisce lo stile di '.security-card'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  gap:9px; /* Definisce la distanza tra gli elementi figli. */
+  padding:10px; /* Definisce lo spazio interno. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  background:#102a2c; /* Definisce lo sfondo. */
+  margin-bottom:9px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.security-icon { /* Selettore CSS: definisce lo stile di '.security-icon'. */
+  width:28px; /* Definisce la larghezza. */
+  height:28px; /* Definisce l'altezza. */
+  border-radius:8px; /* Arrotonda gli angoli. */
+  background:#184b45; /* Definisce lo sfondo. */
+  color:#52c6b7; /* Definisce il colore del testo. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  place-items:center; /* Imposta la proprietà CSS 'place-items'. */
+} /* Chiude il blocco CSS corrente. */
+.security-card strong { /* Selettore CSS: definisce lo stile di '.security-card strong'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#d7e7e6; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.security-card span { /* Selettore CSS: definisce lo stile di '.security-card span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#789090; /* Definisce il colore del testo. */
+  margin-top:2px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.logout-btn { /* Selettore CSS: definisce lo stile di '.logout-btn'. */
+  width:100%; /* Definisce la larghezza. */
+  background:transparent; /* Definisce lo sfondo. */
+  border:0; /* Definisce il bordo. */
+  color:#8da1a1; /* Definisce il colore del testo. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  padding:9px 10px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.logout-btn:hover { /* Selettore CSS: definisce lo stile di '.logout-btn:hover'. */
+  color:#fff; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.main { /* Selettore CSS: definisce lo stile di '.main'. */
+  margin-left:270px; /* Imposta la proprietà CSS 'margin-left'. */
+  width:calc(100% - 270px); /* Definisce la larghezza. */
+  min-width:0; /* Imposta la proprietà CSS 'min-width'. */
+} /* Chiude il blocco CSS corrente. */
+.topbar { /* Selettore CSS: definisce lo stile di '.topbar'. */
+  height:70px; /* Definisce l'altezza. */
+  background:#fff; /* Definisce lo sfondo. */
+  border-bottom:1px solid var(--line); /* Imposta la proprietà CSS 'border-bottom'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  padding:0 32px; /* Definisce lo spazio interno. */
+  position:sticky; /* Definisce il metodo di posizionamento. */
+  top:0; /* Definisce la posizione verticale. */
+  z-index:10; /* Imposta la proprietà CSS 'z-index'. */
+} /* Chiude il blocco CSS corrente. */
+.breadcrumb { /* Selettore CSS: definisce lo stile di '.breadcrumb'. */
+  color:#7c898a; /* Definisce il colore del testo. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.breadcrumb span { /* Selettore CSS: definisce lo stile di '.breadcrumb span'. */
+  margin:0 8px; /* Definisce lo spazio esterno. */
+  color:#c2caca; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.breadcrumb strong { /* Selettore CSS: definisce lo stile di '.breadcrumb strong'. */
+  color:#273839; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.top-actions { /* Selettore CSS: definisce lo stile di '.top-actions'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:14px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.notification-btn { /* Selettore CSS: definisce lo stile di '.notification-btn'. */
+  position:relative; /* Definisce il metodo di posizionamento. */
+  font-size:20px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.notification-btn b { /* Selettore CSS: definisce lo stile di '.notification-btn b'. */
+  position:absolute; /* Definisce il metodo di posizionamento. */
+  right:0; /* Definisce la distanza dal lato destro. */
+  top:0; /* Definisce la posizione verticale. */
+  background:#e65d5d; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  font-size:8px; /* Definisce la dimensione del testo. */
+  padding:2px 5px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.user-chip { /* Selettore CSS: definisce lo stile di '.user-chip'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:8px; /* Definisce la distanza tra gli elementi figli. */
+  background:#f5f7f7; /* Definisce lo sfondo. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  padding:5px 9px; /* Definisce lo spazio interno. */
+  border-radius:30px; /* Arrotonda gli angoli. */
+  color:#344344; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.mobile-menu { /* Selettore CSS: definisce lo stile di '.mobile-menu'. */
+  display:none; /* Definisce il modello di layout dell'elemento. */
+  border:0; /* Definisce il bordo. */
+  background:none; /* Definisce lo sfondo. */
+  font-size:20px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.content { /* Selettore CSS: definisce lo stile di '.content'. */
+  padding:30px; /* Definisce lo spazio interno. */
+  max-width:1600px; /* Imposta la proprietà CSS 'max-width'. */
+  margin:auto; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.page { /* Selettore CSS: definisce lo stile di '.page'. */
+  display:none; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.page.active { /* Selettore CSS: definisce lo stile di '.page.active'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.welcome-row,.page-heading { /* Selettore CSS: definisce lo stile di '.welcome-row,.page-heading'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  align-items:flex-end; /* Allinea gli elementi sull'asse trasversale. */
+  gap:20px; /* Definisce la distanza tra gli elementi figli. */
+  margin-bottom:25px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.eyebrow { /* Selettore CSS: definisce lo stile di '.eyebrow'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  letter-spacing:1.5px; /* Imposta la proprietà CSS 'letter-spacing'. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  color:#7b8b8c; /* Definisce il colore del testo. */
+  margin:0 0 7px; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.page-heading h1,.welcome-row h1 { /* Selettore CSS: definisce lo stile di '.page-heading h1,.welcome-row h1'. */
+  margin:0; /* Definisce lo spazio esterno. */
+  font-size:28px; /* Definisce la dimensione del testo. */
+  letter-spacing:-.7px; /* Imposta la proprietà CSS 'letter-spacing'. */
+} /* Chiude il blocco CSS corrente. */
+.muted { /* Selettore CSS: definisce lo stile di '.muted'. */
+  color:var(--muted); /* Definisce il colore del testo. */
+  margin:6px 0 0; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.primary,.secondary,.text-btn { /* Selettore CSS: definisce lo stile di '.primary,.secondary,.text-btn'. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  padding:10px 15px; /* Definisce lo spazio interno. */
+  font-weight:600; /* Definisce lo spessore del testo. */
+  border:1px solid transparent; /* Definisce il bordo. */
+} /* Chiude il blocco CSS corrente. */
+.primary { /* Selettore CSS: definisce lo stile di '.primary'. */
+  background:var(--teal); /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  box-shadow:0 5px 14px rgba(15,118,110,.18); /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.primary:hover { /* Selettore CSS: definisce lo stile di '.primary:hover'. */
+  background:#0b655f; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.secondary { /* Selettore CSS: definisce lo stile di '.secondary'. */
+  background:#fff; /* Definisce lo sfondo. */
+  border-color:var(--line); /* Imposta la proprietà CSS 'border-color'. */
+  color:#425253; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.text-btn { /* Selettore CSS: definisce lo stile di '.text-btn'. */
+  background:none; /* Definisce lo sfondo. */
+  color:var(--teal); /* Definisce il colore del testo. */
+  padding:4px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.stats-grid { /* Selettore CSS: definisce lo stile di '.stats-grid'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:repeat(4,1fr); /* Definisce colonne e larghezze della griglia. */
+  gap:15px; /* Definisce la distanza tra gli elementi figli. */
+  margin-bottom:20px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.stat-card,.finance-stat,.doc-stat { /* Selettore CSS: definisce lo stile di '.stat-card,.finance-stat,.doc-stat'. */
+  background:#fff; /* Definisce lo sfondo. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:var(--radius); /* Arrotonda gli angoli. */
+  padding:19px; /* Definisce lo spazio interno. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:flex-start; /* Allinea gli elementi sull'asse trasversale. */
+  gap:14px; /* Definisce la distanza tra gli elementi figli. */
+  box-shadow:var(--shadow); /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.stat-icon { /* Selettore CSS: definisce lo stile di '.stat-icon'. */
+  width:42px; /* Definisce la larghezza. */
+  height:42px; /* Definisce l'altezza. */
+  border-radius:12px; /* Arrotonda gli angoli. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  place-items:center; /* Imposta la proprietà CSS 'place-items'. */
+  font-size:19px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.teal { /* Selettore CSS: definisce lo stile di '.teal'. */
+  background:#e3f5f2; /* Definisce lo sfondo. */
+  color:#0f766e; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.blue { /* Selettore CSS: definisce lo stile di '.blue'. */
+  background:#e9efff; /* Definisce lo sfondo. */
+  color:#2563eb; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.purple { /* Selettore CSS: definisce lo stile di '.purple'. */
+  background:#f0eafd; /* Definisce lo sfondo. */
+  color:#7c3aed; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.orange { /* Selettore CSS: definisce lo stile di '.orange'. */
+  background:#fff1df; /* Definisce lo sfondo. */
+  color:#df7a00; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.stat-card span,.finance-stat span,.doc-stat span { /* Selettore CSS: definisce lo stile di '.stat-card span,.finance-stat span,.doc-stat span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:#788687; /* Definisce il colore del testo. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.stat-card strong { /* Selettore CSS: definisce lo stile di '.stat-card strong'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:23px; /* Definisce la dimensione del testo. */
+  margin:5px 0 3px; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.stat-card small,.finance-stat small { /* Selettore CSS: definisce lo stile di '.stat-card small,.finance-stat small'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#899596; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.positive { /* Selettore CSS: definisce lo stile di '.positive'. */
+  color:#15916f!important; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.warning-text { /* Selettore CSS: definisce lo stile di '.warning-text'. */
+  color:#d47b08!important; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.dashboard-grid { /* Selettore CSS: definisce lo stile di '.dashboard-grid'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:1.55fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  gap:20px; /* Definisce la distanza tra gli elementi figli. */
+  margin-bottom:20px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.card { /* Selettore CSS: definisce lo stile di '.card'. */
+  background:#fff; /* Definisce lo sfondo. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:var(--radius); /* Arrotonda gli angoli. */
+  box-shadow:var(--shadow); /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.card-header { /* Selettore CSS: definisce lo stile di '.card-header'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  gap:15px; /* Definisce la distanza tra gli elementi figli. */
+  padding:19px 20px; /* Definisce lo spazio interno. */
+  border-bottom:1px solid var(--line); /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.card-header h2 { /* Selettore CSS: definisce lo stile di '.card-header h2'. */
+  margin:0; /* Definisce lo spazio esterno. */
+  font-size:15px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.card-header span { /* Selettore CSS: definisce lo stile di '.card-header span'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.card-header select { /* Selettore CSS: definisce lo stile di '.card-header select'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  padding:7px; /* Definisce lo spazio interno. */
+  border-radius:8px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.timeline { /* Selettore CSS: definisce lo stile di '.timeline'. */
+  padding:9px 20px 12px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.timeline-item { /* Selettore CSS: definisce lo stile di '.timeline-item'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:45px 12px 1fr; /* Definisce colonne e larghezze della griglia. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  min-height:64px; /* Imposta la proprietà CSS 'min-height'. */
+  border-bottom:1px solid #f0f2f2; /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.timeline-item:last-child { /* Selettore CSS: definisce lo stile di '.timeline-item:last-child'. */
+  border-bottom:0; /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.time { /* Selettore CSS: definisce lo stile di '.time'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#839091; /* Definisce il colore del testo. */
+  text-align:right; /* Imposta la proprietà CSS 'text-align'. */
+} /* Chiude il blocco CSS corrente. */
+.dot { /* Selettore CSS: definisce lo stile di '.dot'. */
+  width:9px; /* Definisce la larghezza. */
+  height:9px; /* Definisce l'altezza. */
+  border-radius:50%; /* Arrotonda gli angoli. */
+  box-shadow:0 0 0 4px #fff; /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.teal-bg { /* Selettore CSS: definisce lo stile di '.teal-bg'. */
+  background:#22a89a; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.blue-bg { /* Selettore CSS: definisce lo stile di '.blue-bg'. */
+  background:#5683ee; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.purple-bg { /* Selettore CSS: definisce lo stile di '.purple-bg'. */
+  background:#986ee7; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.orange-bg { /* Selettore CSS: definisce lo stile di '.orange-bg'. */
+  background:#ee9a2d; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.appointment { /* Selettore CSS: definisce lo stile di '.appointment'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.appointment strong,.appointment span { /* Selettore CSS: definisce lo stile di '.appointment strong,.appointment span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.appointment strong { /* Selettore CSS: definisce lo stile di '.appointment strong'. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.appointment span { /* Selettore CSS: definisce lo stile di '.appointment span'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#8a9899; /* Definisce il colore del testo. */
+  margin-top:3px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.status { /* Selettore CSS: definisce lo stile di '.status'. */
+  display:inline-block; /* Definisce il modello di layout dell'elemento. */
+  padding:5px 8px; /* Definisce lo spazio interno. */
+  border-radius:20px; /* Arrotonda gli angoli. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  white-space:nowrap; /* Imposta la proprietà CSS 'white-space'. */
+} /* Chiude il blocco CSS corrente. */
+.status.confirmed { /* Selettore CSS: definisce lo stile di '.status.confirmed'. */
+  background:#e4f6f0; /* Definisce lo sfondo. */
+  color:#16816d; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.status.pending { /* Selettore CSS: definisce lo stile di '.status.pending'. */
+  background:#fff2df; /* Definisce lo sfondo. */
+  color:#bd700b; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.status.current { /* Selettore CSS: definisce lo stile di '.status.current'. */
+  background:#eee9ff; /* Definisce lo sfondo. */
+  color:#7140bd; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.deadline-list { /* Selettore CSS: definisce lo stile di '.deadline-list'. */
+  padding:8px 20px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.deadline { /* Selettore CSS: definisce lo stile di '.deadline'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:11px; /* Definisce la distanza tra gli elementi figli. */
+  padding:13px 0; /* Definisce lo spazio interno. */
+  border-bottom:1px solid #f0f2f2; /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.deadline:last-child { /* Selettore CSS: definisce lo stile di '.deadline:last-child'. */
+  border:0; /* Definisce il bordo. */
+} /* Chiude il blocco CSS corrente. */
+.deadline>div:nth-child(2) { /* Selettore CSS: definisce lo stile di '.deadline>div:nth-child(2)'. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+} /* Chiude il blocco CSS corrente. */
+.deadline strong,.deadline span { /* Selettore CSS: definisce lo stile di '.deadline strong,.deadline span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.deadline>div:nth-child(2) strong { /* Selettore CSS: definisce lo stile di '.deadline>div:nth-child(2) strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.deadline>div:nth-child(2) span { /* Selettore CSS: definisce lo stile di '.deadline>div:nth-child(2) span'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#899697; /* Definisce il colore del testo. */
+  margin-top:3px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.date-box { /* Selettore CSS: definisce lo stile di '.date-box'. */
+  width:40px; /* Definisce la larghezza. */
+  text-align:center; /* Imposta la proprietà CSS 'text-align'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+  padding:5px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.date-box strong { /* Selettore CSS: definisce lo stile di '.date-box strong'. */
+  font-size:15px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.date-box span { /* Selettore CSS: definisce lo stile di '.date-box span'. */
+  font-size:8px; /* Definisce la dimensione del testo. */
+  color:#8b999a; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.pill { /* Selettore CSS: definisce lo stile di '.pill'. */
+  padding:5px 7px; /* Definisce lo spazio interno. */
+  border-radius:20px; /* Arrotonda gli angoli. */
+  font-size:8px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.pill.orange { /* Selettore CSS: definisce lo stile di '.pill.orange'. */
+  background:#fff0dc; /* Definisce lo sfondo. */
+  color:#c2730a; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.pill.gray { /* Selettore CSS: definisce lo stile di '.pill.gray'. */
+  background:#f1f3f3; /* Definisce lo sfondo. */
+  color:#748182; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.chart-wrap { /* Selettore CSS: definisce lo stile di '.chart-wrap'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  padding:18px 20px 10px; /* Definisce lo spazio interno. */
+  height:240px; /* Definisce l'altezza. */
+} /* Chiude il blocco CSS corrente. */
+.y-labels { /* Selettore CSS: definisce lo stile di '.y-labels'. */
+  width:42px; /* Definisce la larghezza. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  flex-direction:column; /* Imposta la proprietà CSS 'flex-direction'. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  color:#a1acad; /* Definisce il colore del testo. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  padding-bottom:27px; /* Imposta la proprietà CSS 'padding-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.chart { /* Selettore CSS: definisce lo stile di '.chart'. */
+  position:relative; /* Definisce il metodo di posizionamento. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+} /* Chiude il blocco CSS corrente. */
+.gridline { /* Selettore CSS: definisce lo stile di '.gridline'. */
+  height:1px; /* Definisce l'altezza. */
+  background:#eef1f1; /* Definisce lo sfondo. */
+  position:absolute; /* Definisce il metodo di posizionamento. */
+  left:0; /* Definisce la posizione orizzontale. */
+  right:0; /* Definisce la distanza dal lato destro. */
+} /* Chiude il blocco CSS corrente. */
+.g1 { /* Selettore CSS: definisce lo stile di '.g1'. */
+  top:10%; /* Definisce la posizione verticale. */
+} /* Chiude il blocco CSS corrente. */
+.g2 { /* Selettore CSS: definisce lo stile di '.g2'. */
+  top:30%; /* Definisce la posizione verticale. */
+} /* Chiude il blocco CSS corrente. */
+.g3 { /* Selettore CSS: definisce lo stile di '.g3'. */
+  top:50%; /* Definisce la posizione verticale. */
+} /* Chiude il blocco CSS corrente. */
+.g4 { /* Selettore CSS: definisce lo stile di '.g4'. */
+  top:70%; /* Definisce la posizione verticale. */
+} /* Chiude il blocco CSS corrente. */
+.chart svg { /* Selettore CSS: definisce lo stile di '.chart svg'. */
+  position:absolute; /* Definisce il metodo di posizionamento. */
+  inset:0 0 25px; /* Imposta la proprietà CSS 'inset'. */
+  width:100%; /* Definisce la larghezza. */
+  height:calc(100% - 25px); /* Definisce l'altezza. */
+  overflow:visible; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+} /* Chiude il blocco CSS corrente. */
+.x-labels { /* Selettore CSS: definisce lo stile di '.x-labels'. */
+  position:absolute; /* Definisce il metodo di posizionamento. */
+  bottom:0; /* Definisce la distanza dal lato inferiore. */
+  left:0; /* Definisce la posizione orizzontale. */
+  right:0; /* Definisce la distanza dal lato destro. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  color:#9aa7a8; /* Definisce il colore del testo. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid { /* Selettore CSS: definisce lo stile di '.quick-grid'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  padding:15px; /* Definisce lo spazio interno. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid button { /* Selettore CSS: definisce lo stile di '.quick-grid button'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  background:#fbfcfc; /* Definisce lo sfondo. */
+  border-radius:12px; /* Arrotonda gli angoli. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  padding:13px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid button:hover { /* Selettore CSS: definisce lo stile di '.quick-grid button:hover'. */
+  border-color:#b7d9d5; /* Imposta la proprietà CSS 'border-color'. */
+  background:#f5fbfa; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid span { /* Selettore CSS: definisce lo stile di '.quick-grid span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:var(--teal); /* Definisce il colore del testo. */
+  font-size:18px; /* Definisce la dimensione del testo. */
+  margin-bottom:8px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid strong,.quick-grid small { /* Selettore CSS: definisce lo stile di '.quick-grid strong,.quick-grid small'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid strong { /* Selettore CSS: definisce lo stile di '.quick-grid strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.quick-grid small { /* Selettore CSS: definisce lo stile di '.quick-grid small'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#899697; /* Definisce il colore del testo. */
+  margin-top:3px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.toolbar,.filters { /* Selettore CSS: definisce lo stile di '.toolbar,.filters'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+  margin-bottom:15px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.toolbar select,.filters select { /* Selettore CSS: definisce lo stile di '.toolbar select,.filters select'. */
+  margin-left:auto; /* Imposta la proprietà CSS 'margin-left'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+  padding:9px; /* Definisce lo spazio interno. */
+  background:#fff; /* Definisce lo sfondo. */
+  color:#526263; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.toolbar strong { /* Selettore CSS: definisce lo stile di '.toolbar strong'. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.segmented { /* Selettore CSS: definisce lo stile di '.segmented'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  background:#eef2f2; /* Definisce lo sfondo. */
+  padding:3px; /* Definisce lo spazio interno. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.segmented button { /* Selettore CSS: definisce lo stile di '.segmented button'. */
+  border:0; /* Definisce il bordo. */
+  background:transparent; /* Definisce lo sfondo. */
+  padding:7px 12px; /* Definisce lo spazio interno. */
+  border-radius:7px; /* Arrotonda gli angoli. */
+  color:#6d7c7d; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.segmented button.active { /* Selettore CSS: definisce lo stile di '.segmented button.active'. */
+  background:#fff; /* Definisce lo sfondo. */
+  color:#223233; /* Definisce il colore del testo. */
+  box-shadow:0 1px 4px #dfe4e4; /* Aggiunge un'ombra. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-help { /* Contenitore informativo mostrato sopra la griglia. */
+  display:flex; /* Dispone gli elementi informativi sulla stessa riga. */
+  align-items:center; /* Allinea verticalmente gli elementi. */
+  gap:8px; /* Crea uno spazio uniforme tra gli elementi. */
+  margin-bottom:12px; /* Separa il messaggio dalla griglia. */
+  padding:10px 12px; /* Aggiunge spazio interno. */
+  border:1px solid var(--line); /* Disegna un bordo leggero. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  background:#f8fbfb; /* Definisce uno sfondo neutro. */
+  color:#526364; /* Definisce il colore del testo. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-help-rule { /* Evidenzia la regola di disponibilità. */
+  margin-left:auto; /* Spinge la regola verso il lato destro. */
+  font-weight:700; /* Rende la regola più evidente. */
+  color:#b45309; /* Usa un colore di avviso leggibile. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-full { /* Contenitore principale della nuova agenda settimanale. */
+  height:760px; /* Definisce un'altezza sufficiente per la giornata. */
+  overflow:auto; /* Permette lo scorrimento orizzontale e verticale quando necessario. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-week { /* Contiene colonna orari e giorni. */
+  min-width:1100px; /* Mantiene leggibili sette colonne anche su schermi stretti. */
+  min-height:100%; /* Occupa almeno tutta l'altezza della card. */
+  display:flex; /* Dispone la colonna degli orari accanto ai giorni. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-time-column { /* Colonna laterale dedicata agli orari. */
+  width:62px; /* Definisce la larghezza della colonna orari. */
+  flex:0 0 62px; /* Impedisce alla colonna di restringersi. */
+  background:#fff; /* Mantiene lo sfondo pulito. */
+  z-index:3; /* Tiene gli orari sopra la griglia durante lo scroll orizzontale. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-corner { /* Cella superiore sopra le etichette degli orari. */
+  height:48px; /* Allinea la cella all'altezza delle intestazioni dei giorni. */
+  display:flex; /* Attiva il layout flessibile. */
+  align-items:center; /* Centra verticalmente il testo. */
+  justify-content:flex-end; /* Allinea il testo verso destra. */
+  padding-right:8px; /* Aggiunge spazio dal bordo destro. */
+  border-bottom:1px solid var(--line); /* Separa intestazione e calendario. */
+  color:#9aa7a8; /* Usa un colore secondario. */
+  font-size:9px; /* Mantiene il testo compatto. */
+  font-weight:700; /* Evidenzia la parola Ora. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-time-labels { /* Contiene tutte le etichette orarie. */
+  display:flex; /* Attiva il layout flessibile. */
+  flex-direction:column; /* Dispone gli orari verticalmente. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-time-labels span { /* Singola etichetta oraria. */
+  height:60px; /* Ogni ora occupa 60 pixel. */
+  box-sizing:border-box; /* Include eventuali bordi nelle dimensioni. */
+  padding-top:4px; /* Posiziona l'orario vicino alla linea superiore. */
+  padding-right:8px; /* Allontana il testo dal bordo della colonna. */
+  text-align:right; /* Allinea gli orari a destra. */
+  color:#9aa7a8; /* Definisce il colore secondario. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-days { /* Contiene le sette colonne giornaliere. */
+  flex:1; /* Occupa tutto lo spazio disponibile. */
+  display:grid; /* Usa una griglia regolare per i giorni. */
+  grid-template-columns:repeat(7,minmax(145px,1fr)); /* Crea sette colonne di dimensione simile. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day { /* Rappresenta una singola giornata. */
+  min-width:145px; /* Garantisce una larghezza minima utile al drag and drop. */
+  border-left:1px solid var(--line); /* Separa visivamente i giorni. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-header { /* Intestazione di una giornata. */
+  height:48px; /* Allinea l'intestazione alla cella Ora. */
+  box-sizing:border-box; /* Include il bordo nelle dimensioni. */
+  display:flex; /* Dispone giorno e data verticalmente. */
+  flex-direction:column; /* Imposta la direzione verticale. */
+  justify-content:center; /* Centra verticalmente i contenuti. */
+  padding-left:10px; /* Aggiunge spazio dal bordo sinistro. */
+  border-bottom:1px solid var(--line); /* Separa intestazione e corpo. */
+  background:#f8fbfb; /* Evidenzia leggermente l'intestazione. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-header strong { /* Nome abbreviato del giorno. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#637273; /* Definisce il colore del giorno. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-header span { /* Numero e mese del giorno. */
+  margin-top:2px; /* Crea un piccolo spazio dal nome del giorno. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Evidenzia la data. */
+  color:#223233; /* Definisce il colore principale del testo. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-body { /* Area verticale che riceve gli appuntamenti. */
+  position:relative; /* Permette di posizionare gli appuntamenti in base all'orario. */
+  height:720px; /* 12 ore x 60 pixel, dalle 08:00 alle 20:00. */
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 29px,#edf1f1 30px); /* Disegna linee ogni 30 minuti. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-body.drag-over { /* Stato visivo mostrato durante un trascinamento valido. */
+  background-color:#f0fbf8; /* Evidenzia la colonna di destinazione. */
+} /* Chiude il blocco CSS corrente. */
+.agenda-day-body.drag-invalid { /* Stato visivo mostrato quando il punto di rilascio non è valido. */
+  background-color:#fff7ed; /* Evidenzia una destinazione non disponibile. */
+} /* Chiude il blocco CSS corrente. */
+.appointment-block { /* Rappresenta un appuntamento trascinabile. */
+  position:absolute; /* Posiziona l'appuntamento in funzione dell'orario. */
+  left:6px; /* Lascia spazio dal bordo sinistro. */
+  right:6px; /* Lascia spazio dal bordo destro. */
+  min-height:58px; /* Garantisce una superficie comoda da trascinare. */
+  box-sizing:border-box; /* Include padding e bordo nelle dimensioni. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  padding:9px 10px; /* Definisce lo spazio interno. */
+  border-left:4px solid; /* Evidenzia il tipo di appuntamento. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  cursor:grab; /* Indica visivamente che l'elemento può essere trascinato. */
+  user-select:none; /* Evita di selezionare accidentalmente il testo durante il drag. */
+  transition:box-shadow .15s ease,opacity .15s ease; /* Rende più morbidi gli stati interattivi. */
+  z-index:2; /* Tiene l'appuntamento sopra le linee della griglia. */
+} /* Chiude il blocco CSS corrente. */
+.appointment-block:active { /* Stato dell'appuntamento mentre viene trascinato. */
+  cursor:grabbing; /* Mostra il cursore coerente con il trascinamento. */
+} /* Chiude il blocco CSS corrente. */
+.appointment-block.dragging { /* Stato applicato durante il drag. */
+  opacity:.45; /* Rende trasparente l'originale per mostrare che è in movimento. */
+  box-shadow:0 8px 20px #cfd8d8; /* Evidenzia visivamente l'elemento trascinato. */
+} /* Chiude il blocco CSS corrente. */
+.appointment-block strong,.appointment-block span { /* Selettore comune per testo principale e secondario. */
+  display:block; /* Mette ogni testo su una riga separata. */
+} /* Chiude il blocco CSS corrente. */
+.appointment-block span { /* Testo secondario dell'appuntamento. */
+  margin-top:4px; /* Crea distanza dal nome del paziente. */
+  opacity:.75; /* Riduce leggermente l'enfasi del testo secondario. */
+  font-size:9px; /* Definisce la dimensione del testo secondario. */
+} /* Chiude il blocco CSS corrente. */
+.teal-block { /* Selettore CSS: definisce lo stile di '.teal-block'. */
+  background:#e5f6f2; /* Definisce lo sfondo. */
+  border-color:#159b8e; /* Imposta la proprietà CSS 'border-color'. */
+} /* Chiude il blocco CSS corrente. */
+.blue-block { /* Selettore CSS: definisce lo stile di '.blue-block'. */
+  background:#eaf0ff; /* Definisce lo sfondo. */
+  border-color:#4775e8; /* Imposta la proprietà CSS 'border-color'. */
+} /* Chiude il blocco CSS corrente. */
+.purple-block { /* Selettore CSS: definisce lo stile di '.purple-block'. */
+  background:#f0ebff; /* Definisce lo sfondo. */
+  border-color:#8c61d7; /* Imposta la proprietà CSS 'border-color'. */
+} /* Chiude il blocco CSS corrente. */
+.orange-block { /* Selettore CSS: definisce lo stile di '.orange-block'. */
+  background:#fff1df; /* Definisce lo sfondo. */
+  border-color:#df8b1c; /* Imposta la proprietà CSS 'border-color'. */
+} /* Chiude il blocco CSS corrente. */
+.search { /* Selettore CSS: definisce lo stile di '.search'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:8px; /* Definisce la distanza tra gli elementi figli. */
+  background:#fff; /* Definisce lo sfondo. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+  padding:0 11px; /* Definisce lo spazio interno. */
+  height:39px; /* Definisce l'altezza. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+  min-width:220px; /* Imposta la proprietà CSS 'min-width'. */
+} /* Chiude il blocco CSS corrente. */
+.search span { /* Selettore CSS: definisce lo stile di '.search span'. */
+  font-size:18px; /* Definisce la dimensione del testo. */
+  color:#899697; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.search input { /* Selettore CSS: definisce lo stile di '.search input'. */
+  border:0; /* Definisce il bordo. */
+  outline:0; /* Imposta la proprietà CSS 'outline'. */
+  width:100%; /* Definisce la larghezza. */
+  background:transparent; /* Definisce lo sfondo. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.filters select { /* Selettore CSS: definisce lo stile di '.filters select'. */
+  margin-left:0; /* Imposta la proprietà CSS 'margin-left'. */
+} /* Chiude il blocco CSS corrente. */
+.table-card { /* Selettore CSS: definisce lo stile di '.table-card'. */
+  overflow:hidden; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+} /* Chiude il blocco CSS corrente. */
+.table-card .card-header { /* Selettore CSS: definisce lo stile di '.table-card .card-header'. */
+  border-bottom:1px solid var(--line); /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+table { /* Selettore CSS: definisce lo stile di 'table'. */
+  width:100%; /* Definisce la larghezza. */
+  border-collapse:collapse; /* Imposta la proprietà CSS 'border-collapse'. */
+} /* Chiude il blocco CSS corrente. */
+th { /* Selettore CSS: definisce lo stile di 'th'. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  background:#fafbfb; /* Definisce lo sfondo. */
+  color:#8a9899; /* Definisce il colore del testo. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  text-transform:uppercase; /* Imposta la proprietà CSS 'text-transform'. */
+  letter-spacing:.5px; /* Imposta la proprietà CSS 'letter-spacing'. */
+  padding:12px 18px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+td { /* Selettore CSS: definisce lo stile di 'td'. */
+  padding:13px 18px; /* Definisce lo spazio interno. */
+  border-top:1px solid #eef1f1; /* Imposta la proprietà CSS 'border-top'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#536162; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+td strong { /* Selettore CSS: definisce lo stile di 'td strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+  color:#253435; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+td small { /* Selettore CSS: definisce lo stile di 'td small'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#909c9d; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.person { /* Selettore CSS: definisce lo stile di '.person'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:10px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.person span { /* Selettore CSS: definisce lo stile di '.person span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#929e9f; /* Definisce il colore del testo. */
+  margin-top:2px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.clinical-layout { /* Selettore CSS: definisce lo stile di '.clinical-layout'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:300px 1fr; /* Definisce colonne e larghezze della griglia. */
+  gap:18px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.patient-selector { /* Selettore CSS: definisce lo stile di '.patient-selector'. */
+  padding:13px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list { /* Selettore CSS: definisce lo stile di '.patient-list'. */
+  margin-top:10px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list button { /* Selettore CSS: definisce lo stile di '.patient-list button'. */
+  width:100%; /* Definisce la larghezza. */
+  border:0; /* Definisce il bordo. */
+  background:transparent; /* Definisce lo sfondo. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:9px; /* Definisce la distanza tra gli elementi figli. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  padding:10px; /* Definisce lo spazio interno. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list button.selected,.patient-list button:hover { /* Selettore CSS: definisce lo stile di '.patient-list button.selected,.patient-list button:hover'. */
+  background:#eef8f6; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list button>div:nth-child(2) { /* Selettore CSS: definisce lo stile di '.patient-list button>div:nth-child(2)'. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list strong,.patient-list span { /* Selettore CSS: definisce lo stile di '.patient-list strong,.patient-list span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list strong { /* Selettore CSS: definisce lo stile di '.patient-list strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.patient-list span { /* Selettore CSS: definisce lo stile di '.patient-list span'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#8b999a; /* Definisce il colore del testo. */
+  margin-top:2px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.clinical-detail { /* Selettore CSS: definisce lo stile di '.clinical-detail'. */
+  padding:0 20px 20px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.patient-header { /* Selettore CSS: definisce lo stile di '.patient-header'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:12px; /* Definisce la distanza tra gli elementi figli. */
+  padding:20px 0; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.patient-header>div:nth-child(2) { /* Selettore CSS: definisce lo stile di '.patient-header>div:nth-child(2)'. */
+  flex:1; /* Imposta la proprietà CSS 'flex'. */
+} /* Chiude il blocco CSS corrente. */
+.patient-header h2 { /* Selettore CSS: definisce lo stile di '.patient-header h2'. */
+  margin:0; /* Definisce lo spazio esterno. */
+  font-size:18px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.patient-header span { /* Selettore CSS: definisce lo stile di '.patient-header span'. */
+  color:#7e8d8e; /* Definisce il colore del testo. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tabs { /* Selettore CSS: definisce lo stile di '.tabs'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  gap:22px; /* Definisce la distanza tra gli elementi figli. */
+  border-bottom:1px solid var(--line); /* Imposta la proprietà CSS 'border-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.tabs button { /* Selettore CSS: definisce lo stile di '.tabs button'. */
+  border:0; /* Definisce il bordo. */
+  background:transparent; /* Definisce lo sfondo. */
+  padding:11px 2px; /* Definisce lo spazio interno. */
+  color:#899697; /* Definisce il colore del testo. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tabs button.active { /* Selettore CSS: definisce lo stile di '.tabs button.active'. */
+  color:var(--teal); /* Definisce il colore del testo. */
+  border-bottom:2px solid var(--teal); /* Imposta la proprietà CSS 'border-bottom'. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.note { /* Selettore CSS: definisce lo stile di '.note'. */
+  margin-top:17px; /* Imposta la proprietà CSS 'margin-top'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:11px; /* Arrotonda gli angoli. */
+  padding:15px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.note>div { /* Selettore CSS: definisce lo stile di '.note>div'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+} /* Chiude il blocco CSS corrente. */
+.note strong { /* Selettore CSS: definisce lo stile di '.note strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.note>div span { /* Selettore CSS: definisce lo stile di '.note>div span'. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  color:#8d9a9b; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.note p { /* Selettore CSS: definisce lo stile di '.note p'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#677677; /* Definisce il colore del testo. */
+  line-height:1.6; /* Imposta la proprietà CSS 'line-height'. */
+} /* Chiude il blocco CSS corrente. */
+.tag { /* Selettore CSS: definisce lo stile di '.tag'. */
+  font-size:8px; /* Definisce la dimensione del testo. */
+  padding:4px 7px; /* Definisce lo spazio interno. */
+  background:#fff0dc; /* Definisce lo sfondo. */
+  color:#bd710b; /* Definisce il colore del testo. */
+  border-radius:20px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.tag.success { /* Selettore CSS: definisce lo stile di '.tag.success'. */
+  background:#e5f5f0; /* Definisce lo sfondo. */
+  color:#16816d; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.document-cards,.finance-stats { /* Selettore CSS: definisce lo stile di '.document-cards,.finance-stats'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:repeat(3,1fr); /* Definisce colonne e larghezze della griglia. */
+  gap:15px; /* Definisce la distanza tra gli elementi figli. */
+  margin-bottom:18px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.finance-stats { /* Selettore CSS: definisce lo stile di '.finance-stats'. */
+  grid-template-columns:repeat(4,1fr); /* Definisce colonne e larghezze della griglia. */
+} /* Chiude il blocco CSS corrente. */
+.doc-stat,.finance-stat { /* Selettore CSS: definisce lo stile di '.doc-stat,.finance-stat'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.doc-stat strong,.finance-stat strong { /* Selettore CSS: definisce lo stile di '.doc-stat strong,.finance-stat strong'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:24px; /* Definisce la dimensione del testo. */
+  margin-top:7px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.finance-stat small { /* Selettore CSS: definisce lo stile di '.finance-stat small'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  margin-top:5px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.tax-alert { /* Selettore CSS: definisce lo stile di '.tax-alert'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  gap:13px; /* Definisce la distanza tra gli elementi figli. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  background:#fff8ec; /* Definisce lo sfondo. */
+  border:1px solid #f7dfb8; /* Definisce il bordo. */
+  border-radius:14px; /* Arrotonda gli angoli. */
+  padding:15px; /* Definisce lo spazio interno. */
+  margin-bottom:18px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.tax-alert>span { /* Selettore CSS: definisce lo stile di '.tax-alert>span'. */
+  width:34px; /* Definisce la larghezza. */
+  height:34px; /* Definisce l'altezza. */
+  border-radius:50%; /* Arrotonda gli angoli. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  place-items:center; /* Imposta la proprietà CSS 'place-items'. */
+  background:#ffe7bc; /* Definisce lo sfondo. */
+  color:#b86d00; /* Definisce il colore del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-alert strong { /* Selettore CSS: definisce lo stile di '.tax-alert strong'. */
+  font-size:12px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-alert p { /* Selettore CSS: definisce lo stile di '.tax-alert p'. */
+  margin:3px 0 0; /* Definisce lo spazio esterno. */
+  color:#887968; /* Definisce il colore del testo. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.deadline-table { /* Selettore CSS: definisce lo stile di '.deadline-table'. */
+  overflow:hidden; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+} /* Chiude il blocco CSS corrente. */
+.tax-row { /* Selettore CSS: definisce lo stile di '.tax-row'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:58px 1fr auto auto; /* Definisce colonne e larghezze della griglia. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  gap:15px; /* Definisce la distanza tra gli elementi figli. */
+  padding:17px 20px; /* Definisce lo spazio interno. */
+  border-top:1px solid #eef1f1; /* Imposta la proprietà CSS 'border-top'. */
+} /* Chiude il blocco CSS corrente. */
+.tax-date { /* Selettore CSS: definisce lo stile di '.tax-date'. */
+  text-align:center; /* Imposta la proprietà CSS 'text-align'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+  padding:6px; /* Definisce lo spazio interno. */
+  width:45px; /* Definisce la larghezza. */
+} /* Chiude il blocco CSS corrente. */
+.tax-date.urgent { /* Selettore CSS: definisce lo stile di '.tax-date.urgent'. */
+  border-color:#f1c47d; /* Imposta la proprietà CSS 'border-color'. */
+  background:#fff8ec; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-date strong,.tax-date span { /* Selettore CSS: definisce lo stile di '.tax-date strong,.tax-date span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.tax-date strong { /* Selettore CSS: definisce lo stile di '.tax-date strong'. */
+  font-size:15px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-date span { /* Selettore CSS: definisce lo stile di '.tax-date span'. */
+  font-size:8px; /* Definisce la dimensione del testo. */
+  color:#899697; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-row strong { /* Selettore CSS: definisce lo stile di '.tax-row strong'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.tax-row div:nth-child(2) span { /* Selettore CSS: definisce lo stile di '.tax-row div:nth-child(2) span'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:#899697; /* Definisce il colore del testo. */
+  font-size:9px; /* Definisce la dimensione del testo. */
+  margin-top:3px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.report-grid { /* Selettore CSS: definisce lo stile di '.report-grid'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:repeat(4,1fr); /* Definisce colonne e larghezze della griglia. */
+  gap:16px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.report-card { /* Selettore CSS: definisce lo stile di '.report-card'. */
+  padding:20px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.report-card span,.report-card small { /* Selettore CSS: definisce lo stile di '.report-card span,.report-card small'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  color:#839091; /* Definisce il colore del testo. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.report-card strong { /* Selettore CSS: definisce lo stile di '.report-card strong'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:25px; /* Definisce la dimensione del testo. */
+  margin:9px 0; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.mini-bar { /* Selettore CSS: definisce lo stile di '.mini-bar'. */
+  height:6px; /* Definisce l'altezza. */
+  background:#edf1f1; /* Definisce lo sfondo. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  overflow:hidden; /* Gestisce il contenuto che supera le dimensioni disponibili. */
+  margin-bottom:8px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.mini-bar i { /* Selettore CSS: definisce lo stile di '.mini-bar i'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  height:100%; /* Definisce l'altezza. */
+  background:#18a091; /* Definisce lo sfondo. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.team-grid { /* Selettore CSS: definisce lo stile di '.team-grid'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:repeat(3,1fr); /* Definisce colonne e larghezze della griglia. */
+  gap:16px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.team-member { /* Selettore CSS: definisce lo stile di '.team-member'. */
+  text-align:center; /* Imposta la proprietà CSS 'text-align'. */
+  padding:28px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.team-member .avatar { /* Selettore CSS: definisce lo stile di '.team-member .avatar'. */
+  margin:auto; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.team-member h3 { /* Selettore CSS: definisce lo stile di '.team-member h3'. */
+  font-size:13px; /* Definisce la dimensione del testo. */
+  margin:13px 0 4px; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.team-member>span { /* Selettore CSS: definisce lo stile di '.team-member>span'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#839091; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.member-actions { /* Selettore CSS: definisce lo stile di '.member-actions'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  justify-content:space-between; /* Distribuisce gli elementi sull'asse principale. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  margin-top:18px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.member-actions button { /* Selettore CSS: definisce lo stile di '.member-actions button'. */
+  border:0; /* Definisce il bordo. */
+  background:none; /* Definisce lo sfondo. */
+} /* Chiude il blocco CSS corrente. */
+.settings-layout { /* Selettore CSS: definisce lo stile di '.settings-layout'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:220px 1fr; /* Definisce colonne e larghezze della griglia. */
+  gap:18px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.settings-nav { /* Selettore CSS: definisce lo stile di '.settings-nav'. */
+  padding:10px; /* Definisce lo spazio interno. */
+  height:max-content; /* Definisce l'altezza. */
+} /* Chiude il blocco CSS corrente. */
+.settings-nav button { /* Selettore CSS: definisce lo stile di '.settings-nav button'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  width:100%; /* Definisce la larghezza. */
+  text-align:left; /* Imposta la proprietà CSS 'text-align'. */
+  border:0; /* Definisce il bordo. */
+  background:none; /* Definisce lo sfondo. */
+  padding:11px; /* Definisce lo spazio interno. */
+  border-radius:8px; /* Arrotonda gli angoli. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  color:#667576; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.settings-nav button.active { /* Selettore CSS: definisce lo stile di '.settings-nav button.active'. */
+  background:#e9f5f3; /* Definisce lo sfondo. */
+  color:#0d6f67; /* Definisce il colore del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.settings-form { /* Selettore CSS: definisce lo stile di '.settings-form'. */
+  padding:24px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.settings-form h2 { /* Selettore CSS: definisce lo stile di '.settings-form h2'. */
+  margin:0; /* Definisce lo spazio esterno. */
+  font-size:16px; /* Definisce la dimensione del testo. */
+} /* Chiude il blocco CSS corrente. */
+.settings-form>p { /* Selettore CSS: definisce lo stile di '.settings-form>p'. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  margin-bottom:22px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.settings-form label { /* Selettore CSS: definisce lo stile di '.settings-form label'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  color:#526263; /* Definisce il colore del testo. */
+  margin-bottom:15px; /* Imposta la proprietà CSS 'margin-bottom'. */
+} /* Chiude il blocco CSS corrente. */
+.settings-form input { /* Selettore CSS: definisce lo stile di '.settings-form input'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  width:100%; /* Definisce la larghezza. */
+  margin-top:6px; /* Imposta la proprietà CSS 'margin-top'. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+  padding:11px; /* Definisce lo spazio interno. */
+  outline:0; /* Imposta la proprietà CSS 'outline'. */
+} /* Chiude il blocco CSS corrente. */
+.two-col { /* Selettore CSS: definisce lo stile di '.two-col'. */
+  display:grid; /* Definisce il modello di layout dell'elemento. */
+  grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  gap:15px; /* Definisce la distanza tra gli elementi figli. */
+} /* Chiude il blocco CSS corrente. */
+.modal-backdrop { /* Selettore CSS: definisce lo stile di '.modal-backdrop'. */
+  display:none; /* Definisce il modello di layout dell'elemento. */
+  position:fixed; /* Definisce il metodo di posizionamento. */
+  inset:0; /* Imposta la proprietà CSS 'inset'. */
+  background:rgba(9,25,26,.45); /* Definisce lo sfondo. */
+  z-index:50; /* Imposta la proprietà CSS 'z-index'. */
+  align-items:center; /* Allinea gli elementi sull'asse trasversale. */
+  justify-content:center; /* Distribuisce gli elementi sull'asse principale. */
+  padding:20px; /* Definisce lo spazio interno. */
+} /* Chiude il blocco CSS corrente. */
+.modal-backdrop.open { /* Selettore CSS: definisce lo stile di '.modal-backdrop.open'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+} /* Chiude il blocco CSS corrente. */
+.modal { /* Selettore CSS: definisce lo stile di '.modal'. */
+  background:#fff; /* Definisce lo sfondo. */
+  width:min(500px,100%); /* Definisce la larghezza. */
+  border-radius:18px; /* Arrotonda gli angoli. */
+  box-shadow:0 30px 70px rgba(0,0,0,.2); /* Aggiunge un'ombra. */
+  padding:25px; /* Definisce lo spazio interno. */
+  position:relative; /* Definisce il metodo di posizionamento. */
+} /* Chiude il blocco CSS corrente. */
+.modal-close { /* Selettore CSS: definisce lo stile di '.modal-close'. */
+  position:absolute; /* Definisce il metodo di posizionamento. */
+  right:16px; /* Definisce la distanza dal lato destro. */
+  top:12px; /* Definisce la posizione verticale. */
+  border:0; /* Definisce il bordo. */
+  background:none; /* Definisce lo sfondo. */
+  font-size:23px; /* Definisce la dimensione del testo. */
+  color:#718083; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.modal h2 { /* Selettore CSS: definisce lo stile di '.modal h2'. */
+  margin:0 0 6px; /* Definisce lo spazio esterno. */
+} /* Chiude il blocco CSS corrente. */
+.modal p { /* Selettore CSS: definisce lo stile di '.modal p'. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+  color:#788687; /* Definisce il colore del testo. */
+} /* Chiude il blocco CSS corrente. */
+.modal label { /* Selettore CSS: definisce lo stile di '.modal label'. */
+  display:block; /* Definisce il modello di layout dell'elemento. */
+  font-size:10px; /* Definisce la dimensione del testo. */
+  font-weight:700; /* Definisce lo spessore del testo. */
+  margin-top:14px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.modal input,.modal select { /* Selettore CSS: definisce lo stile di '.modal input,.modal select'. */
+  width:100%; /* Definisce la larghezza. */
+  margin-top:6px; /* Imposta la proprietà CSS 'margin-top'. */
+  padding:10px; /* Definisce lo spazio interno. */
+  border:1px solid var(--line); /* Definisce il bordo. */
+  border-radius:9px; /* Arrotonda gli angoli. */
+} /* Chiude il blocco CSS corrente. */
+.modal .form-actions { /* Selettore CSS: definisce lo stile di '.modal .form-actions'. */
+  display:flex; /* Definisce il modello di layout dell'elemento. */
+  justify-content:flex-end; /* Distribuisce gli elementi sull'asse principale. */
+  gap:8px; /* Definisce la distanza tra gli elementi figli. */
+  margin-top:20px; /* Imposta la proprietà CSS 'margin-top'. */
+} /* Chiude il blocco CSS corrente. */
+.toast { /* Selettore CSS: definisce lo stile di '.toast'. */
+  position:fixed; /* Definisce il metodo di posizionamento. */
+  right:25px; /* Definisce la distanza dal lato destro. */
+  bottom:25px; /* Definisce la distanza dal lato inferiore. */
+  background:#102a2c; /* Definisce lo sfondo. */
+  color:#fff; /* Definisce il colore del testo. */
+  padding:12px 16px; /* Definisce lo spazio interno. */
+  border-radius:10px; /* Arrotonda gli angoli. */
+  font-size:11px; /* Definisce la dimensione del testo. */
+  opacity:0; /* Definisce la trasparenza. */
+  transform:translateY(10px); /* Applica una trasformazione grafica. */
+  transition:.25s; /* Definisce l'animazione tra stati diversi. */
+  z-index:70; /* Imposta la proprietà CSS 'z-index'. */
+} /* Chiude il blocco CSS corrente. */
+.toast.show { /* Selettore CSS: definisce lo stile di '.toast.show'. */
+  opacity:1; /* Definisce la trasparenza. */
+  transform:none; /* Applica una trasformazione grafica. */
+} /* Chiude il blocco CSS corrente. */
+@media(max-width:1100px) { /* Media query: applica regole specifiche a determinate dimensioni dello schermo. */
+  .stats-grid { /* Selettore CSS: definisce lo stile di '.stats-grid'. */
+    grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .dashboard-grid { /* Selettore CSS: definisce lo stile di '.dashboard-grid'. */
+    grid-template-columns:1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .finance-stats { /* Selettore CSS: definisce lo stile di '.finance-stats'. */
+    grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .report-grid { /* Selettore CSS: definisce lo stile di '.report-grid'. */
+    grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+} /* Chiude il blocco CSS corrente. */
+@media(max-width:800px) { /* Media query: applica regole specifiche a determinate dimensioni dello schermo. */
+  .sidebar { /* Selettore CSS: definisce lo stile di '.sidebar'. */
+    transform:translateX(-100%); /* Applica una trasformazione grafica. */
+    transition:.25s; /* Definisce l'animazione tra stati diversi. */
+  } /* Chiude il blocco CSS corrente. */
+  .sidebar.open { /* Selettore CSS: definisce lo stile di '.sidebar.open'. */
+    transform:none; /* Applica una trasformazione grafica. */
+  } /* Chiude il blocco CSS corrente. */
+  .main { /* Selettore CSS: definisce lo stile di '.main'. */
+    margin-left:0; /* Imposta la proprietà CSS 'margin-left'. */
+    width:100%; /* Definisce la larghezza. */
+  } /* Chiude il blocco CSS corrente. */
+  .mobile-menu { /* Selettore CSS: definisce lo stile di '.mobile-menu'. */
+    display:block; /* Definisce il modello di layout dell'elemento. */
+  } /* Chiude il blocco CSS corrente. */
+  .topbar { /* Selettore CSS: definisce lo stile di '.topbar'. */
+    padding:0 15px; /* Definisce lo spazio interno. */
+  } /* Chiude il blocco CSS corrente. */
+  .user-chip span:not(.avatar) { /* Selettore CSS: definisce lo stile di '.user-chip span:not(.avatar)'. */
+    display:none; /* Definisce il modello di layout dell'elemento. */
+  } /* Chiude il blocco CSS corrente. */
+  .content { /* Selettore CSS: definisce lo stile di '.content'. */
+    padding:20px 15px; /* Definisce lo spazio interno. */
+  } /* Chiude il blocco CSS corrente. */
+  .page-heading,.welcome-row { /* Selettore CSS: definisce lo stile di '.page-heading,.welcome-row'. */
+    align-items:flex-start; /* Allinea gli elementi sull'asse trasversale. */
+    flex-direction:column; /* Imposta la proprietà CSS 'flex-direction'. */
+  } /* Chiude il blocco CSS corrente. */
+  .clinical-layout,.settings-layout { /* Selettore CSS: definisce lo stile di '.clinical-layout,.settings-layout'. */
+    grid-template-columns:1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .team-grid { /* Selettore CSS: definisce lo stile di '.team-grid'. */
+    grid-template-columns:1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .document-cards { /* Selettore CSS: definisce lo stile di '.document-cards'. */
+    grid-template-columns:1fr 1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .table-card { /* Selettore CSS: definisce lo stile di '.table-card'. */
+    overflow-x:auto; /* Imposta la proprietà CSS 'overflow-x'. */
+  } /* Chiude il blocco CSS corrente. */
+  table { /* Selettore CSS: definisce lo stile di 'table'. */
+    min-width:760px; /* Imposta la proprietà CSS 'min-width'. */
+  } /* Chiude il blocco CSS corrente. */
+  .toolbar,.filters { /* Selettore CSS: definisce lo stile di '.toolbar,.filters'. */
+    flex-wrap:wrap; /* Imposta la proprietà CSS 'flex-wrap'. */
+  } /* Chiude il blocco CSS corrente. */
+  .toolbar select { /* Selettore CSS: definisce lo stile di '.toolbar select'. */
+    margin-left:0; /* Imposta la proprietà CSS 'margin-left'. */
+  } /* Chiude il blocco CSS corrente. */
+  .agenda-full { /* Selettore CSS: definisce lo stile di '.agenda-full'. */
+    height:700px; /* Definisce l'altezza. */
+  } /* Chiude il blocco CSS corrente. */
+  .agenda-hours { /* Selettore CSS: definisce lo stile di '.agenda-hours'. */
+    width:55px; /* Definisce la larghezza. */
+  } /* Chiude il blocco CSS corrente. */
+  .appointment-block { /* Selettore CSS: definisce lo stile di '.appointment-block'. */
+    left:8px; /* Definisce la posizione orizzontale. */
+    right:8px; /* Definisce la distanza dal lato destro. */
+  } /* Chiude il blocco CSS corrente. */
+  .tax-row { /* Selettore CSS: definisce lo stile di '.tax-row'. */
+    grid-template-columns:50px 1fr auto; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .tax-row .text-btn { /* Selettore CSS: definisce lo stile di '.tax-row .text-btn'. */
+    display:none; /* Definisce il modello di layout dell'elemento. */
+  } /* Chiude il blocco CSS corrente. */
+} /* Chiude il blocco CSS corrente. */
+@media(max-width:520px) { /* Media query: applica regole specifiche a determinate dimensioni dello schermo. */
+  .stats-grid,.finance-stats,.report-grid,.document-cards { /* Selettore CSS: definisce lo stile di '.stats-grid,.finance-stats,.report-grid,.document-cards'. */
+    grid-template-columns:1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .quick-grid { /* Selettore CSS: definisce lo stile di '.quick-grid'. */
+    grid-template-columns:1fr; /* Definisce colonne e larghezze della griglia. */
+  } /* Chiude il blocco CSS corrente. */
+  .content { /* Selettore CSS: definisce lo stile di '.content'. */
+    padding:16px 12px; /* Definisce lo spazio interno. */
+  } /* Chiude il blocco CSS corrente. */
+  .page-heading h1,.welcome-row h1 { /* Selettore CSS: definisce lo stile di '.page-heading h1,.welcome-row h1'. */
+    font-size:23px; /* Definisce la dimensione del testo. */
+  } /* Chiude il blocco CSS corrente. */
+  .topbar { /* Selettore CSS: definisce lo stile di '.topbar'. */
+    height:60px; /* Definisce l'altezza. */
+  } /* Chiude il blocco CSS corrente. */
+  .chart-wrap { /* Selettore CSS: definisce lo stile di '.chart-wrap'. */
+    padding-left:8px; /* Imposta la proprietà CSS 'padding-left'. */
+  } /* Chiude il blocco CSS corrente. */
+  .sidebar { /* Selettore CSS: definisce lo stile di '.sidebar'. */
+    width:280px; /* Definisce la larghezza. */
+  } /* Chiude il blocco CSS corrente. */
+} /* Chiude il blocco CSS corrente. */

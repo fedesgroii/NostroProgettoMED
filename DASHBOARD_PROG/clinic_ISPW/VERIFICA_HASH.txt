@@ -1,0 +1,3 @@
+SHA256 style.css precedente: 952bf91f37fa2d535f7da564fe987a687450a8ae763c8a5c1e798fb2d2cf4896
+SHA256 style.css nuovo:       952bf91f37fa2d535f7da564fe987a687450a8ae763c8a5c1e798fb2d2cf4896
+IDENTICO: True

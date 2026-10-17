@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+ <!-- Dichiara che il documento usa lo standard HTML5. -->
+<html lang="it"> <!-- Apre l'elemento radice e imposta la lingua italiana. -->
+<head> <!-- Apre la sezione dei metadati e delle risorse. -->
+<meta charset="utf-8"/> <!-- Imposta la codifica UTF-8. -->
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/> <!-- Rende il layout adattabile a smartphone e tablet. -->
+<meta content="#0f766e" name="theme-color"/> <!-- Imposta il colore del tema del browser. -->
+<title>ClinicaFlow — Area Professionisti</title> <!-- Imposta il titolo della scheda del browser. -->
+<link href="style.css" rel="stylesheet"/> <!-- Collega il file CSS, separando struttura e presentazione. -->
+</head> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<body> <!-- Apre il contenuto visibile dell'applicazione. -->
+<div class="app-shell"> <!-- Contenitore generale dell'intera interfaccia. -->
+<aside class="sidebar" id="sidebar"> <!-- Contiene la sidebar e la navigazione principale. -->
+<div class="brand"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="brand-mark">+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<strong>ClinicaFlow</strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<span>Area professionisti</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="profile-mini"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="avatar" id="sidebarAvatar"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<strong id="sidebarNome"></strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<span id="sidebarRuolo"></span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<button class="icon-btn" title="Impostazioni profilo">⚙</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<nav class="nav"> <!-- Raggruppa semanticamente i comandi di navigazione. -->
+<p class="nav-label">GESTIONE</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+<button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+<button class="nav-item" data-page="agenda"><span>◷</span> Agenda</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="patients"><span>♙</span> Pazienti</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="clinical"><span>▤</span> Cartelle cliniche</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="documents"><span>□</span> Documenti</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<p class="nav-label">AMMINISTRAZIONE</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+<button class="nav-item" data-page="finance"><span>€</span> Finanze e fatture</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="taxes"><span>▣</span> Tasse e scadenze</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="reports"><span>◒</span> Report</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<p class="nav-label">STRUTTURA</p> <!-- Etichetta che raggruppa una sezione del menu. -->
+<button class="nav-item" data-page="team"><span>♧</span> Staff</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+<button class="nav-item" data-page="settings"><span>⚙</span> Impostazioni</button> <!-- Voce di navigazione; data-page identifica la pagina da mostrare. -->
+</nav> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="sidebar-bottom"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="security-card"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="security-icon">✓</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<strong>Sessione protetta</strong> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<span id="ultimoAccesso">Ultimo accesso: oggi, 14:42</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<button class="logout-btn" id="logoutBtn">↪ Esci dall'account</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</aside> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<main class="main"> <!-- Contiene l'area principale del gestionale. -->
+<header class="topbar"> <!-- Apre la sezione dei metadati e delle risorse. -->
+<button class="mobile-menu" id="mobileMenu">☰</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+<div class="breadcrumb">Area professionisti <span>/</span> <strong id="pageTitle">Dashboard</strong></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="top-actions"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<button class="icon-btn notification-btn" id="notificationBtn" title="Notifiche">♢<b id="notificheCount">3</b></button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+<button class="user-chip"> <!-- Pulsante interattivo collegabile a JavaScript. -->
+<div class="avatar small" id="topbarAvatar">MR</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<span id="topbarNome"></span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<span>⌄</span> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</button> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</header> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="content" id="contenitorePagine"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</main> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="modal-backdrop" id="modal"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="modal"> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<button class="modal-close" id="modalClose">×</button> <!-- Pulsante interattivo collegabile a JavaScript. -->
+<div id="modalContent"></div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<div class="toast" id="toast">Operazione completata</div> <!-- Elemento HTML che contribuisce alla struttura della pagina. -->
+<script src="frontend/funzione_package/Funzione_Avvio.js" type="module"></script> <!-- Carica il JavaScript modulare che gestisce le interazioni. -->
+</body> <!-- Chiude il contenuto visibile. -->
+</html> <!-- Chiude il documento HTML. -->

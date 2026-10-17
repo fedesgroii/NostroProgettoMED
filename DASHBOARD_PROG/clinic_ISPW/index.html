@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<!-- [VIEW - Shell] Dichiara lo standard HTML5 della dashboard ClinicaFlow. -->
+<html lang="it">
+<!-- [VIEW - Shell] Apre il documento in lingua italiana. -->
+<head>
+<!-- [VIEW - Shell] Imposta la codifica UTF-8. -->
+<meta charset="UTF-8">
+<!-- [VIEW - Shell] Mantiene il layout responsive originale. -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- [VIEW - Shell] Mantiene il colore tema originale. -->
+<meta name="theme-color" content="#0f766e">
+<!-- [VIEW - Shell] Mantiene il titolo originale della dashboard. -->
+<title>ClinicaFlow — Area Professionisti</title>
+<!-- [VIEW - Shell] Carica il CSS globale senza modificarne il contenuto. -->
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- [VIEW - Shell] Mantiene il contenitore generale previsto dal CSS. -->
+<div class="app-shell">
+<!-- [VIEW - Shell] Mountpoint per Sidebar_View. -->
+<div id="sidebar-root"></div>
+<!-- [VIEW - Shell] Mantiene l'area principale con la stessa classe del progetto esistente. -->
+<main class="main">
+<!-- [VIEW - Shell] Mountpoint per Topbar_View. -->
+<div id="topbar-root"></div>
+<!-- [VIEW - Shell] Mountpoint per tutte le View funzionali. -->
+<div class="content" id="content-root">
+<!-- [VIEW - Shell] I dieci page mountpoint permettono ai ControlGrafico di inserire le proprie View senza accorparle. -->
+<div id="dashboard-root"></div><div id="agenda-root"></div><div id="patients-root"></div><div id="clinical-root"></div><div id="documents-root"></div><div id="finance-root"></div><div id="taxes-root"></div><div id="reports-root"></div><div id="team-root"></div><div id="settings-root"></div>
+</div>
+</main>
+</div>
+<!-- [VIEW - Shell] Mountpoint per la modale comune usata dalle feature appuntamenti e pazienti. -->
+<div id="modal-root"></div>
+<!-- [VIEW - Shell] Mountpoint per Toast_View. -->
+<div id="toast-root"></div>
+
+<!-- [CONTROLLER GRAFICO - Bootstrap] Carica la configurazione e il trasporto client. -->
+<script src="infrastruttura/js/Configurazione.js"></script>
+<!-- [CONTROLLER GRAFICO - Bootstrap] Carica ApiClient come semplice trasporto tra Bean e ControllerApplicativi. -->
+<script src="infrastruttura/js/ApiClient.js"></script>
+<!-- [CONTROLLER GRAFICO - Bootstrap] Carica la funzione comune per il toast. -->
+<script src="infrastruttura/js/Toast.js"></script>
+<!-- [VIEW - Bootstrap] Carica i componenti grafici comuni. -->
+<script src="interfaccia_package/Sidebar_View.js"></script>
+<script src="interfaccia_package/Topbar_View.js"></script>
+<script src="interfaccia_package/Modal_View.js"></script>
+<script src="interfaccia_package/Toast_View.js"></script>
+<!-- [CONTROLLER GRAFICO - Bootstrap] Carica il ControllerGrafico di navigazione. -->
+<script src="navigazione_package/Navigazione_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean della Dashboard. -->
+<script src="funzionalita/dashboard_package/Dashboard_Bean.js"></script>
+<!-- [VIEW - Bootstrap] Carica la View della Dashboard. -->
+<script src="funzionalita/dashboard_package/Dashboard_View.js"></script>
+<!-- [CONTROLLER GRAFICO - Bootstrap] Carica il ControllerGrafico della Dashboard. -->
+<script src="funzionalita/dashboard_package/Dashboard_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean degli appuntamenti. -->
+<script src="funzionalita/appuntamenti_package/Appuntamenti_Bean.js"></script>
+<script src="funzionalita/appuntamenti_package/Appuntamenti_Form_View.js"></script>
+<script src="funzionalita/appuntamenti_package/Appuntamenti_View.js"></script>
+<script src="funzionalita/appuntamenti_package/Appuntamenti_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean dei pazienti. -->
+<script src="funzionalita/pazienti_package/Pazienti_Bean.js"></script>
+<script src="funzionalita/pazienti_package/Pazienti_Form_View.js"></script>
+<script src="funzionalita/pazienti_package/Pazienti_View.js"></script>
+<script src="funzionalita/pazienti_package/Pazienti_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean delle cartelle cliniche. -->
+<script src="funzionalita/cartelle_cliniche_package/CartelleCliniche_Bean.js"></script>
+<script src="funzionalita/cartelle_cliniche_package/CartelleCliniche_View.js"></script>
+<script src="funzionalita/cartelle_cliniche_package/CartelleCliniche_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean dei documenti. -->
+<script src="funzionalita/documenti_package/Documenti_Bean.js"></script>
+<script src="funzionalita/documenti_package/Documenti_View.js"></script>
+<script src="funzionalita/documenti_package/Documenti_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean di fatturazione. -->
+<script src="funzionalita/fatturazione_package/Fatturazione_Bean.js"></script>
+<script src="funzionalita/fatturazione_package/Fatturazione_View.js"></script>
+<script src="funzionalita/fatturazione_package/Fatturazione_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean tasse. -->
+<script src="funzionalita/tasse_package/Tasse_Bean.js"></script>
+<script src="funzionalita/tasse_package/Tasse_View.js"></script>
+<script src="funzionalita/tasse_package/Tasse_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean report. -->
+<script src="funzionalita/report_package/Report_Bean.js"></script>
+<script src="funzionalita/report_package/Report_View.js"></script>
+<script src="funzionalita/report_package/Report_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean staff. -->
+<script src="funzionalita/staff_package/Staff_Bean.js"></script>
+<script src="funzionalita/staff_package/Staff_View.js"></script>
+<script src="funzionalita/staff_package/Staff_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean impostazioni. -->
+<script src="funzionalita/impostazioni_package/Impostazioni_Bean.js"></script>
+<script src="funzionalita/impostazioni_package/Impostazioni_View.js"></script>
+<script src="funzionalita/impostazioni_package/Impostazioni_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean notifiche. -->
+<script src="funzionalita/notifiche_package/Notifiche_Bean.js"></script>
+<script src="funzionalita/notifiche_package/Notifiche_View.js"></script>
+<script src="funzionalita/notifiche_package/Notifiche_View.js"></script>
+<script src="funzionalita/notifiche_package/Notifiche_ControlGrafico.js"></script>
+<!-- [BEAN/DTO - Bootstrap] Carica il Bean sessione. -->
+<script src="funzionalita/sessione_package/Sessione_Bean.js"></script>
+<script src="funzionalita/sessione_package/Sessione_View.js"></script>
+<script src="funzionalita/sessione_package/Sessione_View.js"></script>
+<script src="funzionalita/sessione_package/Sessione_ControlGrafico.js"></script>
+<!-- [CONTROLLER GRAFICO - Bootstrap] Avvia il caricamento delle funzionalità dopo il DOM ready. -->
+<script src="funzione_package/Funzione_Avvio.js"></script>
+</body>
+</html>

@@ -16,15 +16,21 @@
             background-color: #f7f9fa;
             font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
             color: #1f2937;
-            overflow: hidden;
+            /* nessun overflow nascosto, ma il contenuto non supererà la viewport */
         }
 
+        /* ============================================================
+           Contenitore principale: compattato per evitare scroll
+           - max-height: 100vh, overflow: hidden (nessuno scroll)
+           - padding ridotto
+           ============================================================ */
         .container {
             width: 90%;
             max-width: 480px;
-            max-height: 98vh;
+            max-height: 100vh;
+            overflow: hidden;           /* impedisce scroll interni */
             background-color: #ffffff;
-            padding: 24px;
+            padding: 12px 12px 16px;    /* ridotto ulteriormente */
             border-radius: 12px;
             border: 1px solid #e5e7eb;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
@@ -37,21 +43,21 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
+            margin-bottom: 8px;          /* ridotto */
             text-align: center;
             flex-shrink: 0;
         }
 
         .header img {
-            width: 100px;
+            width: 70px;                /* ridotto */
             height: auto;
-            margin-bottom: 8px;
+            margin-bottom: 4px;          /* ridotto */
             object-fit: contain;
         }
 
         .header h1 {
             color: #111827;
-            font-size: 1.25rem;
+            font-size: 1rem;            /* ridotto */
             font-weight: 600;
             margin: 0;
             letter-spacing: -0.025em;
@@ -62,19 +68,8 @@
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        /* Custom Scrollbar */
-        .calendar-wrapper::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .calendar-wrapper::-webkit-scrollbar-thumb {
-            background-color: #d1d5db;
-            border-radius: 3px;
+            gap: 12px;                  /* ridotto */
+            /* overflow e padding rimossi */
         }
 
         .month-selector {
@@ -82,19 +77,19 @@
             justify-content: space-between;
             align-items: center;
             padding: 0 8px;
-            margin-bottom: 10px;
+            margin-bottom: 4px;          /* ridotto */
+            font-size: 0.9rem;           /* ridotto */
         }
 
         .month-name {
             font-weight: 600;
-            font-size: 1rem;
             text-transform: capitalize;
         }
 
         .nav-arrow {
             color: #6b7280;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 2px 6px;           /* ridotto */
             border-radius: 4px;
             user-select: none;
         }
@@ -106,16 +101,16 @@
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 8px;
+            gap: 4px;                   /* ridotto */
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 4px;          /* ridotto */
         }
 
         .weekday {
-            font-size: 0.75rem;
+            font-size: 0.65rem;          /* ridotto */
             color: #9ca3af;
             font-weight: 500;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
         .day {
@@ -123,7 +118,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            font-size: 0.75rem;          /* ridotto */
             border-radius: 50%;
             cursor: pointer;
             transition: all 0.2s;
@@ -150,9 +145,9 @@
         .day.today::after {
             content: '';
             position: absolute;
-            bottom: 4px;
-            width: 4px;
-            height: 4px;
+            bottom: 2px;                /* ridotto */
+            width: 3px;
+            height: 3px;
             background-color: #2563eb;
             border-radius: 50%;
         }
@@ -178,11 +173,11 @@
         .time-section {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 6px;                   /* ridotto */
         }
 
         .section-title {
-            font-size: 0.9rem;
+            font-size: 0.8rem;           /* ridotto */
             font-weight: 600;
             color: #374151;
         }
@@ -190,17 +185,16 @@
         .time-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            /* 3 columns for cleaner look */
-            gap: 10px;
+            gap: 6px;                   /* ridotto */
         }
 
         .time-slot {
-            padding: 10px;
+            padding: 6px 4px;           /* ridotto */
             border: 1px solid #d1d5db;
             border-radius: 8px;
             background: white;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.75rem;          /* ridotto */
             color: #374151;
             cursor: pointer;
             transition: all 0.2s;
@@ -223,8 +217,8 @@
             display: flex;
             justify-content: space-between;
             gap: 12px;
-            margin-top: 24px;
-            padding-top: 16px;
+            margin-top: 12px;           /* ridotto */
+            padding-top: 10px;          /* ridotto */
             border-top: 1px solid #f3f4f6;
             flex-shrink: 0;
         }
@@ -233,8 +227,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 16px;
-            font-size: 0.85em;
+            padding: 6px 10px;          /* ridotto */
+            font-size: 0.75rem;          /* ridotto */
             font-weight: 500;
             text-decoration: none;
             border-radius: 6px;
@@ -264,6 +258,97 @@
 
         .btn-submit:hover {
             background-color: #1d4ed8;
+        }
+
+        /* ============================================================
+           Media query per schermi con altezza limitata (es. smartphone)
+           Comprimi ulteriormente per evitare qualsiasi scroll
+           ============================================================ */
+        @media (max-height: 700px) {
+            .container {
+                padding: 8px 8px 12px;
+            }
+            .header img {
+                width: 60px;
+                margin-bottom: 2px;
+            }
+            .header h1 {
+                font-size: 0.9rem;
+            }
+            .header {
+                margin-bottom: 4px;
+            }
+            .calendar-wrapper {
+                gap: 8px;
+            }
+            .month-selector {
+                font-size: 0.8rem;
+                margin-bottom: 2px;
+            }
+            .calendar-grid {
+                gap: 2px;
+                margin-bottom: 2px;
+            }
+            .weekday {
+                font-size: 0.55rem;
+            }
+            .day {
+                font-size: 0.65rem;
+            }
+            .day.today::after {
+                bottom: 1px;
+                width: 2px;
+                height: 2px;
+            }
+            .time-section {
+                gap: 4px;
+            }
+            .section-title {
+                font-size: 0.7rem;
+            }
+            .time-grid {
+                gap: 4px;
+            }
+            .time-slot {
+                padding: 4px 2px;
+                font-size: 0.65rem;
+            }
+            .buttons {
+                margin-top: 8px;
+                padding-top: 6px;
+                gap: 8px;
+            }
+            .btn {
+                padding: 4px 6px;
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Per schermi molto piccoli in altezza (es. 600px) */
+        @media (max-height: 600px) {
+            .container {
+                padding: 6px 6px 10px;
+            }
+            .header img {
+                width: 50px;
+            }
+            .header h1 {
+                font-size: 0.8rem;
+            }
+            .calendar-grid {
+                gap: 1px;
+            }
+            .day {
+                font-size: 0.6rem;
+            }
+            .time-slot {
+                padding: 3px 2px;
+                font-size: 0.6rem;
+            }
+            .btn {
+                padding: 3px 4px;
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
@@ -428,7 +513,7 @@
                         renderTimeSlots();
                     });
                 } else {
-                    // Make it look disabled if no day selected? 
+                    // Make it look disabled if no day selected?
                     // For simplicity, let's allow selection but maybe we should enforce day first.
                     // For now, let's just allow it for fluid UX.
                     timeEl.addEventListener('click', () => {
@@ -456,7 +541,6 @@
 
         // Initialize
         initCalendar();
-
     </script>
 </body>
 

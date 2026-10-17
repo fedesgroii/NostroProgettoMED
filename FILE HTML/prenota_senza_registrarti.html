@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8"> <!-- Codifica dei caratteri per supportare lettere accentate -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Adattamento ai dispositivi mobili -->
+    <title>MindLab - I tuoi dati</title>
+    <!-- Font Inter: lo stesso usato nel calendario, per coerenza visiva -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ============================================================
+           RESET e impostazioni globali
+           ============================================================ */
+
+        /* Rimuove margini e padding di default, e imposta il box-sizing per includere padding e bordo nella larghezza totale */
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Corpo della pagina: centra il contenuto, sfondo grigio chiaro, font principale Inter */
+        body {
+            display: flex;
+            /* Flexbox per centrare il contenuto */
+            justify-content: center;
+            /* Centra orizzontalmente */
+            align-items: center;
+            /* Centra verticalmente */
+            min-height: 100vh;
+            /* Altezza minima pari al 100% della viewport */
+            margin: 0;
+            /* Rimuove margine di default */
+            background-color: #f7f9fa;
+            /* Colore sfondo grigio chiarissimo, come nel calendario */
+            font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+            /* Font principale, con fallback */
+            color: #1f2937;
+            /* Colore testo principale (grigio scuro) */
+            padding: 20px;
+            /* Spazio interno per evitare che il contenuto tocchi i bordi su schermi piccoli */
+        }
+
+        /* ============================================================
+           Contenitore principale: scheda bianca con ombra
+           ============================================================ */
+
+        .container {
+            width: 100%;
+            /* Larghezza piena del genitore */
+            max-width: 480px;
+            /* Larghezza massima, come nel calendario */
+            background-color: #ffffff;
+            /* Sfondo bianco per la card */
+            padding: 24px 24px 30px;
+            /* Padding interno: top/dx/bottom/sx */
+            border-radius: 12px;
+            /* Angoli arrotondati */
+            border: 1px solid #e5e7eb;
+            /* Bordo sottile grigio */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            /* Ombra leggera per profondità */
+        }
+
+        /* ============================================================
+           Intestazione: logo, titolo e sottotitolo
+           ============================================================ */
+
+        .header {
+            display: flex;
+            /* Flex per allineare gli elementi */
+            flex-direction: column;
+            /* Disposizione verticale */
+            align-items: center;
+            /* Centra orizzontalmente */
+            justify-content: center;
+            /* Centra verticalmente */
+            margin-bottom: 24px;
+            /* Spazio sotto l'intestazione */
+            text-align: center;
+            /* Allinea il testo al centro */
+        }
+
+        /* Logo: dimensioni fisse, margine sotto */
+        .header img {
+            width: 100px;
+            /* Larghezza logo, modifica per ingrandire/rimpicciolire */
+            height: auto;
+            /* Altezza automatica per mantenere proporzioni */
+            margin-bottom: 8px;
+            /* Spazio sotto il logo */
+            object-fit: contain;
+            /* Mantiene le proporzioni senza tagli */
+        }
+
+        /* Titolo principale */
+        .header h1 {
+            color: #111827;
+            /* Colore nero/grigio scuro */
+            font-size: 1.25rem;
+            /* Dimensione font (20px) */
+            font-weight: 600;
+            /* Peso semibold */
+            margin: 0;
+            /* Rimuove margine di default */
+            letter-spacing: -0.025em;
+            /* Leggera riduzione della spaziatura per un aspetto più compatto */
+        }
+
+        /* Sottotitolo descrittivo */
+        .header p {
+            color: #6b7280;
+            /* Colore grigio medio per il testo secondario */
+            font-size: 0.9rem;
+            /* Dimensione leggermente più piccola */
+            margin: 4px 0 0;
+            /* Margine sopra minimo, zero sotto */
+        }
+
+        /* ============================================================
+           Gruppi di campi del form
+           ============================================================ */
+
+        .form-group {
+            margin-bottom: 18px;
+            /* Spazio tra un campo e l'altro */
+        }
+
+        /* Etichette dei campi: senza asterisco */
+        .form-group label {
+            display: block;
+            /* Ogni etichetta occupa tutta la riga */
+            font-size: 0.875rem;
+            /* 14px */
+            font-weight: 500;
+            /* Medium */
+            color: #374151;
+            /* Grigio scuro */
+            margin-bottom: 4px;
+            /* Spazio tra etichetta e input */
+        }
+
+        /* Campi di input e select: stile uniforme */
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            /* Larghezza piena */
+            padding: 10px 12px;
+            /* Spazio interno: top/bottom 10px, left/right 12px */
+            border: 1px solid #d1d5db;
+            /* Bordo grigio chiaro */
+            border-radius: 8px;
+            /* Angoli arrotondati */
+            font-family: inherit;
+            /* Eredita il font dal corpo */
+            font-size: 0.95rem;
+            /* Dimensione leggibile */
+            color: #1f2937;
+            /* Colore testo */
+            background-color: #ffffff;
+            /* Sfondo bianco */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            /* Animazione fluida per focus e hover */
+        }
+
+        /* Stato focus: bordo blu e ombra leggera */
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            /* Rimuove il contorno di default del browser */
+            border-color: #2563eb;
+            /* Bordo blu (colore principale MindLab) */
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+            /* Ombra blu trasparente per evidenziare */
+        }
+
+        /* Classe .error: applicata quando il campo non è valido */
+        .form-group input.error {
+            border-color: #ef4444;
+            /* Bordo rosso per segnalare errore */
+        }
+
+        /* Messaggio di errore sotto il campo: nascosto di default, compare con .show */
+        .form-group .error-message {
+            color: #ef4444;
+            /* Colore rosso */
+            font-size: 0.75rem;
+            /* 12px */
+            margin-top: 4px;
+            /* Piccolo spazio sopra */
+            display: none;
+            /* Nascosto finché non serve */
+        }
+
+        .form-group .error-message.show {
+            display: block;
+            /* Mostra il messaggio quando ha la classe .show */
+        }
+
+        /* ============================================================
+           Griglia a due colonne per nome/cognome (affiancati)
+           ============================================================ */
+
+        .form-row {
+            display: grid;
+            /* Layout a griglia */
+            grid-template-columns: 1fr 1fr;
+            /* Due colonne di larghezza uguale */
+            gap: 16px;
+            /* Spazio tra le colonne */
+        }
+
+        /* ============================================================
+           Checkbox per "il richiedente è il paziente stesso"
+           ============================================================ */
+
+        .checkbox-group {
+            display: flex;
+            /* Allinea checkbox e label in orizzontale */
+            align-items: center;
+            /* Centra verticalmente */
+            gap: 10px;
+            /* Spazio tra checkbox e testo */
+            margin: 6px 0 12px;
+            /* Margine sopra e sotto */
+            font-size: 0.95rem;
+            /* Dimensione del testo */
+        }
+
+        /* Stile del checkbox: dimensione e colore personalizzati */
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            /* Larghezza del checkbox */
+            height: 18px;
+            /* Altezza del checkbox */
+            accent-color: #2563eb;
+            /* Colore del checkbox quando selezionato (blu MindLab) */
+            cursor: pointer;
+            /* Manina al passaggio del mouse */
+            margin: 0;
+            /* Rimuove margine di default */
+        }
+
+        .checkbox-group label {
+            cursor: pointer;
+            /* Manina anche sulla label */
+            color: #374151;
+            /* Colore grigio scuro */
+        }
+
+        /* ============================================================
+           Linea divisoria orizzontale (separatore)
+           ============================================================ */
+
+        .divider {
+            border: none;
+            /* Rimuove bordo di default */
+            border-top: 1px solid #e5e7eb;
+            /* Bordo superiore sottile grigio */
+            margin: 20px 0;
+            /* Spazio sopra e sotto */
+        }
+
+        /* ============================================================
+           Pulsanti in fondo: Annulla e Scegli Data
+           ============================================================ */
+
+        .buttons {
+            display: flex;
+            /* Flex per affiancare i pulsanti */
+            justify-content: space-between;
+            /* Spazio tra i due pulsanti */
+            gap: 12px;
+            /* Spazio aggiuntivo */
+            margin-top: 8px;
+            /* Spazio sopra */
+            padding-top: 16px;
+            /* Spazio interno sopra per separare dal form */
+            border-top: 1px solid #f3f4f6;
+            /* Linea sottile grigia sopra i pulsanti */
+        }
+
+        /* Stile base per tutti i pulsanti */
+        .btn {
+            display: inline-flex;
+            /* Flex per centrare il testo */
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            /* Spazio interno */
+            font-size: 0.85em;
+            /* Dimensione testo leggermente più piccola */
+            font-weight: 500;
+            /* Medium */
+            text-decoration: none;
+            /* Rimuove sottolineatura (per link) */
+            border-radius: 6px;
+            /* Angoli arrotondati */
+            cursor: pointer;
+            /* Manina */
+            width: 100%;
+            /* Occupa tutta la larghezza disponibile (poi il flex li divide) */
+            transition: all 0.2s ease;
+            /* Animazione fluida per hover e focus */
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            /* Ombra leggera */
+            border: 1px solid transparent;
+            /* Bordo trasparente di default */
+            background: none;
+            /* Rimuove sfondo di default */
+            font-family: inherit;
+            /* Eredita il font */
+        }
+
+        /* Pulsante "Annulla": stile bianco con bordo */
+        .btn-cancel {
+            background-color: #ffffff;
+            /* Sfondo bianco */
+            color: #374151;
+            /* Testo grigio scuro */
+            border-color: #d1d5db;
+            /* Bordo grigio chiaro */
+        }
+
+        /* Hover per Annulla: sfondo grigio leggerissimo e bordo più scuro */
+        .btn-cancel:hover {
+            background-color: #f9fafb;
+            /* Grigio molto chiaro */
+            color: #111827;
+            /* Testo più scuro per contrasto */
+            border-color: #9ca3af;
+            /* Bordo grigio medio */
+        }
+
+        /* Pulsante "Scegli Data": blu MindLab */
+        .btn-submit {
+            background-color: #2563eb;
+            /* Blu principale */
+            color: #ffffff;
+            /* Testo bianco */
+            border-color: transparent;
+            /* Nessun bordo visibile */
+        }
+
+        /* Hover per Scegli Data: blu più scuro */
+        .btn-submit:hover {
+            background-color: #1d4ed8;
+            /* Blu più scuro */
+        }
+
+        /* ============================================================
+           Media query per schermi piccoli (max 480px)
+           ============================================================ */
+
+        @media (max-width: 480px) {
+            /* Su schermi piccoli, la griglia a due colonne diventa una colonna singola */
+            .form-row {
+                grid-template-columns: 1fr;
+                /* Una sola colonna */
+                gap: 0;
+                /* Rimuovi il gap tra gli elementi (sarà gestito dal margin dei singoli campi) */
+            }
+            /* Riduci il padding del container per adattarlo a schermi molto piccoli */
+            .container {
+                padding: 20px 16px;
+                /* Meno spazio laterale */
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- ============================================================
+        INTESTAZIONE
+        ============================================================ -->
+        <div class="header">
+            <!-- Logo: modifica il src per cambiare immagine -->
+            <img src="http://mypartyacfslove.altervista.org/logo_ML.png" alt="MindLab Logo">
+            <h1>I tuoi dati personali</h1>
+            <p>Inserisci le informazioni per completare la prenotazione</p>
+        </div>
+
+        <!-- ============================================================
+        FORM: raccolta dati
+        novalidate disabilita la validazione nativa del browser (gestita da JavaScript)
+        ============================================================ -->
+        <form id="booking-form" novalidate>
+
+            <!-- ============================================================
+            SEZIONE: DATI DEL PAZIENTE (persona che riceverà la visita)
+            ============================================================ -->
+
+            <!-- Riga con due campi affiancati: nome e cognome -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="paziente_nome">Nome del paziente</label>
+                    <!-- input di tipo testo, id univoco, name per invio dati -->
+                    <input type="text" id="paziente_nome" name="paziente_nome" placeholder="Mario">
+                    <!-- Messaggio di errore: nascosto di default, verrà mostrato da JS -->
+                    <div class="error-message" id="paziente_nome-error">Inserisci un nome valido (solo lettere, min. 2 caratteri)</div>
+                </div>
+                <div class="form-group">
+                    <label for="paziente_cognome">Cognome del paziente</label>
+                    <input type="text" id="paziente_cognome" name="paziente_cognome" placeholder="Rossi">
+                    <div class="error-message" id="paziente_cognome-error">Inserisci un cognome valido (solo lettere, min. 2 caratteri)</div>
+                </div>
+            </div>
+
+            <!-- Data di nascita: campo testo con auto-slash -->
+            <div class="form-group">
+                <label for="paziente_data_nascita">Data di nascita del paziente (GG/MM/AAAA)</label>
+                <!-- type="text" per permettere l'inserimento manuale e l'auto-formattazione -->
+                <input type="text" id="paziente_data_nascita" name="paziente_data_nascita" placeholder="GG/MM/AAAA" maxlength="10">
+                <div class="error-message" id="paziente_data_nascita-error">Inserisci una data valida nel formato GG/MM/AAAA (maggiorenne)</div>
+            </div>
+
+            <!-- Linea divisoria per separare la sezione paziente da quella richiedente -->
+            <hr class="divider">
+
+            <!-- ============================================================
+            SEZIONE: RICHIEDENTE (chi effettua la prenotazione)
+            ============================================================ -->
+
+            <!-- Checkbox per indicare se richiedente == paziente -->
+            <div class="checkbox-group">
+                <input type="checkbox" id="stesso_paziente" name="stesso_paziente" checked>
+                <label for="stesso_paziente">Il richiedente è il paziente stesso</label>
+            </div>
+
+            <!-- Container per i campi del richiedente: verrà gestito da JS -->
+            <div id="richiedente_fields">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="richiedente_nome">Nome del richiedente</label>
+                        <input type="text" id="richiedente_nome" name="richiedente_nome" placeholder="Mario">
+                        <div class="error-message" id="richiedente_nome-error">Inserisci un nome valido (solo lettere, min. 2 caratteri)</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="richiedente_cognome">Cognome del richiedente</label>
+                        <input type="text" id="richiedente_cognome" name="richiedente_cognome" placeholder="Rossi">
+                        <div class="error-message" id="richiedente_cognome-error">Inserisci un cognome valido (solo lettere, min. 2 caratteri)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ============================================================
+            CONTATTI: email e telefono
+            ============================================================ -->
+
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="mario.rossi@email.it">
+                <div class="error-message" id="email-error">Inserisci un indirizzo email valido (es. nome@dominio.it)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="telefono">Numero di telefono</label>
+                <input type="tel" id="telefono" name="telefono" placeholder="3331234567" maxlength="10">
+                <div class="error-message" id="telefono-error">Inserisci un numero di telefono valido (max 10 cifre)</div>
+            </div>
+
+            <!-- ============================================================
+            PULSANTI DI NAVIGAZIONE
+            ============================================================ -->
+            <div class="buttons">
+                <!-- Pulsante Annulla: link, gestito da JS -->
+                <a href="#" class="btn btn-cancel" id="annulla-btn">Annulla</a>
+                <!-- Pulsante Scegli Data: link, gestito da JS -->
+                <a href="#" class="btn btn-submit" id="scegli-data-btn">Scegli Data</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- ============================================================
+    SCRIPT JS esterno (logica di controllo UI)
+    ============================================================ -->
+    <!-- Il file JavaScript separato contiene tutta la logica di validazione,
+         gestione eventi e interazioni. Separa la Vista (HTML) dal Controllore. -->
+    <script src="prenota_senza_registrarti.js"></script>
+</body>
+
+</html>
