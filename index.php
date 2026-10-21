@@ -27,7 +27,13 @@
 // esplicite, fai il cast tu: (int)$valore. Non togliere mai strict_types
 // per "far funzionare" del codice: il problema è nel codice, non nella riga.
 declare(strict_types=1);
-
+// NOTA STUDIO (FIX DEPLOY-7): output buffering. Se un file incluso emette
+// anche un solo byte prima di `<?php` (BOM, spazio, newline), PHP marca
+// gli header come "già inviati" e TUTTI gli header di sicurezza sotto
+// (CSP, HSTS, cookie Secure, ecc.) vengono scartati silenziosamente.
+// ob_start() accumula l'output in un buffer e lo invia alla fine, così
+// gli header partono sempre prima di qualsiasi contenuto.
+ob_start();
 /*
  * MindLab - Entry Point
  *
@@ -90,6 +96,15 @@ declare(strict_types=1);
 // sezione 1 o peggio sotto session_start().
 const SESSION_IDLE_TIMEOUT     = 1800;   // 30 minuti
 const SESSION_ABSOLUTE_TIMEOUT = 28800;  // 8 ore
+
+// NOTA STUDIO (FIX DEPLOY-8): workaround HTTPS per hosting condivisi
+// (es. Altervista) dove non è possibile impostare TRUST_PROXY /
+// TRUSTED_PROXIES tramite variabili d'ambiente. Se true, il codice
+// legge X-Forwarded-Proto anche quando il proxy NON è dichiarato
+// fidato. Su un hosting con proxy configurabile, imposta a false e
+// configura TRUST_PROXY=1 + TRUSTED_PROXIES=<IP del proxy>: il caso 3
+// del rilevamento HTTPS copre già quella situazione.
+const FORCE_HTTPS_FROM_HEADER = true;
 
 
 // NOTA STUDIO (NEW-2): Handler globale per le eccezioni non catturate.
@@ -290,6 +305,7 @@ $isHttps = (
 // provider esponga correttamente $_SERVER['HTTPS'].
 if (
     !$isHttps
+    && FORCE_HTTPS_FROM_HEADER
     && strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https'
 ) {
     $isHttps = true;
@@ -403,9 +419,8 @@ session_set_cookie_params([
 // fail-closed con 500.
 if (session_status() !== PHP_SESSION_ACTIVE) {
     if (!session_start()) {
-        http_response_code(500);
         error_log('[mindlab] session_start() fallita');
-        exit('Errore interno.');
+        abort(500, 'Errore interno.');
     }
 }
 
@@ -518,7 +533,7 @@ header('Pragma: no-cache'); // equivalente per browser HTTP/1.0 legacy.
 // Inviato solo se $isHttps: su HTTP sarebbe ignorato comunque, e
 // mandarlo su HTTP è considerato sbagliato.
 if ($isHttps) {
-    header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+    header('Strict-Transport-Security: max-age=31536000');
 }
 
 // =============================================================================
@@ -624,6 +639,24 @@ function redirect(string $path): never
 
     header('Location: ' . $safe, true, 302);
     exit; // Termina l'esecuzione: senza exit, il codice continuerebbe a girare.
+}
+
+// NOTA STUDIO (FIX DEPLOY-10): helper per le risposte di errore. Evita di
+// ripetere `http_response_code(...) + exit(...)` in ogni punto del file,
+// e soprattutto garantisce che il Content-Type sia sempre dichiarato.
+// Senza Content-Type, il browser fa MIME sniffing (mitigato da nosniff,
+// ma meglio essere espliciti). In un gestionale sanitario, messaggi di
+// errore in `text/plain` (e non `text/html`) riducono la superficie
+// per eventuali XSS via messaggi.
+//
+// Uso: abort(404, 'Pagina non trovata.');
+function abort(int $code, string $message): never
+{
+    if (!headers_sent()) {
+        http_response_code($code);
+        header('Content-Type: text/plain; charset=UTF-8');
+    }
+    exit($message);
 }
 
 // NOTA STUDIO (FIX M-2): distrugge completamente la sessione.
@@ -820,11 +853,13 @@ function audit_log(string $action, array $context = [], string $result = 'ok'): 
     );
 
     if ($pathOk) {
-        @error_log($line, 3, $path);
+        if (!error_log($line, 3, $path)) {
+            error_log('[mindlab] audit_log: scrittura fallita su ' . $path);
+        }
     } else {
         // Fallback: error_log configurato dal server. Non ideale (misto
         // con errori applicativi) ma meglio di perdere l'evento.
-        @error_log(rtrim($line));
+        error_log(rtrim($line));
     }
 }
 
@@ -946,8 +981,7 @@ function require_role(string ...$roles): void
             'required' => $roles,
             'actual'   => $type,
         ], 'fail');
-        http_response_code(403);
-        exit('Accesso negato.');
+        abort(403, 'Accesso negato.');
     }
 }
 
@@ -1062,17 +1096,16 @@ $routesByRole = [
 // `true` come terzo argomento di in_array = confronto STRETTO (===),
 // non lasco (==): evita sorprese tipo 0 == "qualsiasi_stringa".
 if (!in_array($page, $routes, true)) {
-    http_response_code(404);
-    exit('Pagina non trovata.');
+    abort(404, 'Pagina non trovata.');
 }
 
 // NOTA STUDIO (FIX M-4): verifica del metodo. Va fatta DOPO la whitelist
 // (per non dare 405 su route inesistenti) e PRIMA del dispatch.
 $allowedMethods = $routeMethods[$page] ?? ['GET'];
 if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', $allowedMethods, true)) {
-    http_response_code(405);
+    // L'header Allow va inviato PRIMA di abort(): abort() chiude la connessione.
     header('Allow: ' . implode(', ', $allowedMethods));
-    exit('Metodo non consentito.');
+    abort(405, 'Metodo non consentito.');
 }
 
 // =============================================================================
@@ -1092,7 +1125,26 @@ if (in_array($page, $protectedRoutes, true) && !isAuthenticated()) {
 // NOTA STUDIO: UX. Se l'utente è già loggato e apre una pagina di login,
 // non ha senso mostrargliela: lo mandiamo alla sua home.
 if (in_array($page, $publicRoutes, true) && isAuthenticated()) {
-    redirect(getRedirectAfterLogin());
+    $target = getRedirectAfterLogin();
+
+    // NOTA STUDIO (FIX DEPLOY-11): se getRedirectAfterLogin() restituisce
+    // login-choice ma l'utente È autenticato, significa che ha un ruolo
+    // non mappato (es. 'nurse' o 'admin ' con spazio). Redirigerlo a
+    // login-choice creerebbe un loop infinito (login-choice è pubblica
+    // → redirect → login-choice → ...). In quel caso distruggiamo la
+    // sessione (lo stato è incoerente, meglio forzare un nuovo login)
+    // e mostriamo la pagina di login pulita.
+    if ($target === '/?page=login-choice') {
+        audit_log('auth.unknown_role', [
+            'user_type' => $_SESSION['auth']['user_type'] ?? 'unknown',
+        ], 'fail');
+        destroySession();
+        if (session_status() !== PHP_SESSION_ACTIVE) {
+            session_start();
+        }
+    }
+
+    redirect($target);
 }
 
 // NOTA STUDIO: seconda barriera. Se è loggato ma il suo ruolo non ha
@@ -1108,8 +1160,7 @@ if (in_array($page, $protectedRoutes, true) && isAuthenticated()) {
             'required' => $allowedPages,
             'actual'   => $type,
         ], 'fail');
-        http_response_code(403);
-        exit('Accesso negato.');
+        abort(403, 'Accesso negato.');
     }
 }
 
@@ -1126,11 +1177,12 @@ if (in_array($page, $protectedRoutes, true) && isAuthenticated()) {
 // file). In sviluppo sì, per debug.
 if (!isset($routeHandlers[$page])) {
     error_log('[mindlab] Route non configurata: ' . $page);
-    http_response_code(500);
     if (APP_ENV === 'production') {
-        exit('Errore interno.');
+        abort(500, 'Errore interno.');
     }
-    exit('Route non configurata: ' . htmlspecialchars($page, ENT_QUOTES, 'UTF-8'));
+    // In sviluppo, $page è già passato dalla whitelist $routes, quindi è
+    // una stringa nota e sicura: `text/plain` va bene anche senza htmlspecialchars.
+    abort(500, 'Route non configurata: ' . $page);
 }
 
 // NOTA STUDIO: require (non include) perché se il file manca l'app DEVE
@@ -1148,11 +1200,12 @@ if (!isset($routeHandlers[$page])) {
 $handlerFile = $routeHandlers[$page];
 if (!is_file($handlerFile)) {
     error_log('[mindlab] Handler mancante per rotta "' . $page . '": ' . $handlerFile);
-    http_response_code(500);
     if (APP_ENV === 'production') {
-        exit('Errore interno.');
+        abort(500, 'Errore interno.');
     }
-    exit('Handler mancante per la rotta: ' . htmlspecialchars($page, ENT_QUOTES, 'UTF-8'));
+    // In sviluppo, $page è già passato dalla whitelist $routes, quindi è
+    // una stringa nota e sicura: `text/plain` va bene anche senza htmlspecialchars.
+    abort(500, 'Handler mancante per la rotta: ' . $page);
 }
 
 // FIX DEPLOY-5: qui $handlerFile è già un path assoluto (creato con __DIR__
