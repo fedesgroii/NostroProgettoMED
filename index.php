@@ -91,16 +91,6 @@ declare(strict_types=1);
 const SESSION_IDLE_TIMEOUT     = 1800;   // 30 minuti
 const SESSION_ABSOLUTE_TIMEOUT = 28800;  // 8 ore
 
-if (defined('APP_ENV') && APP_ENV === 'production') {
-    ini_set('display_errors', '0');
-    ini_set('display_startup_errors', '0');
-    ini_set('log_errors', '1');
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-}
 
 // NOTA STUDIO (NEW-2): Handler globale per le eccezioni non catturate.
 //
@@ -152,11 +142,6 @@ date_default_timezone_set((string)(getenv('APP_TIMEZONE') ?: 'UTC'));
 // `session.gc_maxlifetime` (necessario per non far cancellare le sessioni
 // attive dal garbage collector prima del timeout) servono PRIMA di
 // session_start(). Le spostiamo qui, all'inizio.
-//
-// I due `const` SESSION_IDLE_TIMEOUT / SESSION_ABSOLUTE_TIMEOUT sono stati
-// spostati nella sezione 0 (prima del blocco error handling), perché qui
-// verrebbero definiti DOPO l'ini_set('session.gc_maxlifetime') che li usa
-// a runtime → "Undefined constant" fatale. Non riportarli qui sotto.
 
 // =============================================================================
 // 1. AMBIENTE
@@ -260,6 +245,55 @@ $isHttps = (
     // Caso 3: dietro proxy fidato che segnala HTTPS nell'header.
     || ($isTrustedProxy && strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https')
 );
+
+// NOTA STUDIO (FIX DEPLOY-HTTPS): caso 4 — reverse proxy di hosting condiviso.
+//
+// IL PROBLEMA: il blocco qui sopra gestisce il caso 3 (proxy fidato) SOLO
+// se TRUST_PROXY=1 e, opzionalmente, TRUSTED_PROXIES. Su un hosting
+// condiviso come Altervista NON è possibile impostare variabili
+// d'ambiente del server: getenv('TRUST_PROXY') restituisce sempre false.
+// Risultato: quando l'utente naviga in HTTPS, PHP vede una richiesta
+// interna in HTTP (HTTPS=NULL, SERVER_PORT=80) e l'unica traccia
+// dell'HTTPS originale è l'header X-Forwarded-Proto: https, che il
+// codice attuale ignora. Di conseguenza $isHttps resta false, i cookie
+// di sessione non ricevono il flag Secure e l'header HSTS non viene
+// inviato → su Wi-Fi pubblici il cookie può essere intercettato.
+//
+// COME LO ABBIAMO VERIFICATO: con un file check.php aperto via
+// https://.../check.php, Altervista restituisce:
+//   HTTPS             => NULL
+//   SERVER_PORT       => "80"
+//   X_FORWARDED_PROTO => "https"
+// Cioè: TLS terminato dal proxy, header di forward presente.
+//
+// COSA FA QUESTA AGGIUNTA: se il codice qui sopra non ha già rilevato
+// HTTPS, legge direttamente X-Forwarded-Proto e, se vale "https"
+// (case-insensitive), forza $isHttps = true. Non tocca la logica dei
+// casi 1-3: si attiva solo in loro soccorso.
+//
+// PERCHÉ È ACCETTABILE QUI E NON ALTROVE: su Altervista non possiamo
+// whitelistare gli IP del proxy (non documentati). In teoria un
+// attaccante potrebbe inviare X-Forwarded-Proto: https per farci
+// credere che sia HTTPS quando non lo è. Conseguenza pratica: il
+// cookie riceverebbe Secure anche su HTTP → il browser non lo
+// rimanderebbe → l'utente non sarebbe autenticato. È un fail-closed
+// funzionale, non un buco di sicurezza: il rischio peggiore è un
+// fastidio (login che non persiste), non un furto di sessione. Il
+// caso opposto (cookie senza Secure su HTTPS reale, quello attuale)
+// è invece un rischio di sicurezza vero.
+//
+// COME SI MODIFICA: se un giorno migri a un hosting dedicato con
+// proxy configurabile, imposta TRUST_PROXY=1 e TRUSTED_PROXIES e
+// questa riga diventa ridondante (ma innocua). Se invece resti su
+// Altervista, lasciala: è l'unico modo per avere Secure+HSTS
+// corretti. NON rimuoverla senza prima aver verificato che il tuo
+// provider esponga correttamente $_SERVER['HTTPS'].
+if (
+    !$isHttps
+    && strtolower((string)($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '')) === 'https'
+) {
+    $isHttps = true;
+}
 
 // =============================================================================
 // 2. HARDENING DELLA SESSIONE — TUTTO PRIMA DI session_start()
