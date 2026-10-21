@@ -1,0 +1,17 @@
+# MindLab Portal - regole Apache per il front controller
+
+# 1) Negare accesso diretto a file sensibili nella root
+<FilesMatch "^(entrypoint\.php|\.gitignore|composer\.(json|lock))$">
+    Require all denied
+</FilesMatch>
+
+# 2) Routing pulito: le richieste che non corrispondono a un file o
+#    directory reale vengono passate a index.php (che smista per ?page=...).
+#    Se il tuo hosting NON consente override, questa sezione viene ignorata
+#    silenziosamente e il routing ?page= continua a funzionare lo stesso.
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>

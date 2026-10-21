@@ -1,5 +1,13 @@
 <?php
 
+// NOTA STUDIO (FIX DEPLOY-4): per il deploy, questo file deve essere rinominato
+// `index.php` e collocato nella root pubblica del sito. Il nome "entrypoint"
+// NON ha alcun significato per nginx/Apache: se lasci entrypoint.php come unico
+// file raggiungibile via URL, la maggior parte dei webserver non lo usa come
+// indice di directory e le richieste a "/" cadono su directory listing o 404.
+// Dopo il rename, TUTTO il resto del file resta identico: è solo un cambio di
+// nome (e nel webserver: `index index.php;` in nginx, DirectoryIndex in Apache).
+
 // =============================================================================
 // declare(strict_types=1) — TIPIZZAZIONE RIGOROSA
 // =============================================================================
@@ -66,16 +74,32 @@ declare(strict_types=1);
 //
 // IMPORTANTE: NON usare error_reporting(0). Quello nasconde anche i log.
 // Vuoi gli errori nei log, non nella risposta HTTP.
-if (APP_ENV === 'production') {
-    ini_set('display_errors', '0');
-    ini_set('display_startup_errors', '0');
-    ini_set('log_errors', '1');
-    error_reporting(E_ALL);
-} else {
-    ini_set('display_errors', '1');
-    ini_set('display_startup_errors', '1');
-    error_reporting(E_ALL);
-}
+//
+// NOTA STUDIO (FIX DEPLOY-1): il blocco if (APP_ENV === ...) ESECUTIVO che
+// segue questa nota deve stare DOPO la define('APP_ENV', ...) della
+// sezione 1. Se sta prima, PHP 8 tratta APP_ENV come costante non definita
+// e lancia un Error fatale ("Undefined constant \"APP_ENV\"") alla riga 69:
+// l'app muore con HTTP 500 su OGNI richiesta, in ogni ambiente. Le uniche
+// occorrenze di APP_ENV che possono stare prima della define sono quelle
+// dentro commenti o dentro funzioni/closure eseguite più tardi (che infatti
+// usano defensive defined('APP_ENV')).
+//
+// FIX DEPLOY-2: stessa logica per le costanti di timeout: gc_maxlifetime
+// (riga ~286) le usa a runtime, quindi DEVONO essere definite prima delle
+// ini_set di sessione. Qui stanno già prima: non spostarle sotto la
+// sezione 1 o peggio sotto session_start().
+const SESSION_IDLE_TIMEOUT     = 1800;   // 30 minuti
+const SESSION_ABSOLUTE_TIMEOUT = 28800;  // 8 ore
+
+// NOTA STUDIO: qui NON c'è il blocco if (APP_ENV ...) esecutivo. Il blocco
+// ESECUTIVO di gestione errori sta nella sezione 1, subito dopo la
+// define('APP_ENV', ...). Questa prima occorrenza era ridondante: PHP
+// esegue le righe in ordine e la seconda sovrascrive comunque la prima,
+// quindi tenerle duplicate significava solo confusione (e il rischio, se
+// qualcuno avesse spostato la define senza questo if, di rileggere la
+// costante prima che esistesse). Se ti serve un preset "di emergenza"
+// qui, usa valori letterali (es. ini_set('display_errors','0')), MAI
+// APP_ENV: a questo punto della pagina non è ancora definita.
 
 // NOTA STUDIO (NEW-2): Handler globale per le eccezioni non catturate.
 //
@@ -128,13 +152,10 @@ date_default_timezone_set((string)(getenv('APP_TIMEZONE') ?: 'UTC'));
 // attive dal garbage collector prima del timeout) servono PRIMA di
 // session_start(). Le spostiamo qui, all'inizio.
 //
-// SESSION_IDLE_TIMEOUT:     inattività → logout.
-// SESSION_ABSOLUTE_TIMEOUT: età massima della sessione → logout anche se attiva.
-//
-// NOTA: per dati medici, 8 ore di sessione assoluta sono tante. Valuta
-// 2–4 ore per ambienti clinici reali (a seconda del workflow).
-const SESSION_IDLE_TIMEOUT     = 1800;   // 30 minuti
-const SESSION_ABSOLUTE_TIMEOUT = 28800;  // 8 ore
+// I due `const` SESSION_IDLE_TIMEOUT / SESSION_ABSOLUTE_TIMEOUT sono stati
+// spostati nella sezione 0 (prima del blocco error handling), perché qui
+// verrebbero definiti DOPO l'ini_set('session.gc_maxlifetime') che li usa
+// a runtime → "Undefined constant" fatale. Non riportarli qui sotto.
 
 // =============================================================================
 // 1. AMBIENTE
@@ -162,6 +183,22 @@ const SESSION_ABSOLUTE_TIMEOUT = 28800;  // 8 ore
 // Non toccare il fallback 'production': è quello che ti salva se
 // dimentichi di configurare l'ambiente.
 define('APP_ENV', getenv('APP_ENV') ?: 'production');
+
+// NOTA STUDIO (FIX DEPLOY-1): questo è l'UNICO blocco esecutivo di gestione
+// errori del file, ed è volutamente ACCOPPIATO alla define: se sposti la
+// define, sposta anche questo if. Prima (sezione 0) c'era una seconda copia
+// identica, rimossa perché ridondante: PHP esegue le righe in ordine e la
+// seconda sovrascriveva comunque la prima.
+if (APP_ENV === 'production') {
+    ini_set('display_errors', '0');
+    ini_set('display_startup_errors', '0');
+    ini_set('log_errors', '1');
+    error_reporting(E_ALL);
+} else {
+    ini_set('display_errors', '1');
+    ini_set('display_startup_errors', '1');
+    error_reporting(E_ALL);
+}
 
 // NOTA STUDIO (FIX H-2): Rilevamento HTTPS.
 //
@@ -312,12 +349,20 @@ session_name('MINDLAB_SESSION');
 // È il metodo moderno (PHP 7.3+). Sono ridondanti con le ini_set: le
 // teniamo entrambe per chiarezza e compatibilità. Se modifichi un valore,
 // fallo in ENTRAMBI i posti per non creare confusione.
+//
+// FIX DEPLOY-7: c'erano DUE chiamate a session_set_cookie_params(). La
+// seconda sovrascriveva la prima: su alcune configurazioni PHP l'ini_set
+// di cookie_samesite/cookie_secure poteva venire ignorata perché vinceva
+// l'array passato qui. Ora ne resta UNA SOLA, completa e coerente con le
+// ini_set sopra. Se cambi un parametro, cambialo sia nelle ini_set sia
+// qui (valori identici) — oppure elimina le ini_set e tieni solo questo.
 session_set_cookie_params([
-    'lifetime' => 0,       // 0 = cookie di sessione, scade alla chiusura del browser.
-    'path'     => '/',     // valido per tutto il dominio.
-    'secure'   => $isHttps,// true se HTTPS.
-    'httponly' => true,    // inaccessibile a JS.
-    'samesite' => 'Lax',   // anti-CSRF.
+    'lifetime' => 0,        // 0 = cookie di sessione, scade alla chiusura del browser.
+    'path'     => '/',      // valido per tutto il dominio.
+    'domain'   => '',       // vuoto = dominio corrente (senza sottodomini).
+    'secure'   => $isHttps, // true se HTTPS (vedi $isHttps più sopra).
+    'httponly' => true,     // inaccessibile a JS.
+    'samesite' => 'Lax',    // anti-CSRF: niente cookie su POST cross-site.
 ]);
 
 // NOTA STUDIO: qui la sessione parte DAVVERO. Da questa riga in poi
@@ -602,13 +647,17 @@ function destroySession(): void
 // server si aspetta in ogni form POST.
 //
 // COME SI USA:
-// 1. Nelle view, dentro ogni <form method="POST">:
-//    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+// 1. Nelle view, dentro ogni <form method="POST">, aggiungi un campo hidden
+//    name="csrf_token" con valore csrf_token() (escapato con htmlspecialchars).
+//    NOTA STUDIO (FIX DEPLOY-3): NON scrivere qui l'esempio letterale di tag
+//    HTML con la sequenza di chiusura dei blocchi PHP seguita da parentesi
+//    aperta: dentro un commento TALE QUALE il tokenizer PHP vede comunque la
+//    close tag → il resto del commento diventa HTML emesso e il codice che
+//    segue va in parse error. In passato questo mandava in crash l'entrypoint
+//    a ogni richiesta. Se ti serve documentare sintassi di template,
+//    descrivila a parole, non con codice esegetico fra commenti.
 // 2. Nei controller, prima di operazioni state-changing:
-//    if (!csrf_verify($_POST['csrf_token'] ?? null)) {
-//        http_response_code(403);
-//        exit('CSRF token non valido.');
-//    }
+//    se csrf_verify($_POST['csrf_token'] ?? null) fallisce, rispondi 403.
 //
 // csrf_token(): se non esiste, ne genera uno da 32 byte casuali
 // (random_bytes è crittograficamente sicuro: NON usare rand() o mt_rand()).
@@ -642,10 +691,10 @@ function csrf_verify(?string $token): bool
 // Va chiamato nel login handler DOPO aver verificato le credenziali e
 // PRIMA di impostare $_SESSION['auth'].
 //
-// Uso tipico (nel login handler, dopo password_verify() riuscito):
+// Uso tipico (nel login handler, dopo la verifica riuscita della password):
 //   regenerate_session_id();
 //   rotate_csrf_token();
-//   $_SESSION['auth'] = [ ... ];
+//   e poi popola $_SESSION['auth'] con authenticated/user_id/user_type/ruolo.
 //
 // Il parametro `true` a session_regenerate_id() elimina il vecchio
 // file di sessione dal server: l'ID vecchio diventa inutilizzabile.
@@ -927,12 +976,45 @@ $routes = array_merge($publicRoutes, $protectedRoutes);
 // NOTA STUDIO: mappa "page → file da includere". Aggiungere una nuova
 // pagina = aggiungere una riga qui + (eventualmente) il ruolo in
 // $routesByRole + (eventualmente) il metodo in $routeMethods.
+//
+// NOTA STUDIO (FIX DEPLOY-5): i percorsi sono ora ASSOLUTI (con __DIR__) e
+// NON più relativi con '../'. Perché? `require __DIR__ . '/../modules/...'`
+// dipende dalla posizione del FILE richiedente rispetto alla root dei moduli:
+// basta spostare l'entrypoint di un livello (es. da /public a /public/www,
+// oppure servirlo da una sottodirectory) che tutti i require si rompono con
+// fatal error "Failed opening required" → HTTP 500 su ogni rotta. Con
+// __DIR__ . '/modules/...', il percorso è ancorato alla posizione REALE del
+// file: finché la cartella `modules/` resta sorella dell'entrypoint, i
+// require funzionano in ogni ambiente. Se invece i moduli vivono FUORI dalla
+// docroot (configurazione consigliata, vedi NEW-0), cambia qui il prefisso in
+// un path assoluto di filesystem (es. '/var/www/mindlab/modules') invece di
+// usare '..'.
+// NOTA STUDIO (FIX DEPLOY-8): i percorsi qui devono ESISTERE davvero sul
+// filesystem. Se un handler manca, il check is_file() più sotto risponde
+// 500 ("Errore interno." in produzione): è il sintomo tipico di route che
+// puntano a file non ancora creati o rinominati. Ricorda: su Linux i nomi
+// sono case-sensitive e le cartelle vanno create (es. modules/Login/View/).
 $routeHandlers = [
-    'login-choice'  => '/../modules/Login/View/login-choice.php',
-    'login-patient' => '/../modules/Login/View/login-patient.php',
-    'login-doctor'  => '/../modules/Login/View/login-doctor.php',
-    'dashboard'     => '/../modules/Dashboard/Controller/DashboardViewController.php',
-    'patient_home'  => '/../modules/Patient/Controller/PatientHomeController.php',
+    // View di scelta del ruolo: esiste già.
+    'login-choice'  => __DIR__ . '/modules/Login/View/login-choice.php',
+
+    // FIX DEPLOY-8: login paziente e specialista usano STESSA view + stesso
+    // controller (come hai deciso: il tipo utente si distingue dal DB dopo
+    // l'autenticazione). Invece di duplicare il file, passiamo il ruolo alla
+    // view tramite una variabile locale ($ruolo) che il controller leggerà.
+    'login-patient' => __DIR__ . '/modules/Login/Controller/LoginController.php',
+    'login-doctor'  => __DIR__ . '/modules/Login/Controller/LoginController.php',
+
+    'dashboard'     => __DIR__ . '/modules/Dashboard/Controller/DashboardViewController.php',
+    'patient_home'  => __DIR__ . '/modules/Patient/Controller/PatientHomeController.php',
+];
+
+// NOTA STUDIO (FIX DEPLOY-8): parametri per rotta. Qui definiamo il contesto
+// (ruolo) che il controller della pagina di login riceverà, così un unico
+// file gestisce sia l'accesso paziente sia quello specialista.
+$routeParams = [
+    'login-patient' => ['ruolo' => 'paziente'],
+    'login-doctor'  => ['ruolo' => 'specialista'],
 ];
 
 // NOTA STUDIO (FIX M-4): enforcement del metodo HTTP.
@@ -1049,4 +1131,39 @@ if (!isset($routeHandlers[$page])) {
 // fermarsi. 'include' emette un warning e prosegue, lasciando l'utente
 // su una pagina bianca o parziale. 'require' emette un fatal error e
 // termina: comportamento corretto per un file di routing.
-require __DIR__ . $routeHandlers[$page];
+//
+// NOTA STUDIO (FIX DEPLOY-6): prima del require, verifichiamo che il file
+// ESISTA davvero (is_file). Senza questo controllo, un deployment incompleto
+// (cartella modules/ mancante o rinominata) produce un fatal "Failed opening
+// required ..." che, SOLO in sviluppo, può trapelare con path interni nella
+// risposta. Con il check esplicito:
+// - in produzione: 500 generico + errore nei log (nessun leak di path);
+// - in sviluppo:   messaggio chiaro che dice QUALE file manca (debug rapido).
+$handlerFile = $routeHandlers[$page];
+if (!is_file($handlerFile)) {
+    error_log('[mindlab] Handler mancante per rotta "' . $page . '": ' . $handlerFile);
+    http_response_code(500);
+    if (APP_ENV === 'production') {
+        exit('Errore interno.');
+    }
+    exit('Handler mancante per la rotta: ' . htmlspecialchars($page, ENT_QUOTES, 'UTF-8'));
+}
+
+// FIX DEPLOY-5: qui $handlerFile è già un path assoluto (creato con __DIR__
+// nella mappa): NON concatenare di nuovo __DIR__, altrimenti otterresti un
+// path doppio e invalido tipo "/var/www/html/var/www/html/modules/...".
+
+// FIX DEPLOY-7: definiamo la costante APP_BOOTSTRAPPED subito prima del
+// require. Le view la controllano in testa al file: se un utente apre una
+// view direttamente via URL (es. /modules/Login/View/login-choice.php),
+// la costante NON è definita e la view risponde 403. Passando dal router,
+// invece, la costante esiste e la view viene renderizzata normalmente.
+define('APP_BOOTSTRAPPED', true);
+
+// NOTA STUDIO (FIX DEPLOY-8): estraiamo in variabili locali i parametri
+// definiti per la rotta corrente (es. $ruolo per le pagine di login). Il
+// require è nello scope globale, quindi il controller/la view potrà usare
+// direttamente $ruolo senza leggere il GET (fonte non fidata).
+$ruolo = $routeParams[$page]['ruolo'] ?? null;
+
+require $handlerFile;

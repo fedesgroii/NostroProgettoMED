@@ -1,0 +1,5 @@
+# FIX SICUREZZA: nega l'accesso diretto a TUTTO il contenuto di modules/.
+# Le view e i controller devono essere raggiungibili SOLO tramite il front
+# controller (index.php). Questa è una difesa in profondita': si aggiunge
+# alla guardia APP_BOOTSTRAPPED presente in testa a ogni file PHP.
+Require all denied
