@@ -100,9 +100,9 @@
         <h1>Portale MindLab</h1>
         <h2>Accedi come:</h2>
         <div class="btn-group">
-            <a href="#link-specialista" class="btn btn-specialista"><span><i class="fas fa-user-md"></i>Specialista</span></a>
-            <a href="#link-paziente" class="btn btn-paziente"><span><i class="fas fa-user"></i>Paziente</span></a>
-            <a href="#link-prenotazione" class="btn last-child"><span><i class="fas fa-calendar-alt"></i>Prenota un appuntamento senza registrarti</span></a>
+            <a href="/modules/Login/View/login_credential.php" class="btn btn-specialista"><span><i class="fas fa-user-md"></i>Specialista</span></a>
+            <a href="/modules/Login/View/login_credential.php" class="btn btn-paziente"><span><i class="fas fa-user"></i>Paziente</span></a>
+            <a href="#DA FARE" class="btn last-child"><span><i class="fas fa-calendar-alt"></i>Prenota un appuntamento senza registrarti</span></a>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
