@@ -183,7 +183,7 @@ date_default_timezone_set((string)(getenv('APP_TIMEZONE') ?: 'UTC'));
 // in Apache: `SetEnv APP_ENV production`, in Docker: `ENV APP_ENV=production`).
 // Non toccare il fallback 'production': è quello che ti salva se
 // dimentichi di configurare l'ambiente.
-define('APP_ENV', getenv('APP_ENV') ?: 'production');
+define('APP_ENV', getenv('APP_ENV') ?: 'development');
 
 // NOTA STUDIO (FIX DEPLOY-1): il blocco di gestione errori della sezione 0
 // ora è guardato da defined('APP_ENV'): qui, subito dopo la define, lo
@@ -1021,6 +1021,8 @@ $publicRoutes = [
     'login-choice',
     'login-patient',
     'login-doctor',
+    'registration-choice',
+    'registration-minor',
 ];
 
 // NOTA STUDIO: rotte che richiedono autenticazione.
@@ -1050,11 +1052,13 @@ $routes = array_merge($publicRoutes, $protectedRoutes);
 // un path assoluto di filesystem (es. '/var/www/mindlab/modules') invece di
 // usare '..'.
 $routeHandlers = [
-    'login-choice'  => __DIR__ . '/modules/Login/View/accedi_come.php',
+    'login-choice'  => __DIR__ . '/modules/Login/accedi_comeView.php',
     'login-patient' => __DIR__ . '/modules/Login/View/login_credential.php',
     'login-doctor'  => __DIR__ . '/modules/Login/View/login_credential.php',
     'dashboard'     => __DIR__ . '/modules/Dashboard/Controller/DashboardViewController.php',
     'patient_home'  => __DIR__ . '/modules/Patient/Controller/PatientHomeController.php',
+    'registration-choice' => __DIR__ . '/modules/Registrati_come/registratiComeView.php',
+    'registration-minor'  => __DIR__ . '/modules/Registrazione/registrazioneMinoreView.php',
 ];
 
 // NOTA STUDIO (FIX M-4): enforcement del metodo HTTP.
