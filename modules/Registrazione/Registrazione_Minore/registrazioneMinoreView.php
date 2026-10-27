@@ -50,9 +50,9 @@
          basta sovrascrivere assets/img/logo_ML.ico: nessun'altra
          modifica e' necessaria.
          ============================================================ -->
-    <link rel="icon" type="image/x-icon" href="assets/img/logo_ML.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="logo_ML.ico">
-    <link rel="apple-touch-icon" href="/logo_ML.png">
+    <link rel="icon" type="image/x-icon" href="/Logo/logo.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/Logo/logo.ico">
+    <link rel="apple-touch-icon" href="/Logo/logo.png">
     <!-- Font Inter: lo stesso usato nelle pagine paziente, per coerenza visiva -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
