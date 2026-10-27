@@ -11,111 +11,8 @@
 
     <title>Portale MindLab - Accedi Come</title>
 
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f0f4f8;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-        .container {
-            text-align: center;
-            padding: 30px;
-            background-color: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 400px;
-        }
-        h1 {
-            font-size: 2em;
-            color: #00796b;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 1.2em;
-            color: #333333;
-            margin-bottom: 30px;
-        }
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        .btn {
-            padding: 12px 20px;
-            font-size: 1em;
-            font-weight: bold;
-            color: #ffffff;
-            background-color: #00796b;
-            border: none;
-            border-radius: 5px;
-            text-decoration: none;
-            text-align: center;
-            transition: background-color 0.3s ease;
-            width: 100%;
-            max-width: 300px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .btn-specialista { background-color: #0288d1; }
-        .btn-paziente { background-color: #388e3c; }
-        .btn:hover { background-color: #005f56; }
-        .btn-specialista:hover { background-color: #0277bd; }
-        .btn-paziente:hover { background-color: #2e7d32; }
-
-        .btn-ospite {
-            background-color: #ffffff;
-            color: #00796b;
-            border: 2px solid #00796b;
-            font-size: 0.85em;
-            padding: 10px 20px;
-        }
-        .btn-ospite:hover { background-color: #e0f2f1; }
-
-        .separator {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: #888888;
-            font-size: 0.85em;
-            margin: 10px 0;
-        }
-        .separator::before,
-        .separator::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #dddddd;
-        }
-        .separator::before { margin-right: 10px; }
-        .separator::after { margin-left: 10px; }
-
-        .btn-registrati {
-            background-color: #ffffff;
-            color: #00796b;
-            border: 1px solid #00796b;
-            font-size: 0.9em;
-            padding: 10px 20px;
-        }
-        .btn-registrati:hover { background-color: #f0f4f8; }
-
-        .btn svg {
-            width: 1.1em;
-            height: 1.1em;
-            fill: currentColor;
-            flex-shrink: 0;
-        }
-    </style>
+    <!-- Foglio di stile esterno (Separazione MVC View) -->
+    <link rel="stylesheet" href="/STILI_CSS_VIEW/accedi_come.css">
 </head>
 <body>
     <div class="container">
@@ -160,5 +57,8 @@
 
         </div>
     </div>
+
+    <!-- Script esterno (Separazione MVC View) -->
+    <script src="/SCRIPT_JS_VIEW/accedi_come.js" defer></script>
 </body>
 </html>

@@ -1,0 +1,664 @@
+/* ============================================================
+   MINDLAB - STILI: REGISTRAZIONE MINORE
+   Cartella: STILI_CSS_VIEW/registrazioneMinoreView.css
+   Ruolo MVC: Presentazione grafica per la vista registrazioneMinoreView.php
+   ============================================================ */
+
+/* ============================================================
+   RESET e impostazioni globali
+   ============================================================ */
+
+/* Rimuove margini e padding di default, e imposta il box-sizing per includere padding e bordo nella larghezza totale */
+* {
+    box-sizing: border-box;
+}
+
+/* Corpo della pagina: sfondo grigio chiaro, font principale Inter */
+body {
+    display: flex;
+    /* Flexbox per centrare il contenuto */
+    justify-content: center;
+    /* Centra orizzontalmente */
+    align-items: flex-start;
+    /* Allinea in alto: il form di registrazione e' molto lungo */
+    min-height: 100vh;
+    /* Altezza minima pari al 100% della viewport */
+    margin: 0;
+    /* Rimuove margine di default */
+    background-color: #f7f9fa;
+    /* Colore sfondo grigio chiarissimo, come nel calendario */
+    font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+    /* Font principale, con fallback */
+    color: #1f2937;
+    /* Colore testo principale (grigio scuro) */
+    padding: 32px 20px;
+    /* Spazio interno per evitare che il contenuto tocchi i bordi su schermi piccoli */
+
+    /* ========================================================
+       DISABILITAZIONE SELEZIONE DEL TESTO - 4 BROWSER
+       ========================================================
+       Ogni riga copre un motore di rendering diverso:
+       1. -webkit-user-select : Safari (macOS/iOS) e Chromium
+                                (Chrome, Edge moderno, Opera)
+       2. -moz-user-select    : Firefox
+       3. -ms-user-select     : Internet Explorer 10/11 (legacy)
+       4. user-select         : standard W3C, gestito da tutti i
+                                browser moderni
+       Nota: nei form, i CAMPI DI INSERIMENTO restano comunque
+       selezionabili perche' l'utente deve poter correggere il
+       testo che digita (vedi regola .form-group input piu' sotto).
+       ======================================================== */
+    -webkit-user-select: none; /* Per Safari e Chrome */
+    -moz-user-select: none;    /* Per Firefox */
+    -ms-user-select: none;     /* Per IE/Edge legacy */
+    user-select: none;         /* Standard */
+}
+
+/* ============================================================
+   Contenitore principale: scheda bianca con ombra
+   ============================================================ */
+
+.container {
+    width: 100%;
+    /* Larghezza piena del genitore */
+    max-width: 900px;
+    /* piu' larga delle altre pagine: qui servono due colonne */
+    background-color: #ffffff;
+    /* Sfondo bianco per la card */
+    padding: 32px 32px 36px;
+    /* Padding interno: top/dx/bottom/sx */
+    border-radius: 12px;
+    /* Angoli arrotondati */
+    border: 1px solid #e5e7eb;
+    /* Bordo sottile grigio */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    /* Ombra leggera per profondita' */
+}
+
+/* ============================================================
+   Intestazione: logo, titolo e sottotitolo
+   ============================================================ */
+
+.header {
+    display: flex;
+    /* Flex per allineare gli elementi */
+    flex-direction: column;
+    /* Disposizione verticale */
+    align-items: center;
+    /* Centra orizzontalmente */
+    justify-content: center;
+    /* Centra verticalmente */
+    margin-bottom: 28px;
+    /* Spazio sotto l'intestazione */
+    text-align: center;
+    /* Allinea il testo al centro */
+}
+
+/* Logo: dimensioni fisse, margine sotto */
+.header img {
+    width: 100px;
+    /* Larghezza logo, modifica per ingrandire/rimpicciolire */
+    height: auto;
+    /* Altezza automatica per mantenere proporzioni */
+    margin-bottom: 8px;
+    /* Spazio sotto il logo */
+    object-fit: contain;
+    /* Mantiene le proporzioni senza tagli */
+}
+
+/* Titolo principale */
+.header h1 {
+    color: #111827;
+    /* Colore nero/grigio scuro */
+    font-size: 1.5rem;
+    /* Dimensione font (24px) */
+    font-weight: 600;
+    /* Peso semibold */
+    margin: 0;
+    /* Rimuove margine di default */
+    letter-spacing: -0.025em;
+    /* Leggera riduzione della spaziatura per un aspetto piu' compatto */
+}
+
+/* Sottotitolo descrittivo */
+.header p {
+    color: #6b7280;
+    /* Colore grigio medio per il testo secondario */
+    font-size: 0.9rem;
+    /* Dimensione leggermente piu' piccola */
+    margin: 4px 0 0;
+    /* Margine sopra minimo, zero sotto */
+}
+
+/* ============================================================
+   Sezioni del form (DATI ANAGRAFICI / GENITORI / FATTURAZIONE)
+   ============================================================ */
+
+.section-title {
+    font-size: 0.8rem;
+    /* Etichetta sezione: piccola */
+    font-weight: 600;
+    /* Semibold */
+    text-transform: uppercase;
+    /* Tutto maiuscolo, stile "sezione" */
+    letter-spacing: 0.05em;
+    /* Spaziatura ampia per distinzione visiva */
+    color: #2563eb;
+    /* Blu MindLab: richiama il colore principale del sito */
+    margin: 0 0 14px;
+    /* Spazio solo sotto il titolo di sezione */
+}
+
+/* Linea divisoria orizzontale (separatore tra le sezioni) */
+.divider {
+    border: none;
+    /* Rimuove bordo di default */
+    border-top: 1px solid #e5e7eb;
+    /* Bordo superiore sottile grigio */
+    margin: 26px 0;
+    /* Spazio sopra e sotto */
+}
+
+/* ============================================================
+   Gruppi di campi del form
+   ============================================================ */
+
+.form-group {
+    margin-bottom: 18px;
+    /* Spazio tra un campo e l'altro */
+}
+
+/* Etichette dei campi */
+.form-group label {
+    display: block;
+    /* Ogni etichetta occupa tutta la larghezza */
+    font-size: 0.875rem;
+    /* 14px */
+    font-weight: 500;
+    /* Medium */
+    color: #374151;
+    /* Grigio scuro */
+    margin-bottom: 4px;
+    /* Spazio tra etichetta e input */
+}
+
+/* Campi di input e select: stile uniforme */
+.form-group input,
+.form-group select {
+    width: 100%;
+    /* Larghezza piena */
+    min-width: 0;
+    /* Permette al flex item di restringersi sotto la
+       larghezza minima intrinseca dei controlli nativi */
+    padding: 10px 12px;
+    /* Spazio interno: top/bottom 10px, left/right 12px */
+    border: 1px solid #d1d5db;
+    /* Bordo grigio chiaro */
+    border-radius: 8px;
+    /* Angoli arrotondati */
+    font-family: inherit;
+    /* Eredita il font dal corpo */
+    font-size: 0.95rem;
+    /* Dimensione leggibile */
+    color: #1f2937;
+    /* Colore testo */
+    background-color: #ffffff;
+    /* Sfondo bianco */
+    transition: border-color 0.2s, box-shadow 0.2s;
+    /* Animazione fluida per focus e hover */
+
+    /* I campi di inserimento DEVONO restare selezionabili:
+       il divieto globale sul body si applica alla pagina, non
+       a dove l'utente scrive e corregge il proprio testo. */
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* ============================================================
+   FIX Safari / iPadOS: input[type="date"]
+   ============================================================
+   Su Safari / WebKit i campi data hanno uno stile nativo con una
+   larghezza intrinseca fissa che ignora width:100% all'interno di flex,
+   rischiando di sbordare e sovrapporsi ai campi adiacenti (come "Eta'").
+   Resettando l'appearance e impostando min-width: 0, il campo rispetta
+   la larghezza assegnata dal contenitore.
+   ============================================================ */
+.form-group input[type="date"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-inline-size: 0;
+    box-sizing: border-box;
+}
+
+/* Stato focus: bordo blu e ombra leggera */
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    /* Rimuove il contorno di default del browser */
+    border-color: #2563eb;
+    /* Bordo blu (colore principale MindLab) */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    /* Ombra blu trasparente per evidenziare */
+}
+
+/* Campo in stato di errore: lo stile esiste qui, ma chi lo
+   APPLICA o toglie e' il JavaScript/controllore, non la view */
+.form-group input.error {
+    border-color: #ef4444;
+    /* Bordo rosso per segnalare errore */
+}
+
+/* Messaggio di errore sotto il campo: nascosto di default, compare con .show */
+.form-group .error-message {
+    color: #ef4444;
+    /* Colore rosso */
+    font-size: 0.75rem;
+    /* 12px */
+    margin-top: 4px;
+    /* Piccolo spazio sopra */
+    display: none;
+    /* Nascosto finche' non serve */
+}
+
+.form-group .error-message.show {
+    display: block;
+    /* Mostra il messaggio quando ha la classe .show */
+}
+
+/* ============================================================
+   Griglie di layout (flexbox, coerenti con le altre pagine)
+   ============================================================ */
+
+/* Riga generica a due campi affiancati (es. Nome / Cognome) */
+.form-row {
+    display: flex;
+    /* Flex per affiancare i campi */
+    gap: 16px;
+    /* Spazio tra le colonne */
+}
+
+/* Ogni colonna dentro una riga occupa meta' dello spazio */
+.form-row > .form-group {
+    flex: 1;
+    /* Ripartizione equa della larghezza */
+    min-width: 0;
+    /* Impedisce al flex item di eccedere lo spazio disponibile */
+}
+
+/* ============================================================
+   FIX "Data di Nascita" + "Età" (riga con #minore_eta)
+   ============================================================
+   Il campo "Età" contiene solo un numero breve (max 3 cifre):
+   non deve occupare metà della riga. Fissando il campo Età
+   a 110px e assegnando al campo Data tutto lo spazio rimanente
+   (minmax(0, 1fr)), la data ha pieno respiro e si evita
+   qualsiasi sovrapposizione tra i due campi.
+   ============================================================ */
+.form-row:has(#minore_eta),
+.form-row-nascita-eta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px;
+    gap: 16px;
+}
+
+.form-row:has(#minore_eta) > .form-group,
+.form-row-nascita-eta > .form-group {
+    min-width: 0;
+}
+
+/* Fallback per browser datati senza supporto al selettore :has() */
+@supports not (selector(:has(*))) {
+    @media (max-width: 900px) {
+        .form-group input[type="date"] {
+            max-width: 280px;
+        }
+    }
+}
+
+/* ============================================================
+   Sezione DATI GENITORI: due colonne identiche
+   ============================================================ */
+
+.genitori-grid {
+    display: flex;
+    /* Due genitori affiancati */
+    gap: 24px;
+    /* Spazio tra le due colonne */
+}
+
+/* Colonna di un genitore: card interna con bordo leggero */
+.genitore-colonna {
+    flex: 1;
+    /* Larghezza equa tra i due genitori */
+    min-width: 0;
+    /* Bordo sottile per separare visivamente le due colonne */
+    border: 1px solid #e5e7eb;
+    /* Bordo sottile per separare visivamente le due colonne */
+    border-radius: 10px;
+    /* Angoli arrotondati */
+    padding: 18px 18px 4px;
+    /* Spazio interno (sotto ridotto: pensano i margin dei campi) */
+    background-color: #fafbfc;
+    /* Sfondo quasi bianco per distinguere la colonna */
+}
+
+/* Titolo della colonna genitore ("Genitore 1" / "Genitore 2") */
+.genitore-colonna h3 {
+    font-size: 0.95rem;
+    /* Titolo colonna */
+    font-weight: 600;
+    /* Semibold */
+    color: #111827;
+    /* Grigio molto scuro */
+    margin: 0 0 14px;
+    /* Spazio solo sotto */
+    text-align: center;
+    /* Centrato nella colonna */
+}
+
+/* ============================================================
+   AVVISI FORMALI (banner "Avviso importante")
+   ============================================================ */
+
+.avviso {
+    display: flex;
+    /* Icona a sinistra, testo a destra */
+    gap: 12px;
+    /* Spazio tra icona e testo */
+    background-color: #fffbeb;
+    /* Ambra chiarissimo: segnala senza allarmare */
+    border: 1px solid #fcd34d;
+    /* Bordo ambra: coerente con il richiamo visivo */
+    border-left: 4px solid #d97706;
+    /* Barra spessa a sinistra: stile "notice" formale */
+    border-radius: 8px;
+    /* Angoli arrotondati come il resto della pagina */
+    padding: 14px 16px;
+    /* Spazio interno */
+    margin-bottom: 18px;
+    /* Spazio sotto l'avviso, prima dei campi */
+    font-size: 0.85rem;
+    /* Testo leggermente piu' piccolo dei campi */
+    line-height: 1.55;
+    /* Interlinea comoda per un testo discorsivo */
+    color: #78350f;
+    /* Marrone scuro su fondo ambra: leggibile e formale */
+}
+
+/* Icona "!": cerchio ambra con glifo bianco */
+.avviso-icon {
+    flex-shrink: 0;
+    /* Non si restringe mai: l'icona resta intera */
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    /* Cerchio perfetto */
+    background-color: #d97706;
+    /* Ambra scura */
+    color: #ffffff;
+    /* Glifo bianco */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-top: 2px;
+    /* Allineato alla prima riga di testo */
+}
+
+/* Elenco puntato dentro l'avviso (le due condizioni di esclusione) */
+.avviso ul {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    /* Rientro standard per i pallini */
+}
+
+.avviso li {
+    margin-top: 3px;
+}
+
+/* Variante blu: usata per la nota giuridica sul documento PDF */
+.avviso-info {
+    background-color: #eff6ff;
+    /* Blu chiarissimo */
+    border-color: #bfdbfe;
+    /* Bordo blu chiaro */
+    border-left-color: #2563eb;
+    /* Barra blu MindLab */
+    color: #1e3a8a;
+    /* Blu scuro: testo formale-giuridico */
+}
+
+/* ============================================================
+   CHECKBOX "Genitore 2 facoltativo" e blocco PDF
+   ============================================================ */
+
+/* Riga della checkbox: etichetta affiancata al quadratino */
+.checkbox-group {
+    display: flex;
+    /* Quadratino + testo sulla stessa riga */
+    align-items: flex-start;
+    /* Allineati in alto se il testo va su piu' righe */
+    gap: 10px;
+    /* Spazio tra checkbox ed etichetta */
+    background-color: #f9fafb;
+    /* Grigio chiarissimo: distingue il controllo dai campi */
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 18px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 3px;
+    /* Allinea il quadratino alla prima riga di testo */
+    accent-color: #2563eb;
+    /* Colore blu MindLab quando e' spuntata */
+    cursor: pointer;
+    flex-shrink: 0;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.checkbox-group label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    /* Il click sull'etichetta attiva la checkbox */
+}
+
+/* Blocco di caricamento PDF: DI DEFAULT E' NASCOSTO.
+   Chi lo MOSTRA/NASCONDE e' il JS di presentazione legato alla
+   checkbox; chi ne CONTROLLA la validita' (PDF vero, dimensione)
+   e' il Model lato server. La view fornisce solo il contenitore
+   e lo stile degli stati. */
+.upload-box {
+    display: none;
+}
+
+/* Stato "attivo": la classe viene messa dal JS quando il blocco
+   deve comparire (genitore 2 non compilato / checkbox spuntata) */
+.upload-box.show {
+    display: block;
+}
+
+/* Etichetta del campo file: stile identico alle altre label */
+.upload-box > label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+/* Input type="file": inquadrato come gli altri campi */
+.upload-box input[type="file"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px dashed #9ca3af;
+    /* Bordo tratteggiato: convenzione visiva per i caricamenti */
+    border-radius: 8px;
+    background-color: #fafbfc;
+    font-family: inherit;
+    font-size: 0.85rem;
+    color: #374151;
+    cursor: pointer;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+.upload-box input[type="file"]:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Campo disabilitato perche' genitore 2 non richiesto: grigio,
+   non cliccabile, ma sempre selezionabile dal JS di supporto */
+.genitore-colonna.disabled {
+    opacity: 0.55;
+    /* Sfumatura: segnala visivamente che la colonna e' inattiva */
+    background-color: #f3f4f6;
+}
+
+.genitore-colonna.disabled input,
+.genitore-colonna.disabled select {
+    background-color: #f3f4f6;
+    /* Fondo grigio: standard per i campi non editabili */
+    cursor: not-allowed;
+}
+
+/* ============================================================
+   Pulsanti in fondo: Annulla e Registrati
+   ============================================================ */
+
+.buttons {
+    display: flex;
+    /* Flex per affiancare i pulsanti */
+    justify-content: space-between;
+    /* Spazio tra i due pulsanti */
+    gap: 12px;
+    /* Spazio aggiuntivo */
+    margin-top: 8px;
+    /* Spazio sopra */
+    padding-top: 16px;
+    /* Spazio interno sopra per separare dal form */
+    border-top: 1px solid #f3f4f6;
+    /* Linea sottile grigia sopra i pulsanti */
+}
+
+/* Stile base per tutti i pulsanti */
+.btn {
+    display: inline-flex;
+    /* Flex per centrare il testo */
+    align-items: center;
+    justify-content: center;
+    padding: 10px 16px;
+    /* Spazio interno */
+    font-size: 0.85em;
+    /* Dimensione testo leggermente piu' piccola */
+    font-weight: 500;
+    /* Medium */
+    text-decoration: none;
+    /* Rimuove sottolineatura (per link) */
+    border-radius: 6px;
+    /* Angoli arrotondati */
+    cursor: pointer;
+    /* Manina */
+    width: 100%;
+    /* Occupa tutta la larghezza disponibile (poi il flex li divide) */
+    transition: all 0.2s ease;
+    /* Animazione fluida per hover e focus */
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    /* Ombra leggera */
+    border: 1px solid transparent;
+    /* Bordo trasparente di default */
+    background: none;
+    /* Rimuove sfondo di default */
+    font-family: inherit;
+    /* Eredita il font */
+}
+
+/* Pulsante "Annulla": stile bianco con bordo */
+.btn-cancel {
+    background-color: #ffffff;
+    /* Sfondo bianco */
+    color: #374151;
+    /* Testo grigio scuro */
+    border-color: #d1d5db;
+    /* Bordo grigio chiaro */
+}
+
+/* Hover per Annulla: sfondo grigio leggerissimo e bordo piu' scuro */
+.btn-cancel:hover {
+    background-color: #f9fafb;
+    /* Grigio molto chiaro */
+    color: #111827;
+    /* Testo piu' scuro per contrasto */
+    border-color: #9ca3af;
+    /* Bordo grigio medio */
+}
+
+/* Pulsante "Registrati": blu MindLab */
+.btn-submit {
+    background-color: #2563eb;
+    /* Blu principale */
+    color: #ffffff;
+    /* Testo bianco */
+    border-color: transparent;
+    /* Nessun bordo visibile */
+}
+
+/* Hover per Registrati: blu piu' scuro */
+.btn-submit:hover {
+    background-color: #1d4ed8;
+    /* Blu piu' scuro */
+}
+
+/* ============================================================
+   Media query per schermi piccoli (max 900px e 480px)
+   ============================================================ */
+
+@media (max-width: 900px) {
+    /* Su tablet/phone le colonne dei genitori si impilano */
+    .genitori-grid {
+        flex-direction: column;
+        /* Una colonna sopra l'altra */
+    }
+}
+
+@media (max-width: 480px) {
+    /* Su schermi piccoli, anche le righe a due campi diventano singole */
+    .form-row {
+        flex-direction: column;
+        /* Una riga sopra l'altra */
+        gap: 0;
+        /* Rimuovi il gap (lo gestisce il margin dei singoli campi) */
+    }
+    /* Reset anche della griglia Data+Età: su telefono
+       tutti i campi devono essere disposti in colonna a piena larghezza */
+    .form-row:has(#minore_eta),
+    .form-row-nascita-eta {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    /* Riduci il padding del container per adattarlo a schermi piccoli */
+    .container {
+        padding: 20px 16px;
+        /* Meno spazio laterale */
+    }
+}
