@@ -1058,7 +1058,7 @@ $routeHandlers = [
     'dashboard'     => __DIR__ . '/modules/Dashboard/Controller/DashboardViewController.php',
     'patient_home'  => __DIR__ . '/modules/Patient/Controller/PatientHomeController.php',
     'registration-choice' => __DIR__ . '/modules/Registrati_come/registratiComeView.php',
-    'registration-minor'  => __DIR__ . '/modules/Registrazione/registrazioneMinore/registrazioneMinoreView.php',
+    'registration-minor'  => __DIR__ . '/modules/Registrazione/Registrazione_Minore/registrazioneMinoreView.php',
 ];
 
 // NOTA STUDIO (FIX M-4): enforcement del metodo HTTP.

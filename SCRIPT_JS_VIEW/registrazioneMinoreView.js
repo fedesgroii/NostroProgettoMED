@@ -5,24 +5,13 @@
  */
 
 // ============================================================
-// BLOCCO SELEZIONE - parte JS per OGNI BROWSER (4 operazioni)
+// 1. BLOCCO SELEZIONE - versione NON invasiva
 // ============================================================
-// Il CSS ha gia' coperto i 4 casi (webkit/moz/ms/standard); qui
-// le stesse difese sono ripetute a livello di EVENTO, per i
-// browser che ignorassero le proprieta' CSS o per selezioni
-// avviate con doppio clic / tripla digitazione.
-// Ogni handler e' agganciato a un browser/famiglia diversa:
-//   1. onselectstart -> Safari e Internet Explorer / Edge legacy
-//   2. mousedown     -> Chrome e Chromium-based (Opera, Edge)
-//   3. FF_domutils   -> Firefox (via getSelection)
-//   4. keydown       -> universale (Ctrl+A, Ctrl+C, tasto menu)
-// NB: NONE of this is application logic: it only affects the
-// presentation layer (what the user can highlight/copy). Data
-// validation and processing belong to Model/Controller.
-
-document.addEventListener('DOMContentLoaded', function () {
-    // Esclusione: dentro gli input la selezione DEVE restare
-    // libera, altrimenti l'utente non puo' correggere il testo.
+// Non usiamo più `document.onselectstart`: in Chrome/Safari/Firefox
+// può impedire la collocazione del caret negli input e bloccare la
+// digitazione. Ci limitiamo a scoraggiare copia/taglio/menu contestuale
+// FUORI dai campi editabili, lasciando intatta la digitazione.
+function initBloccoSelezione() {
     var isEditable = function (node) {
         while (node && node !== document) {
             if (node.tagName === 'INPUT' || node.tagName === 'TEXTAREA' || node.tagName === 'SELECT') {
@@ -33,101 +22,60 @@ document.addEventListener('DOMContentLoaded', function () {
         return false;
     };
 
-    // 1) Browser WebKit/Blink e IE: intercetta l'evento nativo
-    //    di inizio selezione.
-    document.onselectstart = function (e) {
-        return isEditable(e.target || e.srcElement) ? true : false;
-    };
-
-    // 2) Chrome/Chromium: blocca la drag-selection da mouse.
-    document.addEventListener('mousedown', function (e) {
-        if (!isEditable(e.target) && e.detail > 1) { // doppio/triplo clic
-            e.preventDefault();
-        }
-    }, false);
-
-    // 3) Firefox: svuota qualsiasi selezione residua.
-    document.addEventListener('mouseup', function () {
-        if (!isEditable(window.getSelection().anchorNode)) {
-            window.getSelection().removeAllRanges();
-        }
-    }, false);
-
-    // 4) Universale: blocca le scorciatoie da tastiera che
-    //    selezionano/copiano (Ctrl+A, Ctrl+C, Ctrl+X, tasto Menu).
-    document.addEventListener('keydown', function (e) {
-        if (isEditable(e.target)) return; // negli input tutto libero
-        var k = (e.ctrlKey || e.metaKey) ? String(e.key || '').toLowerCase() : '';
-        if (k === 'a' || k === 'c' || k === 'x') e.preventDefault();
-        if (e.key === 'ContextMenu') e.preventDefault();
-    }, false);
-
-    // Extra: disabilita anche copia/taglio contestuale (tasto dx).
+    // Blocca copia/taglio solo fuori dai campi editabili
     document.addEventListener('copy', function (e) {
         if (!isEditable(e.target)) e.preventDefault();
     }, false);
+
     document.addEventListener('cut', function (e) {
         if (!isEditable(e.target)) e.preventDefault();
     }, false);
-});
+
+    // Blocca il tasto destro solo fuori dai campi editabili
+    document.addEventListener('contextmenu', function (e) {
+        if (!isEditable(e.target)) e.preventDefault();
+    }, false);
+
+    // Blocca Ctrl+A / Ctrl+C / Ctrl+X solo fuori dai campi
+    document.addEventListener('keydown', function (e) {
+        if (isEditable(e.target)) return;
+        var k = (e.ctrlKey || e.metaKey) ? String(e.key || '').toLowerCase() : '';
+        if (k === 'a' || k === 'c' || k === 'x') e.preventDefault();
+    }, false);
+}
 
 // ============================================================
-// INTERATTIVITA' DI SOLA PRESENTAZIONE (punti 2, 3 e 4)
-// ------------------------------------------------------------
-// Questo blocco NON e' logica applicativa: non decide nulla dei
-// dati, non parla col server, non valida in senso definitivo.
-// Si limita a MUTARE LO STATO VISIVO di tre elementi gia'
-// presenti nella pagina (checkbox -> colonna Genitore 2 e
-// blocco PDF), esattamente come il selettore nativo del type
-// "date" o l'hover di un pulsante. La validazione che conta
-// resta quella del Model lato server (required HTML = vincolo
-// dichiarativo richiesto dal committente).
+// 2. GESTIONE GENITORE 2 (Esclusione & Documento PDF)
 // ============================================================
-document.addEventListener('DOMContentLoaded', function () {
+function initGenitore2() {
     var checkbox   = document.getElementById('genitore2_escluso');
     var colonna    = document.getElementById('colonna-genitore2');
     var uploadBox  = document.getElementById('blocco-allegato');
-    var form       = document.getElementById('registration-form');
     var fileInput  = document.getElementById('allegato_responsabilita_genitoriale');
 
-    if (!checkbox || !colonna || !uploadBox || !form) {
+    if (!checkbox || !colonna || !uploadBox) {
         return;
     }
 
-    // Richiesta esplicita del committente: tutti i campi sono
-    // OBBLIGATORI, eccetto la colonna Genitore 2 (facoltativa).
-    // Qui raccogliamo i due set di campi per tempo.
     var campiGen2 = Array.prototype.slice.call(
         colonna.querySelectorAll('input, select')
     );
 
-    // ---- Funzione di servizio della UI -------------------
-    // Applica lo stato "escluso" (checkbox spuntata) o "attivo".
     function aggiornaStato() {
         var escluso = checkbox.checked;
 
-        // 1) Colonna Genitore 2: disabilitata/ripristinata.
         campiGen2.forEach(function (el) {
             el.disabled = escluso;
             if (escluso) {
-                // Se la colonna viene spenta, si toglie anche
-                // il required: un campo disabled non verrebbe
-                // comunque controllato, ma lo togliamo per
-                // chiarezza semantica del DOM.
                 el.removeAttribute('required');
-                el.value = '';           // azzeriamo gli input
+                el.value = '';
                 el.classList.remove('error');
             } else {
-                // Ripristino: i campi tornano obbligatori,
-                // come da regola "se compili Genitore 2,
-                // devi compilarlo tutto".
                 el.setAttribute('required', 'required');
             }
         });
         colonna.classList.toggle('disabled', escluso);
 
-        // 2) Blocco PDF: visibile SOLO quando Genitore 2 non
-        //    viene compilato (checkbox spuntata).
         uploadBox.classList.toggle('show', escluso);
         if (fileInput) {
             fileInput.required = escluso;
@@ -135,34 +83,284 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Lo stato iniziale rispecchia la checkbox (non spuntata
-    // -> colonna attiva con required rimesso dal JS).
     aggiornaStato();
     checkbox.addEventListener('change', aggiornaStato);
+    checkbox.addEventListener('click', aggiornaStato);
+}
 
-    // ---- Regola di coerenza (solo feedback visivo) -------
-    // "Se i campi del Genitore 2 non vengono compilati deve
-    // apparire il campo PDF": lo garantiamo al submit. Se
-    // nessuno dei campi Gen2 e' valorizzato e la checkbox
-    // non e' spuntata, mostriamo il blocco PDF e chiediamo
-    // di confermare l'esclusione. E' un aiuto all'utente:
-    // la verifica definitiva sara' del ControlApp.
-    form.addEventListener('submit', function (e) {
-        var qualcunoPieno = campiGen2.some(function (el) {
-            return String(el.value || '').trim() !== '';
+// ============================================================
+// 3. MASCHERA DATA AUTOMATICA (GG/MM/AAAA) PER TUTTI I SOGGETTI
+// Inserisce automaticamente lo slash ogni due numeri
+// ============================================================
+function initMascheraData() {
+    function applicaMaschera(idInput) {
+        var input = document.getElementById(idInput);
+        if (!input) return;
+
+        input.addEventListener('input', function (e) {
+            if (e.inputType === 'deleteContentBackward' || e.inputType === 'deleteContentForward') {
+                return;
+            }
+
+            var cifre = input.value.replace(/\D/g, '').slice(0, 8);
+            var formattato = '';
+
+            if (cifre.length >= 4) {
+                formattato = cifre.slice(0, 2) + '/' + cifre.slice(2, 4) + '/' + cifre.slice(4);
+            } else if (cifre.length >= 2) {
+                formattato = cifre.slice(0, 2) + '/' + cifre.slice(2);
+            } else {
+                formattato = cifre;
+            }
+
+            input.value = formattato;
         });
-        var errAllegato = document.getElementById(
-            'allegato_responsabilita_genitoriale-error'
-        );
 
-        if (!checkbox.checked && !qualcunoPieno) {
-            // Genitore 2 lasciato in bianco senza dichiarazione:
-            // forza la scelta dell'utente invece di spedire.
-            e.preventDefault();
-            checkbox.focus();
-            if (errAllegato) errAllegato.classList.add('show');
-            return;
+        input.addEventListener('keydown', function (e) {
+            var tastiSpeciali = [
+                'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+                'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+                'Home', 'End'
+            ];
+            if (tastiSpeciali.indexOf(e.key) !== -1 || e.ctrlKey || e.metaKey) {
+                return;
+            }
+            if (!/^[0-9]$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+    }
+
+    applicaMaschera('minore_data_nascita');
+    applicaMaschera('genitore1_data_nascita');
+    applicaMaschera('genitore2_data_nascita');
+}
+
+// ============================================================
+// 4. GESTIONE DATI FATTURAZIONE (PRESENTAZIONE MVC)
+// - Checkbox spuntata di default -> sezione nascosta
+// - Deselezionando la checkbox -> appare scelta obbligatoria "Persona fisica / Azienda"
+// - Selezione Persona fisica -> visibili solo campi Persona fisica (tutti obbligatori)
+// - Selezione Azienda -> visibili solo campi Azienda (tutti obbligatori)
+// ============================================================
+function initFatturazione() {
+    var cbFatturaMinore      = document.getElementById('fattura_a_nome_minore');
+    var sezioneFatturazione  = document.getElementById('sezione-dati-fatturazione');
+    var radioPersona         = document.getElementById('fattura_tipo_persona');
+    var radioAzienda         = document.getElementById('fattura_tipo_azienda');
+    var subformPersona       = document.getElementById('subform-persona-fisica');
+    var subformAzienda       = document.getElementById('subform-azienda');
+    var form                 = document.getElementById('registration-form');
+
+    if (!cbFatturaMinore || !sezioneFatturazione) {
+        return;
+    }
+
+    var campiPersona = [
+        document.getElementById('fatturazione_persona_nome'),
+        document.getElementById('fatturazione_persona_cognome'),
+        document.getElementById('fatturazione_persona_cf'),
+        document.getElementById('fatturazione_persona_via'),
+        document.getElementById('fatturazione_persona_civico'),
+        document.getElementById('fatturazione_persona_cap'),
+        document.getElementById('fatturazione_persona_citta'),
+        document.getElementById('fatturazione_persona_provincia'),
+        document.getElementById('fatturazione_persona_nazione')
+    ].filter(Boolean);
+
+    var campiAziendaObbligatori = [
+        document.getElementById('fatturazione_azienda_ragione_sociale'),
+        document.getElementById('fatturazione_azienda_via'),
+        document.getElementById('fatturazione_azienda_civico'),
+        document.getElementById('fatturazione_azienda_cap'),
+        document.getElementById('fatturazione_azienda_citta'),
+        document.getElementById('fatturazione_azienda_provincia'),
+        document.getElementById('fatturazione_azienda_nazione'),
+        document.getElementById('fatturazione_azienda_piva')
+    ].filter(Boolean);
+
+    var sdiInput = document.getElementById('fatturazione_azienda_sdi');
+    var pecInput = document.getElementById('fatturazione_azienda_pec');
+
+    function aggiornaStatoFatturazione() {
+        var aNomeMinore = cbFatturaMinore.checked;
+
+        if (aNomeMinore) {
+            // Checkbox spuntata di default: sezione dati fatturazione completamente nascosta
+            sezioneFatturazione.style.display = 'none';
+
+            // Nessun campo o radio è obbligatorio
+            if (radioPersona) radioPersona.removeAttribute('required');
+            if (radioAzienda) radioAzienda.removeAttribute('required');
+
+            if (subformPersona) {
+                subformPersona.style.display = 'none';
+                subformPersona.classList.remove('active');
+            }
+            if (subformAzienda) {
+                subformAzienda.style.display = 'none';
+                subformAzienda.classList.remove('active');
+            }
+
+            campiPersona.forEach(function (el) {
+                el.removeAttribute('required');
+                el.classList.remove('error');
+            });
+            campiAziendaObbligatori.forEach(function (el) {
+                el.removeAttribute('required');
+                el.classList.remove('error');
+            });
+            if (sdiInput) {
+                sdiInput.removeAttribute('required');
+                sdiInput.classList.remove('error');
+            }
+            if (pecInput) {
+                pecInput.removeAttribute('required');
+                pecInput.classList.remove('error');
+            }
+        } else {
+            // Checkbox deselezionata: mostra la sezione con la scelta obbligatoria
+            sezioneFatturazione.style.display = 'block';
+
+            // La scelta Persona fisica / Azienda è obbligatoria
+            if (radioPersona) radioPersona.setAttribute('required', 'required');
+            if (radioAzienda) radioAzienda.setAttribute('required', 'required');
+
+            var isPersona = radioPersona && radioPersona.checked;
+            var isAzienda = radioAzienda && radioAzienda.checked;
+
+            if (isPersona) {
+                // Mostra SOLO campi Persona fisica
+                if (subformPersona) {
+                    subformPersona.style.display = 'block';
+                    subformPersona.classList.add('active');
+                }
+                if (subformAzienda) {
+                    subformAzienda.style.display = 'none';
+                    subformAzienda.classList.remove('active');
+                }
+
+                // Rendi obbligatori tutti i campi di Persona fisica
+                campiPersona.forEach(function (el) {
+                    el.setAttribute('required', 'required');
+                });
+
+                // Rimuovi required da Azienda
+                campiAziendaObbligatori.forEach(function (el) {
+                    el.removeAttribute('required');
+                    el.classList.remove('error');
+                });
+                if (sdiInput) {
+                    sdiInput.removeAttribute('required');
+                    sdiInput.classList.remove('error');
+                }
+                if (pecInput) {
+                    pecInput.removeAttribute('required');
+                    pecInput.classList.remove('error');
+                }
+            } else if (isAzienda) {
+                // Mostra SOLO campi Azienda
+                if (subformPersona) {
+                    subformPersona.style.display = 'none';
+                    subformPersona.classList.remove('active');
+                }
+                if (subformAzienda) {
+                    subformAzienda.style.display = 'block';
+                    subformAzienda.classList.add('active');
+                }
+
+                // Rendi obbligatori tutti i campi di Azienda
+                campiAziendaObbligatori.forEach(function (el) {
+                    el.setAttribute('required', 'required');
+                });
+
+                // Rimuovi required da Persona fisica
+                campiPersona.forEach(function (el) {
+                    el.removeAttribute('required');
+                    el.classList.remove('error');
+                });
+            } else {
+                // Nessuna opzione ancora scelta: mostra solo i radiobutton
+                if (subformPersona) {
+                    subformPersona.style.display = 'none';
+                    subformPersona.classList.remove('active');
+                }
+                if (subformAzienda) {
+                    subformAzienda.style.display = 'none';
+                    subformAzienda.classList.remove('active');
+                }
+
+                campiPersona.forEach(function (el) {
+                    el.removeAttribute('required');
+                    el.classList.remove('error');
+                });
+                campiAziendaObbligatori.forEach(function (el) {
+                    el.removeAttribute('required');
+                    el.classList.remove('error');
+                });
+                if (sdiInput) sdiInput.removeAttribute('required');
+                if (pecInput) pecInput.removeAttribute('required');
+            }
         }
-        if (errAllegato) errAllegato.classList.remove('show');
-    });
-});
+    }
+
+    // Ascolto eventi sia change che click per massima reattività cross-browser
+    cbFatturaMinore.addEventListener('change', aggiornaStatoFatturazione);
+    cbFatturaMinore.addEventListener('click', aggiornaStatoFatturazione);
+
+    if (radioPersona) {
+        radioPersona.addEventListener('change', aggiornaStatoFatturazione);
+        radioPersona.addEventListener('click', aggiornaStatoFatturazione);
+    }
+    if (radioAzienda) {
+        radioAzienda.addEventListener('change', aggiornaStatoFatturazione);
+        radioAzienda.addEventListener('click', aggiornaStatoFatturazione);
+    }
+
+    // Controllo SDI / PEC: obbligatorio almeno uno dei due se Azienda
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            if (!cbFatturaMinore.checked && radioAzienda && radioAzienda.checked) {
+                var sdiVal = (sdiInput ? sdiInput.value : '').trim();
+                var pecVal = (pecInput ? pecInput.value : '').trim();
+                var errPec = document.getElementById('fatturazione_azienda_pec-error');
+
+                if (!sdiVal && !pecVal) {
+                    e.preventDefault();
+                    if (pecInput) {
+                        pecInput.focus();
+                        pecInput.classList.add('error');
+                    }
+                    if (sdiInput) {
+                        sdiInput.classList.add('error');
+                    }
+                    if (errPec) {
+                        errPec.textContent = 'Indicare obbligatoriamente almeno uno tra Codice Destinatario SDI e indirizzo PEC';
+                        errPec.classList.add('show');
+                    }
+                } else if (errPec) {
+                    errPec.classList.remove('show');
+                }
+            }
+        });
+    }
+
+    // Inizializza lo stato
+    aggiornaStatoFatturazione();
+}
+
+// ============================================================
+// BOOTSTRAP: Esecuzione garantita al caricamento del DOM
+// ============================================================
+function initView() {
+    initBloccoSelezione();
+    initGenitore2();
+    initMascheraData();
+    initFatturazione();
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initView);
+} else {
+    initView();
+}
